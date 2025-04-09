@@ -29,6 +29,8 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react-swc": "^3.8.0",
+    "cz-cli": "^1.0.0",
+    "cz-customizable": "^7.4.0",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.6",
@@ -54,5 +56,13 @@
       "prettier --write",
       "stylelint --fix"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "commitlint.config.cjs"
+    }
   }
 }
