@@ -1,0 +1,44 @@
+@use 'tailwindcss';
+@use '@arco-design/web-react/dist/css/arco.css';
+:root {
+  // 字体
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+
+  /* 默认背景色 */
+
+  --default-bg: #f4f5f7;
+
+  /* 默认字体色 */
+  --default-color: #1d2129;
+
+  /* 默认字体大小 */
+  --default-size: 16px;
+}
+/* 滚动条 */
+*::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: var(--default-bg);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: var(--default-bg);
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #ccc;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+#root {
+  font-family: var(--font-family);
+  font-size: var(--default-size);
+  position: relative;
+  min-height: 100vh;
+  color: var(--default-color);
+  background-color: var(--default-bg);
+}
+/* 表单内*号换行问题解决方案 */
+strong {
+  display: inline-block;
+}

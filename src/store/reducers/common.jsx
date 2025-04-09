@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import logo from 'src/assets/images/logo.png'
 // 初始状态
 const initialState = {
-  title: 'CRM',
+  title: '创智CRM',
   company: '中电创智（南京）科技有限公司',
   logo: logo,
   // 用户数据

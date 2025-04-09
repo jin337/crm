@@ -1,7 +1,10 @@
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react-swc'
-import { resolve } from 'path'
 import { defineConfig } from 'vite'
+
+import legacy from '@vitejs/plugin-legacy'
+import { resolve } from 'path'
+import compression from 'vite-plugin-compression'
 
 export default defineConfig({
   server: {
@@ -14,7 +17,14 @@ export default defineConfig({
       src: resolve('src'),
     },
   },
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    compression({ threshold: 10240 }),
+    legacy({
+      targets: ['defaults', 'not IE 11'],
+    }),
+  ],
   build: {
     rollupOptions: {
       output: {

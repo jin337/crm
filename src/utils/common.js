@@ -30,7 +30,6 @@ export const groupArrKey = (arr, key) => {
   }))
 }
 
-
 // 文件下载
 export const downloadFile = (url, filename) => {
   const link = document.createElement('a')

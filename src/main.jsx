@@ -1,15 +1,16 @@
-import { createRoot } from 'react-dom/client';
+import { createRoot } from 'react-dom/client'
 // redux
-import { Provider } from 'react-redux';
-import { store } from './store';
+import { Provider } from 'react-redux'
+import { store } from './store'
 // 路由
-import { RouterProvider } from "react-router";
-import { router } from './router';
+import { RouterProvider } from 'react-router'
+import { router } from './router'
 // 样式
-import 'src/styles/index.scss';
+import 'src/styles/base.scss'
+import 'src/styles/index.scss'
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-      <RouterProvider router={router} />
-  </Provider>,
+    <RouterProvider router={router} />
+  </Provider>
 )
