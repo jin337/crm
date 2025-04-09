@@ -1,8 +1,18 @@
 module.exports = {
   extends: ['@commitlint/config-conventional'],
   rules: {
-    'subject-min-length': [2, 'always', 1],
-    'subject-max-length': [2, 'always', 100],
+    'type-enum': [2, 'always', [
+      'feat',
+      'fix',
+      'build',
+      'revert',
+      'docs',
+      'style',
+      'ci',
+      'chore'
+    ]],
+    'type-empty': [2, 'never'],
+    'subject-empty': [2, 'never'],
   },
   messages: {
     type: '请选择提交的类型',
