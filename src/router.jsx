@@ -12,7 +12,8 @@ const Project = lazy(() => import('src/pages/project'))
 // 财务管理
 const Finance = lazy(() => import('src/pages/finance'))
 // OA
-const OA = lazy(() => import('src/pages/oa'))
+const OAapply = lazy(() => import('src/pages/oa/apply'))
+const OAtodo = lazy(() => import('src/pages/oa/todo'))
 // 用户信息
 const Person = lazy(() => import('src/pages/person'))
 
@@ -63,8 +64,12 @@ const routes = [
       },
       // OA
       {
-        path: '/oa',
-        element: <OA />,
+        path: '/oa/apply',
+        element: <OAapply />,
+      },
+      {
+        path: '/oa/todo',
+        element: <OAtodo />,
       },
       {
         path: '/setting/application',

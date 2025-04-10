@@ -10,7 +10,7 @@
         "describe": "仪表盘",
         "path": "/workplace",
         "type": 2,
-        "is_icon": null,
+        "is_icon": "IconStamp",
         "start_time": "2025-01-24 11:57:56",
         "is_hide": 0,
         "sort": 1
@@ -23,7 +23,7 @@
         "describe": "工程管理",
         "path": "/project",
         "type": 2,
-        "is_icon": null,
+        "is_icon": "IconStamp",
         "start_time": "2025-01-24 11:57:56",
         "is_hide": 0,
         "sort": 2
@@ -36,7 +36,7 @@
         "describe": "财务管理",
         "path": "/finance",
         "type": 2,
-        "is_icon": null,
+        "is_icon": "IconStamp",
         "start_time": "2025-01-24 11:57:56",
         "is_hide": 0,
         "sort": 2
@@ -45,14 +45,42 @@
         "id": "4",
         "pid": "0",
         "permission": "oa",
-        "title": "OA",
-        "describe": "OA",
-        "path": "/oa",
-        "type": 2,
-        "is_icon": null,
+        "title": "审批",
+        "describe": "审批",
+        "path": null,
+        "type": 1,
+        "is_icon": "IconStamp",
         "start_time": "2025-01-24 11:57:56",
         "is_hide": 0,
-        "sort": 2
+        "sort": 2,
+        "children": [
+          {
+            "id": "41",
+            "pid": "4",
+            "permission": "oa-apply",
+            "title": "申请",
+            "describe": "申请",
+            "path": "/oa/apply",
+            "type": 2,
+            "is_icon": "IconSubscribeAdd",
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 1
+          },
+          {
+            "id": "43",
+            "pid": "4",
+            "permission": "oa-todo",
+            "title": "待办",
+            "describe": "待办",
+            "path": "/oa/todo",
+            "type": 2,
+            "is_icon": "IconSchedule",
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 3
+          }
+        ]
       }
     ],
     "right": [
@@ -75,7 +103,7 @@
             "permission": "setting-application",
             "title": "应用管理",
             "path": "/setting/application",
-            "is_icon": "IconStamp",
+            "is_icon": "IconApps",
             "type": 2,
             "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
@@ -87,12 +115,12 @@
             "permission": "setting-auth",
             "title": "角色权限",
             "path": null,
-            "is_icon": "IconStamp",
+            "is_icon": "IconRobot",
             "type": 1,
             "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
             "sort": 2,
-            "children":[
+            "children": [
               {
                 "id": "721",
                 "pid": "72",
@@ -133,7 +161,7 @@
                 "id": "724",
                 "pid": "72",
                 "permission": "setting-auth-oa",
-                "title": "OA管理角色",
+                "title": "审批管理角色",
                 "path": "/setting/auth/oa",
                 "is_icon": "IconStamp",
                 "type": 2,
@@ -149,7 +177,7 @@
             "permission": "setting-account",
             "title": "账号管理",
             "path": "/setting/account",
-            "is_icon": "IconStamp",
+            "is_icon": "IconIdcard",
             "type": 2,
             "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
@@ -161,7 +189,7 @@
             "permission": "setting-project",
             "title": "工程应用管理",
             "path": "/setting/project",
-            "is_icon": "IconStamp",
+            "is_icon": "IconTool",
             "type": 2,
             "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
@@ -173,23 +201,23 @@
             "permission": "setting-finance",
             "title": "财务应用管理",
             "path": "/setting/finance",
-            "is_icon": "IconStamp",
+            "is_icon": "IconSafe",
             "type": 2,
             "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
-            "sort":5
+            "sort": 5
           },
           {
             "id": "76",
             "pid": "7",
             "permission": "setting-oa",
-            "title": "OA应用管理",
+            "title": "审批应用管理",
             "path": "/setting/oa",
-            "is_icon": "IconStamp",
+            "is_icon": "IconTags",
             "type": 2,
             "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
-            "sort":6
+            "sort": 6
           }
         ]
       }

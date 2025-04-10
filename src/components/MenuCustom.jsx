@@ -1,9 +1,9 @@
 import { Avatar, Button, ColorPicker, Dropdown, Form, Image, Layout, Menu, Modal, Space } from '@arco-design/web-react'
-import { IconLeft, IconNotification, IconPalette, IconRight } from '@arco-design/web-react/icon'
+import { IconDown, IconLeft, IconNotification, IconPalette, IconRight } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 // 组件
 import IconCustom from 'src/components/IconCustom'
-// 公共事件
+// 公共方法
 import { findRootNode } from 'src/utils/common'
 
 const filterHiddenItems = (arr) => {
@@ -72,10 +72,26 @@ const Header = (props) => {
         <Space size='large'>
           <div className='menu-content'>
             <div className='right-item'>
+              <Dropdown
+                position='br'
+                trigger='click'
+                droplist={
+                  <Menu>
+                    <Menu.Item key='person'>创智南京</Menu.Item>
+                    <Menu.Item key='exit'>B机构</Menu.Item>
+                  </Menu>
+                }>
+                <div className='org'>
+                  <span className='txt'>创智南京</span>
+                  <IconDown />
+                </div>
+              </Dropdown>
+            </div>
+            <div className='right-item'>
               <IconPalette onClick={() => toggleTheme(true)} />
             </div>
             <div className='right-item'>
-              <IconNotification />
+              <IconNotification onClick={() => onSelectSystem('notification')} />
             </div>
             <div className='right-item divider'></div>
             {rightMenus?.map((item) => (

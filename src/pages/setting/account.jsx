@@ -17,31 +17,7 @@ const Account = () => {
       dataIndex: 'name2',
     },
     {
-      title: '性别',
-      dataIndex: 'name3',
-    },
-    {
-      title: '邮箱',
-      dataIndex: 'name4',
-    },
-    {
-      title: '主部门',
-      dataIndex: 'name5',
-    },
-    {
-      title: '附属部门',
-      dataIndex: 'name6',
-    },
-    {
-      title: '岗位',
-      dataIndex: 'name7',
-    },
-    {
-      title: '直属上司',
-      dataIndex: 'name8',
-    },
-    {
-      title: '角色',
+      title: '角色权限',
       dataIndex: 'name9',
     },
     {
@@ -66,8 +42,8 @@ const Account = () => {
             </Form.Item>
             <Form.Item label='显示' field=''>
               <Space>
-                <Button type='secondary'>内部员工</Button>
-                <Button type='secondary'>外部员工</Button>
+                <Button type='secondary'>内部账号</Button>
+                <Button type='secondary'>外部账号</Button>
               </Space>
             </Form.Item>
           </Form>

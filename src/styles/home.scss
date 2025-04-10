@@ -40,6 +40,15 @@
         font-size: 20px;
         cursor: pointer;
         user-select: none;
+        .org {
+          display: flex;
+          align-items: center;
+          .txt {
+            font-size: 14px;
+            font-weight: normal;
+            margin-right: 6px;
+          }
+        }
       }
       .divider {
         width: 0;

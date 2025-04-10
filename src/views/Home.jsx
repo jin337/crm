@@ -7,6 +7,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router'
 import MenuCustom from 'src/components/MenuCustom'
 
 import { getMenu, getMenuSelect, getSystemMenu, setUserInfo } from 'src/store/reducers/common'
+// 公共方法
 import { findRootNode, flattenArray, localGetItem } from 'src/utils/common'
 // hooks
 import { useColorTheme } from 'src/hooks'
@@ -132,6 +133,8 @@ const Home = () => {
     if (type === 'theme') {
       updateTheme(obj)
     }
+    // 切换主题
+    // if (type === 'notification') {}
     // 个人信息
     if (type === 'person') {
       setHeaderSelect()

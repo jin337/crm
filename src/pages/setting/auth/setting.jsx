@@ -21,7 +21,7 @@ const Setting = () => {
     },
     {
       id: '4',
-      title: 'OA应用管理员',
+      title: '审批应用管理员',
     },
   ])
   const [active, setActive] = useState(0)
@@ -36,16 +36,16 @@ const Setting = () => {
       dataIndex: 'name1',
     },
     {
+      title: '组织',
+      dataIndex: 'name0',
+    },
+    {
       title: '部门',
       dataIndex: 'name2',
     },
     {
       title: '职位',
       dataIndex: 'name3',
-    },
-    {
-      title: '角色',
-      dataIndex: 'name4',
     },
     {
       title: '操作',

@@ -20,7 +20,7 @@ const list = [
   {
     id: 3,
     title: '权限信息',
-    icon: 'IconSwap',
+    icon: 'IconIdcard',
   },
 ]
 
@@ -114,11 +114,11 @@ const Permissions = () => {
   // 表头
   const columns = [
     {
-      title: '主部门',
+      title: '组织',
       dataIndex: 'name1',
     },
     {
-      title: '附属部门',
+      title: '部门',
       dataIndex: 'name2',
     },
     {
@@ -129,22 +129,11 @@ const Permissions = () => {
       title: '角色',
       dataIndex: 'name4',
     },
-    {
-      title: '操作',
-      code: 'op',
-      align: 'center',
-      width: 60,
-      render: () => (
-        <Button type='text' size='mini'>
-          切换
-        </Button>
-      ),
-    },
   ]
   return (
     <>
       <div className='wrap-title'>权限信息</div>
-      <Table borderCell rowKey={'id'} columns={columns} data={[{ id: '111' }]} pagination={false} />
+      <Table borderCell rowKey={'id'} columns={columns} data={[]} pagination={false} />
     </>
   )
 }

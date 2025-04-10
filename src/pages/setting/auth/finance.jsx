@@ -47,16 +47,16 @@ const Finance = () => {
       dataIndex: 'name1',
     },
     {
+      title: '组织',
+      dataIndex: 'name0',
+    },
+    {
       title: '部门',
       dataIndex: 'name2',
     },
     {
       title: '职位',
       dataIndex: 'name3',
-    },
-    {
-      title: '角色',
-      dataIndex: 'name4',
     },
     {
       title: '操作',
