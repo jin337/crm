@@ -1,29 +1,59 @@
-import { Button, Checkbox, Form, Input } from '@arco-design/web-react'
+import { Button, Checkbox, Form, Input, Modal } from '@arco-design/web-react'
 import { IconCommand, IconSafe, IconStamp } from '@arco-design/web-react/icon'
-import {} from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 
 import { localSetItem } from 'src/utils/common'
+
 const Login = () => {
   const navigate = useNavigate()
   const [formLogin] = Form.useForm()
   const { logo, title } = useSelector((state) => state.common)
 
+  const [isChecked, setIsChecked] = useState(false)
+
+  // 登录判断
   const submit = async () => {
     const data = await formLogin.validate()
     if (data) {
-      const user = {
-        name: 'Admin',
-        role: 1,
-        token: 'ABCDEFG',
-        theme: '#0052CC',
-        presetColors: ['#165DFF', '#0052CC', '#304156', '#00b796', '#FC750D'], // 预设颜色
+      if (isChecked) {
+        handleLogin(data)
+      } else {
+        Modal.confirm({
+          title: '提醒',
+          content: (
+            <div>
+              请阅读并同意<span className='link'>《用户协议》和《隐私条款》</span>
+            </div>
+          ),
+          okText: '已阅读并登录',
+          icon: null,
+          closable: true,
+          wrapClassName: 'modal-wrap',
+          onOk: () => {
+            setIsChecked(true)
+            handleLogin(data)
+          },
+        })
       }
-      // 登录，保存登录状态
-      localSetItem('AUTHTOKEN', user, 3600000) // 1小时过期
-      navigate('/')
     }
+  }
+
+  // 登录
+  const handleLogin = (e) => {
+    const user = {
+      name: 'Admin',
+      role: 1,
+      token: 'ABCDEFG',
+      theme: {
+        header: '#304156',
+        button: '#165DFF',
+      },
+    }
+    // 登录，保存登录状态
+    localSetItem('AUTHTOKEN', user, 3600000) // 1小时过期
+    navigate('/')
   }
 
   return (
@@ -63,14 +93,14 @@ const Login = () => {
         <div className='login-form-content'>
           <div className='form-title'>欢迎登录系统</div>
           <Form size='large' layout='vertical' autoComplete='off' form={formLogin}>
-            <Form.Item label='用户名' field={'username'} required>
+            <Form.Item label='用户名' field={'username'} rules={[{ required: true, message: '用户名不能为空' }]}>
               <Input placeholder='请输入用户名/手机号' />
             </Form.Item>
-            <Form.Item label='密码' field={'password'} required>
+            <Form.Item label='密码' field={'password'} rules={[{ required: true, message: '密码不能为空' }]}>
               <Input.Password placeholder='请输入密码/验证码' />
             </Form.Item>
             <Form.Item>
-              <Checkbox>
+              <Checkbox checked={isChecked} onChange={(checked) => setIsChecked(checked)}>
                 我已阅读，同意并接受<span className='link'>《用户协议》和《隐私条款》</span>
               </Checkbox>
             </Form.Item>

@@ -30,7 +30,7 @@ const Home = () => {
     const user = localGetItem('AUTHTOKEN')
     if (user) {
       dispatch(setUserInfo(user))
-      updateTheme(user?.theme)
+      updateTheme(user?.theme) //获取主题
       // 获取导航数据
       if (initMenuData.length === 0) {
         createMenu()
@@ -122,13 +122,21 @@ const Home = () => {
   }
   // 系统功能
   const onSelectSystem = (type, obj) => {
+    // 退出
     if (type === 'exit') {
       sessionStorage.clear()
       localStorage.removeItem('TOKEN')
       navigate('/login') // 跳转登录页
     }
+    // 切换主题
     if (type === 'theme') {
       updateTheme(obj)
+    }
+    // 个人信息
+    if (type === 'person') {
+      setHeaderSelect()
+      dispatch(getMenuSelect(null))
+      navigate('/person')
     }
   }
 

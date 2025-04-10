@@ -1,9 +1,9 @@
-import { Avatar, Button, ColorPicker, Dropdown, Image, Layout, Menu, Space } from '@arco-design/web-react'
+import { Avatar, Button, ColorPicker, Dropdown, Form, Image, Layout, Menu, Modal, Space } from '@arco-design/web-react'
 import { IconLeft, IconPalette, IconRight } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 // 组件
-import IconCustom from './IconCustom'
-
+import IconCustom from 'src/components/IconCustom'
+// 公共事件
 import { findRootNode } from 'src/utils/common'
 
 const filterHiddenItems = (arr) => {
@@ -22,8 +22,10 @@ const filterHiddenItems = (arr) => {
 
 const Header = (props) => {
   const { leftIitems = [], rightIitems = [], select, logo, title, userInfo, onSelectMenu, onSelectSystem } = props
+  const [formTheme] = Form.useForm()
   const [leftMenus, setLeftMenus] = useState([])
   const [rightMenus, setRightMenus] = useState([])
+  const [visibleTheme, setVisibleTheme] = useState(false)
 
   useEffect(() => {
     setLeftMenus(filterHiddenItems(leftIitems))
@@ -33,9 +35,19 @@ const Header = (props) => {
     setRightMenus(filterHiddenItems(rightIitems))
   }, [rightIitems])
 
+  // 主题切换
+  const toggleTheme = (type) => {
+    setVisibleTheme(type)
+    if (type) {
+      formTheme.setFieldsValue(userInfo?.theme)
+    } else {
+      onSelectSystem('theme', formTheme.getFieldsValue())
+    }
+  }
+
   return (
     <>
-      <Layout.Header className='first-menu-wrap'>
+      <Layout.Header className='header-menu-wrap'>
         <div className='menu-content'>
           <div className='logo' onClick={() => onSelectMenu(leftMenus[0])}>
             <Image preview={false} simple={true} src={logo} />
@@ -52,16 +64,10 @@ const Header = (props) => {
         </div>
         <Space size='large'>
           <div className='menu-content'>
-            <ColorPicker
-              format='rgb'
-              disabledAlpha
-              value={userInfo?.theme || '#165DFF'}
-              presetColors={userInfo?.presetColors || []}
-              showPreset
-              onChange={(color) => onSelectSystem('theme', color)}
-              triggerElement={<IconPalette className='right-item' />}
-            />
-            {rightMenus.map((item) => (
+            <div className='right-item'>
+              <IconPalette onClick={() => toggleTheme(true)} />
+            </div>
+            {rightMenus?.map((item) => (
               <div key={item.permission} className='right-item' onClick={() => onSelectMenu(item)}>
                 <IconCustom name={item?.is_icon} />
               </div>
@@ -72,6 +78,7 @@ const Header = (props) => {
             trigger='click'
             droplist={
               <Menu onClickMenuItem={onSelectSystem}>
+                <Menu.Item key='person'>个人信息</Menu.Item>
                 <Menu.Item key='exit'>退出登录</Menu.Item>
               </Menu>
             }>
@@ -81,6 +88,24 @@ const Header = (props) => {
           </Dropdown>
         </Space>
       </Layout.Header>
+
+      <Modal
+        title='颜色配置'
+        visible={visibleTheme}
+        onOk={() => toggleTheme(false)}
+        onCancel={() => setVisibleTheme(false)}
+        autoFocus={false}
+        focusLock={true}>
+        {/* 恢复系统默认 */}
+        <Form layout='vertical' autoComplete='off' form={formTheme} className='theme-form'>
+          <Form.Item label='顶部导航颜色' field={'header'}>
+            <ColorPicker format='rgb' disabledAlpha />
+          </Form.Item>
+          <Form.Item label='主按钮颜色' field={'button'}>
+            <ColorPicker format='rgb' disabledAlpha />
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   )
 }
@@ -139,14 +164,14 @@ const Sider = (props) => {
   }
 
   return (
-    <div className='second-menu-wrap'>
-      <div className='second-menu'>
+    <div className='sider-menu-wrap'>
+      <div className='menu-content'>
         {menus
           ?.filter((e) => e.is_hide !== 1)
           .map((item) => (
             <Fragment key={item.permission}>
               <div
-                className={['item', selectSecond?.permission === item.permission ? 'active' : ''].join(' ')}
+                className={`item, ${selectSecond?.permission === item.permission ? 'active' : ''}`}
                 onClick={() => onSelectSecond(item)}>
                 {item.is_icon && (
                   <Avatar shape='square' size={32}>
@@ -169,15 +194,11 @@ const Sider = (props) => {
               icon={collapsed ? <IconRight /> : <IconLeft />}
             />
           </div>
-          <div className={['third-menu', collapsed ? 'third-menu-border' : ''].join(' ')}>
+          <div className={`third-menu ${collapsed ? 'third-menu-border' : ''}`}>
             {selectSecond?.children?.map((item) => (
               <Fragment key={item.permission}>
                 <div
-                  className={[
-                    'item',
-                    collapsed ? 'hide' : 'show',
-                    selectThird?.permission === item.permission ? 'active' : '',
-                  ].join(' ')}
+                  className={`item ${collapsed ? 'hide' : 'show'} ${selectThird?.permission === item.permission ? 'active' : ''}`}
                   onClick={() => onSelectThird(item)}>
                   {item.is_icon && (
                     <Avatar shape='square' size={32}>

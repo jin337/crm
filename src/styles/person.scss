@@ -1,0 +1,75 @@
+.person-wrap {
+  display: flex;
+  align-items: start;
+  height: 100%;
+
+  gap: 20px;
+  .left-wrap {
+    width: 25%;
+    padding: 20px 0;
+    background-color: #fff;
+    .user-box {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      padding: 0 20px;
+      .icon {
+        margin-right: 22px;
+      }
+    }
+    .nav-list {
+      margin-top: 20px;
+      .nav-list-item {
+        display: flex;
+        align-items: center;
+        height: 50px;
+        padding: 0 20px;
+        cursor: pointer;
+        .icon {
+          margin-right: 10px;
+        }
+        .text {
+          font-size: 14px;
+        }
+        &:hover {
+          background-color: var(--default-bg);
+        }
+      }
+      .active {
+        background-color: var(--default-bg);
+      }
+    }
+  }
+  .right-wrap {
+    width: 75%;
+    height: 100%;
+    padding: 16px;
+    background-color: #fff;
+    .wrap-title {
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+    .information-wrap {
+      width: 620px;
+      .online {
+        display: flex;
+        gap: 20px;
+      }
+    }
+    .password-wrap {
+      .input-width {
+        width: 300px;
+      }
+      .online {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        .txt {
+          font-size: 12px;
+          margin-left: 10px;
+          color: var(--color-text-3);
+        }
+      }
+    }
+  }
+}

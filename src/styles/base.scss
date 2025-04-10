@@ -1,11 +1,12 @@
 @use 'tailwindcss';
 @use '@arco-design/web-react/dist/css/arco.css';
 :root {
-  // 字体
+  /* 字体 */
   --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
 
+  /* 主题色 */
+  --default-theme: #304156;
   /* 默认背景色 */
-
   --default-bg: #f4f5f7;
 
   /* 默认字体色 */
@@ -41,4 +42,29 @@
 /* 表单内*号换行问题解决方案 */
 strong {
   display: inline-block;
+}
+.link {
+  cursor: pointer;
+  color: rgb(var(--primary-6));
+}
+/*  弹框自定义样式 */
+.modal-wrap {
+  .arco-modal {
+    padding: 20px;
+  }
+  .arco-modal-header {
+    margin-bottom: 12px;
+    text-align-last: left;
+  }
+  .arco-modal-footer {
+    margin-top: 12px;
+    text-align: right;
+  }
+}
+// 页面标题
+.page-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 12px 24px;
 }

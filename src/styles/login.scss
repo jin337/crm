@@ -5,7 +5,6 @@
   background-color: #fff;
   .login-cover {
     display: flex;
-    align-items: center;
     justify-content: center;
     width: 50%;
     height: 100%;
@@ -15,6 +14,7 @@
     background-size: cover;
     .login-cover-content {
       width: 480px;
+      margin-top: 22vh;
       padding: 20px;
       .logo {
         display: flex;
@@ -44,8 +44,8 @@
           }
         }
         .stitle {
-          font-size: 14px;
-          margin-top: 8px;
+          font-size: 13px;
+          margin-top: 4px;
           margin-bottom: 24px;
         }
       }
@@ -53,17 +53,17 @@
   }
   .login-form {
     display: flex;
-    align-items: center;
     flex-direction: row;
     justify-content: center;
     width: 50%;
-    .form-title {
-      font-size: 24px;
-      margin-bottom: 32px;
-    }
     .login-form-content {
       width: 480px;
+      margin-top: 22vh;
       padding: 20px;
+      .form-title {
+        font-size: 24px;
+        margin-bottom: 32px;
+      }
       .link {
         color: rgb(var(--primary-6));
       }

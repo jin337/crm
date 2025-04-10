@@ -6,6 +6,8 @@ const Demo = lazy(() => import('src/pages/demo'))
 const Home = lazy(() => import('src/views/Home'))
 const Login = lazy(() => import('src/views/Login'))
 const NotAuth = lazy(() => import('src/views/NotAuth'))
+// 用户信息
+const Person = lazy(() => import('src/pages/person'))
 
 const routes = [
   {
@@ -20,6 +22,10 @@ const routes = [
     path: '/',
     element: <Home />,
     children: [
+      {
+        path: '/person',
+        element: <Person />,
+      },
       {
         path: '/demo',
         element: <Demo />,
