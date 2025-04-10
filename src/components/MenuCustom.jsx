@@ -1,5 +1,5 @@
 import { Avatar, Button, ColorPicker, Dropdown, Form, Image, Layout, Menu, Modal, Space } from '@arco-design/web-react'
-import { IconLeft, IconPalette, IconRight } from '@arco-design/web-react/icon'
+import { IconLeft, IconNotification, IconPalette, IconRight } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 // 组件
 import IconCustom from 'src/components/IconCustom'
@@ -44,6 +44,13 @@ const Header = (props) => {
       onSelectSystem('theme', formTheme.getFieldsValue())
     }
   }
+  // 恢复系统默认
+  const resetTheme = () => {
+    formTheme.setFieldsValue({
+      header: '#304156',
+      button: '#165DFF',
+    })
+  }
 
   return (
     <>
@@ -67,6 +74,10 @@ const Header = (props) => {
             <div className='right-item'>
               <IconPalette onClick={() => toggleTheme(true)} />
             </div>
+            <div className='right-item'>
+              <IconNotification />
+            </div>
+            <div className='right-item divider'></div>
             {rightMenus?.map((item) => (
               <div key={item.permission} className='right-item' onClick={() => onSelectMenu(item)}>
                 <IconCustom name={item?.is_icon} />
@@ -96,15 +107,21 @@ const Header = (props) => {
         onCancel={() => setVisibleTheme(false)}
         autoFocus={false}
         focusLock={true}>
-        {/* 恢复系统默认 */}
-        <Form layout='vertical' autoComplete='off' form={formTheme} className='theme-form'>
-          <Form.Item label='顶部导航颜色' field={'header'}>
-            <ColorPicker format='rgb' disabledAlpha />
-          </Form.Item>
-          <Form.Item label='主按钮颜色' field={'button'}>
-            <ColorPicker format='rgb' disabledAlpha />
-          </Form.Item>
-        </Form>
+        <div className='theme-form'>
+          <div className='theme-reset'>
+            <Button type='text' onClick={resetTheme}>
+              恢复系统默认
+            </Button>
+          </div>
+          <Form layout='vertical' autoComplete='off' form={formTheme}>
+            <Form.Item label='顶部导航颜色' field={'header'}>
+              <ColorPicker format='rgb' disabledAlpha />
+            </Form.Item>
+            <Form.Item label='主按钮颜色' field={'button'}>
+              <ColorPicker format='rgb' disabledAlpha />
+            </Form.Item>
+          </Form>
+        </div>
       </Modal>
     </>
   )
@@ -171,7 +188,7 @@ const Sider = (props) => {
           .map((item) => (
             <Fragment key={item.permission}>
               <div
-                className={`item, ${selectSecond?.permission === item.permission ? 'active' : ''}`}
+                className={`item ${selectSecond?.permission === item.permission ? 'active' : ''}`}
                 onClick={() => onSelectSecond(item)}>
                 {item.is_icon && (
                   <Avatar shape='square' size={32}>

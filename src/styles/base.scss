@@ -4,9 +4,11 @@
   /* 字体 */
   --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
 
-  /* 主题色 */
-  --default-theme: #304156;
+  /* 边框颜色 */
+  --border-color: #dfe1e6;
+
   /* 默认背景色 */
+
   --default-bg: #f4f5f7;
 
   /* 默认字体色 */
@@ -14,6 +16,12 @@
 
   /* 默认字体大小 */
   --default-size: 16px;
+
+  /* 主题色 */
+  --default-theme: #304156;
+
+  /* hover颜色 */
+  --hover-color: #eef1f8;
 }
 /* 滚动条 */
 *::-webkit-scrollbar-track {

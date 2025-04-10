@@ -43,8 +43,13 @@ const Login = () => {
   // 登录
   const handleLogin = (e) => {
     const user = {
-      name: 'Admin',
       role: 1,
+      name: 'Admin',
+      phone: '13888888888',
+      gender: 1,
+      department: '研发部',
+      job: '前端',
+      higher_up: '王主管',
       token: 'ABCDEFG',
       theme: {
         header: '#304156',

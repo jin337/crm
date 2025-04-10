@@ -41,6 +41,11 @@
         cursor: pointer;
         user-select: none;
       }
+      .divider {
+        width: 0;
+        height: 20px;
+        border-left: 0.5px solid var(--border-color);
+      }
       .active {
         color: var(--default-theme);
         background-color: #fff;
@@ -152,5 +157,8 @@
   .arco-color-picker-preview,
   .arco-color-picker {
     width: 100%;
+  }
+  .theme-reset {
+    text-align: right;
   }
 }

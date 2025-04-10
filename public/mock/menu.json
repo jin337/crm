@@ -5,17 +5,194 @@
       {
         "id": "1",
         "pid": "0",
-        "permission": "demo",
+        "permission": "workplace",
         "title": "仪表盘",
         "describe": "仪表盘",
-        "path": "/demo",
+        "path": "/workplace",
         "type": 2,
         "is_icon": null,
         "start_time": "2025-01-24 11:57:56",
-        "sort": 1,
-        "is_hide": 0
+        "is_hide": 0,
+        "sort": 1
+      },
+      {
+        "id": "2",
+        "pid": "0",
+        "permission": "project",
+        "title": "工程管理",
+        "describe": "工程管理",
+        "path": "/project",
+        "type": 2,
+        "is_icon": null,
+        "start_time": "2025-01-24 11:57:56",
+        "is_hide": 0,
+        "sort": 2
+      },
+      {
+        "id": "3",
+        "pid": "0",
+        "permission": "finance",
+        "title": "财务管理",
+        "describe": "财务管理",
+        "path": "/finance",
+        "type": 2,
+        "is_icon": null,
+        "start_time": "2025-01-24 11:57:56",
+        "is_hide": 0,
+        "sort": 2
+      },
+      {
+        "id": "4",
+        "pid": "0",
+        "permission": "oa",
+        "title": "OA",
+        "describe": "OA",
+        "path": "/oa",
+        "type": 2,
+        "is_icon": null,
+        "start_time": "2025-01-24 11:57:56",
+        "is_hide": 0,
+        "sort": 2
       }
     ],
-    "right": []
+    "right": [
+      {
+        "id": "7",
+        "pid": "0",
+        "permission": "setting",
+        "title": "系统设置",
+        "describe": "系统设置",
+        "path": null,
+        "type": 1,
+        "is_icon": "IconSettings",
+        "start_time": "2025-01-24 11:57:56",
+        "is_hide": 0,
+        "sort": 2,
+        "children": [
+          {
+            "id": "71",
+            "pid": "7",
+            "permission": "setting-application",
+            "title": "应用管理",
+            "path": "/setting/application",
+            "is_icon": "IconStamp",
+            "type": 2,
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 1
+          },
+          {
+            "id": "72",
+            "pid": "7",
+            "permission": "setting-auth",
+            "title": "角色权限",
+            "path": null,
+            "is_icon": "IconStamp",
+            "type": 1,
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 2,
+            "children":[
+              {
+                "id": "721",
+                "pid": "72",
+                "permission": "setting-auth-setting",
+                "title": "系统管理角色",
+                "path": "/setting/auth/setting",
+                "is_icon": "IconStamp",
+                "type": 2,
+                "start_time": "2025-01-24 11:57:56",
+                "is_hide": 0,
+                "sort": 1
+              },
+              {
+                "id": "722",
+                "pid": "72",
+                "permission": "setting-auth-project",
+                "title": "工程管理角色",
+                "path": "/setting/auth/project",
+                "is_icon": "IconStamp",
+                "type": 2,
+                "start_time": "2025-01-24 11:57:56",
+                "is_hide": 0,
+                "sort": 2
+              },
+              {
+                "id": "723",
+                "pid": "72",
+                "permission": "setting-auth-finance",
+                "title": "财务管理角色",
+                "path": "/setting/auth/finance",
+                "is_icon": "IconStamp",
+                "type": 2,
+                "start_time": "2025-01-24 11:57:56",
+                "is_hide": 0,
+                "sort": 3
+              },
+              {
+                "id": "724",
+                "pid": "72",
+                "permission": "setting-auth-oa",
+                "title": "OA管理角色",
+                "path": "/setting/auth/oa",
+                "is_icon": "IconStamp",
+                "type": 2,
+                "start_time": "2025-01-24 11:57:56",
+                "is_hide": 0,
+                "sort": 4
+              }
+            ]
+          },
+          {
+            "id": "73",
+            "pid": "7",
+            "permission": "setting-account",
+            "title": "账号管理",
+            "path": "/setting/account",
+            "is_icon": "IconStamp",
+            "type": 2,
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 3
+          },
+          {
+            "id": "74",
+            "pid": "7",
+            "permission": "setting-project",
+            "title": "工程应用管理",
+            "path": "/setting/project",
+            "is_icon": "IconStamp",
+            "type": 2,
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 4
+          },
+          {
+            "id": "75",
+            "pid": "7",
+            "permission": "setting-finance",
+            "title": "财务应用管理",
+            "path": "/setting/finance",
+            "is_icon": "IconStamp",
+            "type": 2,
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort":5
+          },
+          {
+            "id": "76",
+            "pid": "7",
+            "permission": "setting-oa",
+            "title": "OA应用管理",
+            "path": "/setting/oa",
+            "is_icon": "IconStamp",
+            "type": 2,
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort":6
+          }
+        ]
+      }
+    ]
   }
 }

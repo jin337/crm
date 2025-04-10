@@ -1,6 +1,6 @@
 import { Avatar, Button, Form, Input, Select, Table } from '@arco-design/web-react'
 import { IconUser } from '@arco-design/web-react/icon'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 // 组件
@@ -25,23 +25,28 @@ const list = [
 ]
 
 // 个人信息
-const Information = () => {
+const Information = ({ userInfo }) => {
   const [formInformation] = Form.useForm()
+
+  useEffect(() => {
+    formInformation.setFieldsValue(userInfo)
+  }, [userInfo])
+
   return (
     <>
       <div className='wrap-title'>个人信息</div>
       <div className='information-wrap'>
         <Form layout='vertical' autoComplete='off' form={formInformation}>
           <div className='online'>
-            <Form.Item label='姓名' field={'name2'} rules={[{ required: true, message: '姓名不能为空' }]}>
+            <Form.Item label='姓名' field={'name'} rules={[{ required: true, message: '姓名不能为空' }]}>
               <Input placeholder='请输入姓名' />
             </Form.Item>
-            <Form.Item label='手机号(登录名)' field={'name3'} rules={[{ required: true, message: '手机号(登录名)不能为空' }]}>
+            <Form.Item label='手机号(登录名)' field={'phone'} rules={[{ required: true, message: '手机号(登录名)不能为空' }]}>
               <Input disabled />
             </Form.Item>
           </div>
           <div className='online'>
-            <Form.Item label='性别' field={'name4'}>
+            <Form.Item label='性别' field={'gender'}>
               <Select
                 options={[
                   {
@@ -55,15 +60,15 @@ const Information = () => {
                 ]}
               />
             </Form.Item>
-            <Form.Item label='部门' field={'name5'}>
+            <Form.Item label='部门' field={'department'}>
               <Input disabled />
             </Form.Item>
           </div>
           <div className='online'>
-            <Form.Item label='岗位' field={'name6'}>
+            <Form.Item label='岗位' field={'job'}>
               <Input disabled />
             </Form.Item>
-            <Form.Item label='直属上级' field={'name7'}>
+            <Form.Item label='直属上级' field={'higher_up'}>
               <Input disabled />
             </Form.Item>
           </div>
@@ -139,7 +144,7 @@ const Permissions = () => {
   return (
     <>
       <div className='wrap-title'>权限信息</div>
-      <Table borderCell rowKey={'id'} columns={columns} data={[{ id: '111' }]} />
+      <Table borderCell rowKey={'id'} columns={columns} data={[{ id: '111' }]} pagination={false} />
     </>
   )
 }
@@ -167,7 +172,7 @@ const Person = () => {
         </ul>
       </div>
       <div className='right-wrap'>
-        {select === 0 && <Information />}
+        {select === 0 && <Information userInfo={userInfo} />}
         {select === 1 && <Password />}
         {select === 2 && <Permissions />}
       </div>
