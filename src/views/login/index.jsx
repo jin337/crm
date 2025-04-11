@@ -87,7 +87,7 @@ const Login = () => {
             </div>
             <div className={styles['title']}>
               <IconStamp className={styles['icon']} />
-              OA
+              审批
             </div>
             <div className={styles['stitle']}>
               支持高度自定义配置，适应企业特定业务流程，无缝对接现有工作模式，显著提高运营效率，降低成本。
