@@ -55,6 +55,15 @@ strong {
   cursor: pointer;
   color: rgb(var(--primary-6));
 }
+.theme-form {
+  .arco-color-picker-preview,
+  .arco-color-picker {
+    width: 100%;
+  }
+  .theme-reset {
+    text-align: right;
+  }
+}
 /*  弹框自定义样式 */
 .modal-wrap {
   .arco-modal {

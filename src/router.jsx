@@ -2,7 +2,7 @@ import { lazy } from 'react'
 import { createBrowserRouter } from 'react-router'
 
 const Home = lazy(() => import('src/views/Home'))
-const Login = lazy(() => import('src/views/Login'))
+const Login = lazy(() => import('src/views/login'))
 const NotAuth = lazy(() => import('src/views/NotAuth'))
 
 // 仪表盘
@@ -15,7 +15,7 @@ const Finance = lazy(() => import('src/pages/finance'))
 const OAapply = lazy(() => import('src/pages/oa/apply'))
 const OAtodo = lazy(() => import('src/pages/oa/todo'))
 // 用户信息
-const Person = lazy(() => import('src/pages/person'))
+const Person = lazy(() => import('src/pages/person/index'))
 
 // 系统管理
 const SettingApplication = lazy(() => import('src/pages/setting/application'))

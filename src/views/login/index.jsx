@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 // 公共方法
 import { localSetItem } from 'src/utils/common'
+import styles from './index.module.scss'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -62,41 +63,41 @@ const Login = () => {
   }
 
   return (
-    <div className='login-wrap'>
-      <div className='login-cover'>
-        <div className='login-cover-content'>
-          <div className='logo'>
+    <div className={styles['login-wrap']}>
+      <div className={styles['login-cover']}>
+        <div className={styles['login-cover-content']}>
+          <div className={styles['logo']}>
             <img src={logo} alt={title} />
-            <div className='text'>{title}</div>
+            <div className={styles['text']}>{title}</div>
           </div>
-          <div className='list'>
-            <div className='title'>
-              <IconCommand className='icon' />
+          <div className={styles['list']}>
+            <div className={styles['title']}>
+              <IconCommand className={styles['icon']} />
               工程管理
             </div>
-            <div className='stitle'>
+            <div className={styles['stitle']}>
               借助360°客户全景画像，深入洞察客户需求，有效提升客户跟进效率，从而提高客户满意度和业务成交率。
             </div>
-            <div className='title'>
-              <IconSafe className='icon' />
+            <div className={styles['title']}>
+              <IconSafe className={styles['icon']} />
               财务管理
             </div>
-            <div className='stitle'>
+            <div className={styles['stitle']}>
               搭载深度数据分析工具，为企业提供精准的市场趋势预测和销售业绩评估，助力企业制定数据驱动的战略决策。
             </div>
-            <div className='title'>
-              <IconStamp className='icon' />
+            <div className={styles['title']}>
+              <IconStamp className={styles['icon']} />
               OA
             </div>
-            <div className='stitle'>
+            <div className={styles['stitle']}>
               支持高度自定义配置，适应企业特定业务流程，无缝对接现有工作模式，显著提高运营效率，降低成本。
             </div>
           </div>
         </div>
       </div>
-      <div className='login-form'>
-        <div className='login-form-content'>
-          <div className='form-title'>欢迎登录系统</div>
+      <div className={styles['login-form']}>
+        <div className={styles['login-form-content']}>
+          <div className={styles['form-title']}>欢迎登录系统</div>
           <Form size='large' layout='vertical' autoComplete='off' form={formLogin}>
             <Form.Item label='用户名' field={'username'} rules={[{ required: true, message: '用户名不能为空' }]}>
               <Input placeholder='请输入用户名/手机号' />
@@ -106,7 +107,7 @@ const Login = () => {
             </Form.Item>
             <Form.Item>
               <Checkbox checked={isChecked} onChange={(checked) => setIsChecked(checked)}>
-                我已阅读，同意并接受<span className='link'>《用户协议》和《隐私条款》</span>
+                我已阅读，同意并接受<span className={styles['link']}>《用户协议》和《隐私条款》</span>
               </Checkbox>
             </Form.Item>
             <Form.Item>

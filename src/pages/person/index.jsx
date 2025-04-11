@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 
 // 组件
 import IconCustom from 'src/components/IconCustom'
+import styles from './index.module.scss'
 
 const list = [
   {
@@ -34,10 +35,10 @@ const Information = ({ userInfo }) => {
 
   return (
     <>
-      <div className='wrap-title'>个人信息</div>
-      <div className='information-wrap'>
+      <div className={styles['wrap-title']}>个人信息</div>
+      <div className={styles['information-wrap']}>
         <Form layout='vertical' autoComplete='off' form={formInformation}>
-          <div className='online'>
+          <div className={styles['online']}>
             <Form.Item label='姓名' field={'name'} rules={[{ required: true, message: '姓名不能为空' }]}>
               <Input placeholder='请输入姓名' />
             </Form.Item>
@@ -45,7 +46,7 @@ const Information = ({ userInfo }) => {
               <Input disabled />
             </Form.Item>
           </div>
-          <div className='online'>
+          <div className={styles['online']}>
             <Form.Item label='性别' field={'gender'}>
               <Select
                 options={[
@@ -64,7 +65,7 @@ const Information = ({ userInfo }) => {
               <Input disabled />
             </Form.Item>
           </div>
-          <div className='online'>
+          <div className={styles['online']}>
             <Form.Item label='岗位' field={'job'}>
               <Input disabled />
             </Form.Item>
@@ -86,20 +87,20 @@ const Password = () => {
 
   return (
     <>
-      <div className='wrap-title'>账号密码</div>
-      <div className='password-wrap'>
+      <div className={styles['wrap-title']}>账号密码</div>
+      <div className={styles['password-wrap']}>
         <Form layout='vertical' autoComplete='off' form={formPassword}>
           <Form.Item label='原密码' field={'username'} rules={[{ required: true, message: '原密码不能为空' }]}>
-            <Input className='input-width' placeholder='请输入原密码' />
+            <Input className={styles['input-width']} placeholder='请输入原密码' />
           </Form.Item>
           <Form.Item label='新密码' field={'password'} rules={[{ required: true, message: '新密码不能为空' }]}>
-            <div className='online'>
-              <Input.Password className='input-width' placeholder='请输入新密码' />
-              <div className='txt'>密码规则：6-16位，必须包含字母、数字。</div>
+            <div className={styles['online']}>
+              <Input.Password className={styles['input-width']} placeholder='请输入新密码' />
+              <div className={styles['txt']}>密码规则：6-16位，必须包含字母、数字。</div>
             </div>
           </Form.Item>
           <Form.Item label='确认密码' field={'password2'} rules={[{ required: true, message: '确认密码不能为空' }]}>
-            <Input.Password className='input-width' placeholder='请再次输入确认密码' />
+            <Input.Password className={styles['input-width']} placeholder='请再次输入确认密码' />
           </Form.Item>
           <Form.Item>
             <Button type='primary'>保存</Button>
@@ -132,7 +133,7 @@ const Permissions = () => {
   ]
   return (
     <>
-      <div className='wrap-title'>权限信息</div>
+      <div className={styles['wrap-title']}>权限信息</div>
       <Table borderCell rowKey={'id'} columns={columns} data={[]} pagination={false} />
     </>
   )
@@ -143,24 +144,27 @@ const Person = () => {
   const [select, setSelect] = useState(0)
 
   return (
-    <div className='person-wrap'>
-      <div className='left-wrap'>
-        <div className='user-box'>
-          <Avatar className='icon'>
+    <div className={styles['person-wrap']}>
+      <div className={styles['left-wrap']}>
+        <div className={styles['user-box']}>
+          <Avatar className={styles['icon']}>
             <IconUser />
           </Avatar>
           {userInfo?.name}
         </div>
-        <ul className='nav-list'>
+        <ul className={styles['nav-list']}>
           {navList.map((item, index) => (
-            <li key={item.id} className={`nav-list-item ${select === index ? 'active' : ''}`} onClick={() => setSelect(index)}>
-              <IconCustom name={item.icon} className='icon' />
-              <div className='text'>{item.title}</div>
+            <li
+              key={item.id}
+              className={`${styles['nav-list-item']} ${select === index ? styles['active'] : ''}`}
+              onClick={() => setSelect(index)}>
+              <IconCustom name={item.icon} className={styles['icon']} />
+              <div className={styles['text']}>{item.title}</div>
             </li>
           ))}
         </ul>
       </div>
-      <div className='right-wrap'>
+      <div className={styles['right-wrap']}>
         {select === 0 && <Information userInfo={userInfo} />}
         {select === 1 && <Password />}
         {select === 2 && <Permissions />}

@@ -1,10 +1,10 @@
-import { Layout } from '@arco-design/web-react'
+import { Drawer, Layout } from '@arco-design/web-react'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useLocation, useNavigate } from 'react-router'
 
 // 组件
-import MenuCustom from 'src/components/MenuCustom'
+import MenuCustom from 'src/components/MenuCustom/index'
 
 import { getMenu, getMenuSelect, getSystemMenu, setUserInfo } from 'src/store/reducers/common'
 // 公共方法
@@ -25,6 +25,8 @@ const Home = () => {
   const [menuData, setMenuData] = useState(initMenuData)
   const [rightMenuData, setRightMenu] = useState(systemMenuData)
   const [headerSelect, setHeaderSelect] = useState()
+
+  const [newsVisible, setNewsVisible] = useState(false)
 
   // 判断登录权限
   useEffect(() => {
@@ -134,7 +136,9 @@ const Home = () => {
       updateTheme(obj)
     }
     // 切换主题
-    // if (type === 'notification') {}
+    if (type === 'notification') {
+      setNewsVisible(true)
+    }
     // 个人信息
     if (type === 'person') {
       setHeaderSelect()
@@ -144,7 +148,7 @@ const Home = () => {
   }
 
   return (
-    <Layout className='home-wrap'>
+    <Layout className='h-screen w-screen'>
       <MenuCustom.Header
         leftIitems={menuData}
         rightIitems={rightMenuData}
@@ -167,6 +171,15 @@ const Home = () => {
           </div>
         </Layout.Content>
       </Layout>
+
+      <Drawer
+        width={'50%'}
+        title={'消息提醒'}
+        visible={newsVisible}
+        onOk={() => setNewsVisible(false)}
+        onCancel={() => setNewsVisible(false)}>
+        <div>消息提醒</div>
+      </Drawer>
     </Layout>
   )
 }

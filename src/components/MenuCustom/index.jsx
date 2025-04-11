@@ -5,6 +5,7 @@ import { Fragment, useEffect, useState } from 'react'
 import IconCustom from 'src/components/IconCustom'
 // 公共方法
 import { findRootNode } from 'src/utils/common'
+import styles from './index.module.scss'
 
 const filterHiddenItems = (arr) => {
   return arr
@@ -54,24 +55,24 @@ const Header = (props) => {
 
   return (
     <>
-      <Layout.Header className='header-menu-wrap'>
-        <div className='menu-content'>
-          <div className='logo' onClick={() => onSelectMenu(leftMenus[0])}>
+      <Layout.Header className={styles['header-menu-wrap']}>
+        <div className={styles['menu-content']}>
+          <div className={styles['logo']} onClick={() => onSelectMenu(leftMenus[0])}>
             <Image preview={false} simple={true} src={logo} />
             {title}
           </div>
           {leftMenus.map((item) => (
             <div
               key={item.permission}
-              className={`left-item ${select?.permission === item.permission ? 'active' : ''}`}
+              className={`${styles['left-item']} ${select?.permission === item.permission ? styles['active'] : ''}`}
               onClick={() => onSelectMenu(item)}>
               {item.title}
             </div>
           ))}
         </div>
         <Space size='large'>
-          <div className='menu-content'>
-            <div className='right-item'>
+          <div className={styles['menu-content']}>
+            <div className={styles['right-item']}>
               <Dropdown
                 position='br'
                 trigger='click'
@@ -81,21 +82,21 @@ const Header = (props) => {
                     <Menu.Item key='exit'>B机构</Menu.Item>
                   </Menu>
                 }>
-                <div className='org'>
-                  <span className='txt'>创智南京</span>
+                <div className={styles['org']}>
+                  <span className={styles['txt']}>创智南京</span>
                   <IconDown />
                 </div>
               </Dropdown>
             </div>
-            <div className='right-item'>
+            <div className={styles['right-item']}>
               <IconPalette onClick={() => toggleTheme(true)} />
             </div>
-            <div className='right-item'>
+            <div className={styles['right-item']}>
               <IconNotification onClick={() => onSelectSystem('notification')} />
             </div>
-            <div className='right-item divider'></div>
+            <div className={`${styles['right-item']} ${styles['divider']}`}></div>
             {rightMenus?.map((item) => (
-              <div key={item.permission} className='right-item' onClick={() => onSelectMenu(item)}>
+              <div key={item.permission} className={styles['right-item']} onClick={() => onSelectMenu(item)}>
                 <IconCustom name={item?.is_icon} />
               </div>
             ))}
@@ -197,28 +198,31 @@ const Sider = (props) => {
   }
 
   return (
-    <div className='sider-menu-wrap'>
-      <div className='menu-content'>
+    <div className={styles['sider-menu-wrap']}>
+      <div className={styles['menu-content']}>
         {menus
           ?.filter((e) => e.is_hide !== 1)
           .map((item) => (
             <Fragment key={item.permission}>
               <div
-                className={`item ${selectSecond?.permission === item.permission ? 'active' : ''}`}
+                className={`${styles['item']} ${selectSecond?.permission === item.permission ? styles['active'] : ''}`}
                 onClick={() => onSelectSecond(item)}>
                 {item.is_icon && (
-                  <Avatar shape='square' size={32}>
+                  <Avatar
+                    shape='square'
+                    size={32}
+                    style={selectSecond?.permission === item.permission ? { backgroundColor: 'rgb(var(--primary-6))' } : {}}>
                     <IconCustom name={item.is_icon} />
                   </Avatar>
                 )}
-                <div className='text'>{item.title}</div>
+                <div className={styles['text']}>{item.title}</div>
               </div>
             </Fragment>
           ))}
       </div>
       {selectSecond?.children?.length > 0 && (
         <>
-          <div className='collapse-btn'>
+          <div className={styles['collapse-btn']}>
             <Button
               onClick={() => cutCollap(!collapsed)}
               type='secondary'
@@ -227,18 +231,21 @@ const Sider = (props) => {
               icon={collapsed ? <IconRight /> : <IconLeft />}
             />
           </div>
-          <div className={`third-menu ${collapsed ? 'third-menu-border' : ''}`}>
+          <div className={`${styles['third-menu']} ${collapsed ? styles['third-menu-border'] : ''}`}>
             {selectSecond?.children?.map((item) => (
               <Fragment key={item.permission}>
                 <div
-                  className={`item ${collapsed ? 'hide' : 'show'} ${selectThird?.permission === item.permission ? 'active' : ''}`}
+                  className={`${styles['item']} ${collapsed ? styles['hide'] : styles['show']} ${selectThird?.permission === item.permission ? styles['active'] : ''}`}
                   onClick={() => onSelectThird(item)}>
                   {item.is_icon && (
-                    <Avatar shape='square' size={32}>
+                    <Avatar
+                      shape='square'
+                      size={32}
+                      style={selectThird?.permission === item.permission ? { backgroundColor: 'rgb(var(--primary-6))' } : {}}>
                       <IconCustom name={item.is_icon} />
                     </Avatar>
                   )}
-                  <div className='text'>{item.title}</div>
+                  <div className={styles['text']}>{item.title}</div>
                 </div>
               </Fragment>
             ))}
