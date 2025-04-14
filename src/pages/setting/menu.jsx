@@ -186,7 +186,7 @@ const SystemMenu = () => {
         </div>
 
         <Tabs defaultActiveTab='1'>
-          <Tabs.TabPane key='1' title='主菜单'>
+          <Tabs.TabPane key='1' title='应用菜单'>
             {dataTable.length && (
               <Table
                 borderCell
