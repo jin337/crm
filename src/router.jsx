@@ -12,8 +12,8 @@ const Project = lazy(() => import('src/pages/project'))
 // 财务管理
 const Finance = lazy(() => import('src/pages/finance'))
 // 人力资源
-const HrmOrg = lazy(() => import('projectApp/org'))
-const HrmMember = lazy(() => import('projectApp/member'))
+const HrmOrg = lazy(() => import('hrmApp/org'))
+const HrmMember = lazy(() => import('hrmApp/member'))
 // OA
 const OAapply = lazy(() => import('oaApp/apply'))
 const OAtodo = lazy(() => import('oaApp/todo'))
