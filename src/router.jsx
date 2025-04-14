@@ -11,16 +11,16 @@ const Workplace = lazy(() => import('src/pages/workplace'))
 const Project = lazy(() => import('src/pages/project'))
 // 财务管理
 const Finance = lazy(() => import('src/pages/finance'))
-// 人力资源
-const HrmOrg = lazy(() => import('projectApp/org'))
-const HrmMember = lazy(() => import('projectApp/member'))
-// OA
-const OAapply = lazy(() => import('oaApp/apply'))
-const OAtodo = lazy(() => import('oaApp/todo'))
-const OAtrace = lazy(() => import('oaApp/trace'))
-const OAarchive = lazy(() => import('oaApp/archive'))
-const OAdraft = lazy(() => import('oaApp/draft'))
-const OAall = lazy(() => import('oaApp/all'))
+// // 人力资源
+// const HrmOrg = lazy(() => import('projectApp/org'))
+// const HrmMember = lazy(() => import('projectApp/member'))
+// // OA
+// const OAapply = lazy(() => import('oaApp/apply'))
+// const OAtodo = lazy(() => import('oaApp/todo'))
+// const OAtrace = lazy(() => import('oaApp/trace'))
+// const OAarchive = lazy(() => import('oaApp/archive'))
+// const OAdraft = lazy(() => import('oaApp/draft'))
+// const OAall = lazy(() => import('oaApp/all'))
 // 用户信息
 const Person = lazy(() => import('src/pages/person/index'))
 
@@ -73,39 +73,39 @@ const routes = [
         element: <Finance />,
       },
       // OA
-      {
-        path: '/oa/apply',
-        element: <OAapply />,
-      },
-      {
-        path: '/oa/todo',
-        element: <OAtodo />,
-      },
-      {
-        path: '/oa/trace',
-        element: <OAtrace />,
-      },
-      {
-        path: '/oa/archive',
-        element: <OAarchive />,
-      },
-      {
-        path: '/oa/draft',
-        element: <OAdraft />,
-      },
-      {
-        path: '/oa/all',
-        element: <OAall />,
-      },
-      // 人力资源
-      {
-        path: '/hrm/org',
-        element: <HrmOrg />,
-      },
-      {
-        path: '/hrm/member',
-        element: <HrmMember />,
-      },
+      // {
+      //   path: '/oa/apply',
+      //   element: <OAapply />,
+      // },
+      // {
+      //   path: '/oa/todo',
+      //   element: <OAtodo />,
+      // },
+      // {
+      //   path: '/oa/trace',
+      //   element: <OAtrace />,
+      // },
+      // {
+      //   path: '/oa/archive',
+      //   element: <OAarchive />,
+      // },
+      // {
+      //   path: '/oa/draft',
+      //   element: <OAdraft />,
+      // },
+      // {
+      //   path: '/oa/all',
+      //   element: <OAall />,
+      // },
+      // // 人力资源
+      // {
+      //   path: '/hrm/org',
+      //   element: <HrmOrg />,
+      // },
+      // {
+      //   path: '/hrm/member',
+      //   element: <HrmMember />,
+      // },
       {
         path: '/setting/application',
         element: <SettingApplication />,
