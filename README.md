@@ -1,11 +1,15 @@
+# 代码提交规范
+
 ## 代码提交
-```
+
+```bash
 git add .
 git cz  // 需要全局安装npm i -g commitizen
 git push
 ```
 
 ## git cz
+
 - feat: 新增功能
 - fix: Bug 修复缺陷
 - build: 项目打包
@@ -16,6 +20,7 @@ git push
 - chore: 其他零星修改修改
 
 ## 无特殊情况，勿动
+
 - .husky文
 - .prettierrc
 - eslint.config.js

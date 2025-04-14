@@ -12,9 +12,15 @@ const Project = lazy(() => import('src/pages/project'))
 // 财务管理
 const Finance = lazy(() => import('src/pages/finance'))
 // 人力资源
-const Hrm = lazy(() => import('src/pages/hrm'))
+const HrmOrg = lazy(() => import('projectApp/org'))
+const HrmMember = lazy(() => import('projectApp/member'))
 // OA
-const OA = lazy(() => import('src/pages/oa'))
+const OAapply = lazy(() => import('oaApp/apply'))
+const OAtodo = lazy(() => import('oaApp/todo'))
+const OAtrace = lazy(() => import('oaApp/trace'))
+const OAarchive = lazy(() => import('oaApp/archive'))
+const OAdraft = lazy(() => import('oaApp/draft'))
+const OAall = lazy(() => import('oaApp/all'))
 // 用户信息
 const Person = lazy(() => import('src/pages/person/index'))
 
@@ -25,6 +31,7 @@ const SettingProject = lazy(() => import('src/pages/setting/project'))
 const SettingFinance = lazy(() => import('src/pages/setting/finance'))
 const SettingOA = lazy(() => import('src/pages/setting/oa'))
 const SettingHrm = lazy(() => import('src/pages/setting/hrm'))
+const SettingMenu = lazy(() => import('src/pages/setting/menu'))
 
 // 角色权限
 const SettingAuthSetting = lazy(() => import('src/pages/setting/auth/setting'))
@@ -67,13 +74,37 @@ const routes = [
       },
       // OA
       {
-        path: '/oa',
-        element: <OA />,
+        path: '/oa/apply',
+        element: <OAapply />,
+      },
+      {
+        path: '/oa/todo',
+        element: <OAtodo />,
+      },
+      {
+        path: '/oa/trace',
+        element: <OAtrace />,
+      },
+      {
+        path: '/oa/archive',
+        element: <OAarchive />,
+      },
+      {
+        path: '/oa/draft',
+        element: <OAdraft />,
+      },
+      {
+        path: '/oa/all',
+        element: <OAall />,
       },
       // 人力资源
       {
-        path: '/hrm',
-        element: <Hrm />,
+        path: '/hrm/org',
+        element: <HrmOrg />,
+      },
+      {
+        path: '/hrm/member',
+        element: <HrmMember />,
       },
       {
         path: '/setting/application',
@@ -118,6 +149,10 @@ const routes = [
       {
         path: '/setting/hrm',
         element: <SettingHrm />,
+      },
+      {
+        path: '/setting/menu',
+        element: <SettingMenu />,
       },
     ],
   },

@@ -47,25 +47,127 @@
         "permission": "oa",
         "title": "审批",
         "describe": "审批",
-        "path": "/oa",
-        "type": 2,
+        "path": null,
+        "type": 1,
         "is_icon": "IconStamp",
         "start_time": "2025-01-24 11:57:56",
         "is_hide": 0,
-        "sort": 2
+        "sort": 2,
+        "children": [
+          {
+            "id": "41",
+            "pid": "4",
+            "permission": "oa-apply",
+            "title": "申请",
+            "path": "/oa/apply",
+            "is_icon": "IconStamp",
+            "type": 2,
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 1
+          },
+          {
+            "id": "42",
+            "pid": "4",
+            "permission": "oa-todo",
+            "title": "待办",
+            "path": "/oa/todo",
+            "is_icon": "IconStamp",
+            "type": 2,
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 2
+          },
+          {
+            "id": "43",
+            "pid": "4",
+            "permission": "oa-trace",
+            "title": "跟踪",
+            "path": "/oa/trace",
+            "is_icon": "IconStamp",
+            "type": 2,
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 3
+          },
+          {
+            "id": "44",
+            "pid": "4",
+            "permission": "oa-archive",
+            "title": "归档",
+            "path": "/oa/archive",
+            "is_icon": "IconStamp",
+            "type": 2,
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 4
+          },
+          {
+            "id": "45",
+            "pid": "4",
+            "permission": "oa-draft",
+            "title": "草稿",
+            "path": "/oa/draft",
+            "is_icon": "IconStamp",
+            "type": 2,
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 5
+          },
+          {
+            "id": "46",
+            "pid": "4",
+            "permission": "oa-all",
+            "title": "全部审批",
+            "path": "/oa/all",
+            "is_icon": "IconStamp",
+            "type": 2,
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 6
+          }
+        ]
       },
       {
         "id": "5",
         "pid": "0",
-        "permission": "htm",
+        "permission": "hrm",
         "title": "人力资源",
         "describe": "人力资源",
-        "path": "/hrm",
-        "type": 2,
+        "path": null,
+        "type": 1,
         "is_icon": "IconStamp",
         "start_time": "2025-01-24 11:57:56",
         "is_hide": 0,
-        "sort": 2
+        "sort": 2,
+        "children": [
+          {
+            "id": "51",
+            "pid": "5",
+            "permission": "hrm-org",
+            "title": "组织管理",
+            "describe": "组织管理",
+            "path": "/hrm/org",
+            "type": 2,
+            "is_icon": "IconStamp",
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 1
+          },
+          {
+            "id": "52",
+            "pid": "5",
+            "permission": "hrm-member",
+            "title": "员工管理",
+            "describe": "员工管理",
+            "path": "/hrm/member",
+            "type": 2,
+            "is_icon": "IconStamp",
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 2
+          }
+        ]
       }
     ],
     "right": [
@@ -82,6 +184,18 @@
         "is_hide": 0,
         "sort": 2,
         "children": [
+          {
+            "id": "70",
+            "pid": "7",
+            "permission": "setting-menu",
+            "title": "菜单管理",
+            "path": "/setting/menu",
+            "is_icon": "IconApps",
+            "type": 2,
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 1
+          },
           {
             "id": "71",
             "pid": "7",
