@@ -185,18 +185,6 @@
         "sort": 2,
         "children": [
           {
-            "id": "70",
-            "pid": "7",
-            "permission": "setting-menu",
-            "title": "菜单管理",
-            "path": "/setting/menu",
-            "is_icon": "IconApps",
-            "type": 2,
-            "start_time": "2025-01-24 11:57:56",
-            "is_hide": 0,
-            "sort": 1
-          },
-          {
             "id": "71",
             "pid": "7",
             "permission": "setting-application",

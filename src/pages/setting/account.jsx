@@ -1,4 +1,4 @@
-import { Button, Card, Form, Input, Space, Table } from '@arco-design/web-react'
+import { Button, Card, Form, Input, Table } from '@arco-design/web-react'
 import { IconPlus } from '@arco-design/web-react/icon'
 import { useState } from 'react'
 
@@ -39,12 +39,6 @@ const Account = () => {
           <Form layout='inline' autoComplete='off' size='small' form={formSearch}>
             <Form.Item label='' field='keyword'>
               <Input.Search placeholder='请输入员工名称/手机号' />
-            </Form.Item>
-            <Form.Item label='显示' field=''>
-              <Space>
-                <Button type='secondary'>内部账号</Button>
-                <Button type='secondary'>外部账号</Button>
-              </Space>
             </Form.Item>
           </Form>
           <Button type='primary' size='small' icon={<IconPlus />}>
