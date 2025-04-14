@@ -3,36 +3,39 @@ import { IconPlus, IconRefresh, IconSearch, IconSettings } from '@arco-design/we
 import { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-const Setting = () => {
+const list = [
+  {
+    id: 1,
+    title: '主管',
+  },
+  {
+    id: 2,
+    title: '管理员',
+  },
+]
+const Hrm = () => {
   const common = useSelector((state) => state.common)
   const [formSearch] = Form.useForm()
-  const [items, setItems] = useState([
-    {
-      id: '1',
-      title: '超级管理员',
-    },
-    {
-      id: '2',
-      title: '工程应用管理员',
-    },
-    {
-      id: '3',
-      title: '财务应用管理员',
-    },
-    {
-      id: '4',
-      title: '审批应用管理员',
-    },
-    {
-      id: '5',
-      title: '人力资源应用管理员',
-    },
-  ])
+  const [items, setItems] = useState(list)
   const [active, setActive] = useState(0)
 
   const [dataTable, setDataTable] = useState([])
   const [setting, setSetting] = useState([])
   const [selectValue, setSelectValue] = useState([])
+  const [selectOptions, setSelectOptions] = useState([
+    {
+      label: '新建',
+      value: '1',
+    },
+    {
+      label: '编辑',
+      value: '2',
+    },
+    {
+      label: '删除',
+      value: '3',
+    },
+  ])
 
   const columns = [
     {
@@ -74,12 +77,13 @@ const Setting = () => {
   ]
 
   useEffect(() => {
-    const arr = [...common.initMenuData, ...common.systemMenuData]
+    const arr = [...common.initMenuData, ...common.systemMenuData].filter((e) => e.permission === 'oa')
     if (arr.length) {
-      setSetting(arr)
+      const childrenList = arr[0].children?.filter((e) => e.type === 2) || []
+      const deepList = arr[0].children?.flatMap((item) => item?.children || []) || []
+      setSetting([...childrenList, ...deepList])
     }
   }, [common?.initMenuData, common?.systemMenuData])
-
   // 查询事件
   const onChangeSearch = (e) => {
     if (e === 'refresh') {
@@ -154,17 +158,9 @@ const Setting = () => {
                     <Checkbox>
                       <span className='font-bold'>{item.title}</span>
                     </Checkbox>
-                    {item?.children && (
-                      <div>
-                        <Checkbox.Group
-                          value={selectValue}
-                          options={item?.children?.map((item) => ({
-                            label: item.title,
-                            value: item.id,
-                          }))}
-                        />
-                      </div>
-                    )}
+                    <div>
+                      <Checkbox.Group value={selectValue} options={selectOptions} />
+                    </div>
                   </div>
                 </Fragment>
               ))}
@@ -175,4 +171,4 @@ const Setting = () => {
     </div>
   )
 }
-export default Setting
+export default Hrm

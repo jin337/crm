@@ -175,6 +175,7 @@ const Home = () => {
       <Drawer
         width={'50%'}
         title={'消息提醒'}
+        footer={null}
         visible={newsVisible}
         onOk={() => setNewsVisible(false)}
         onCancel={() => setNewsVisible(false)}>

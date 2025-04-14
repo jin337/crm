@@ -47,40 +47,25 @@
         "permission": "oa",
         "title": "审批",
         "describe": "审批",
-        "path": null,
-        "type": 1,
+        "path": "/oa",
+        "type": 2,
         "is_icon": "IconStamp",
         "start_time": "2025-01-24 11:57:56",
         "is_hide": 0,
-        "sort": 2,
-        "children": [
-          {
-            "id": "41",
-            "pid": "4",
-            "permission": "oa-apply",
-            "title": "申请",
-            "describe": "申请",
-            "path": "/oa/apply",
-            "type": 2,
-            "is_icon": "IconSubscribeAdd",
-            "start_time": "2025-01-24 11:57:56",
-            "is_hide": 0,
-            "sort": 1
-          },
-          {
-            "id": "43",
-            "pid": "4",
-            "permission": "oa-todo",
-            "title": "待办",
-            "describe": "待办",
-            "path": "/oa/todo",
-            "type": 2,
-            "is_icon": "IconSchedule",
-            "start_time": "2025-01-24 11:57:56",
-            "is_hide": 0,
-            "sort": 3
-          }
-        ]
+        "sort": 2
+      },
+      {
+        "id": "5",
+        "pid": "0",
+        "permission": "htm",
+        "title": "人力资源",
+        "describe": "人力资源",
+        "path": "/hrm",
+        "type": 2,
+        "is_icon": "IconStamp",
+        "start_time": "2025-01-24 11:57:56",
+        "is_hide": 0,
+        "sort": 2
       }
     ],
     "right": [
@@ -168,6 +153,18 @@
                 "start_time": "2025-01-24 11:57:56",
                 "is_hide": 0,
                 "sort": 4
+              },
+              {
+                "id": "725",
+                "pid": "72",
+                "permission": "setting-auth-hrm",
+                "title": "人力资源管理角色",
+                "path": "/setting/auth/hrm",
+                "is_icon": "IconStamp",
+                "type": 2,
+                "start_time": "2025-01-24 11:57:56",
+                "is_hide": 0,
+                "sort": 5
               }
             ]
           },
@@ -187,7 +184,7 @@
             "id": "74",
             "pid": "7",
             "permission": "setting-project",
-            "title": "工程应用管理",
+            "title": "工程管理",
             "path": "/setting/project",
             "is_icon": "IconTool",
             "type": 2,
@@ -199,7 +196,7 @@
             "id": "75",
             "pid": "7",
             "permission": "setting-finance",
-            "title": "财务应用管理",
+            "title": "财务管理",
             "path": "/setting/finance",
             "is_icon": "IconSafe",
             "type": 2,
@@ -211,13 +208,25 @@
             "id": "76",
             "pid": "7",
             "permission": "setting-oa",
-            "title": "审批应用管理",
+            "title": "审批管理",
             "path": "/setting/oa",
             "is_icon": "IconTags",
             "type": 2,
             "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
             "sort": 6
+          },
+          {
+            "id": "77",
+            "pid": "7",
+            "permission": "setting-hrm",
+            "title": "人力资源管理",
+            "path": "/setting/hrm",
+            "is_icon": "IconStamp",
+            "type": 2,
+            "start_time": "2025-01-24 11:57:56",
+            "is_hide": 0,
+            "sort": 7
           }
         ]
       }
