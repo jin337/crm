@@ -26,6 +26,7 @@ const Person = lazy(() => import('src/pages/person/index'))
 
 // 系统管理
 const SettingApplication = lazy(() => import('src/pages/setting/application'))
+const SettingAppManage = lazy(() => import('src/pages/setting/application/manage'))
 const SettingAccount = lazy(() => import('src/pages/setting/account'))
 const SettingProject = lazy(() => import('src/pages/setting/project'))
 const SettingFinance = lazy(() => import('src/pages/setting/finance'))
@@ -109,6 +110,10 @@ const routes = [
       {
         path: '/setting/application',
         element: <SettingApplication />,
+      },
+      {
+        path: '/setting/app/manage',
+        element: <SettingAppManage />,
       },
       {
         path: '/setting/account',

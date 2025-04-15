@@ -24,7 +24,7 @@ import IconCustom from 'src/components/IconCustom'
 // 接口
 import Http from 'src/service/api'
 
-const SystemMenu = () => {
+const Manage = () => {
   const [formSearch] = Form.useForm()
   const [dataTable, setDataTable] = useState([])
   const [dataRightTable, setRightDataTable] = useState([])
@@ -59,7 +59,7 @@ const SystemMenu = () => {
       render: (text) => {
         switch (text) {
           case 1:
-            return <Tag color='arcoblue'>目录</Tag>
+            return <Tag color='arcoblue'>应用</Tag>
           case 2:
             return <Tag color='green'>菜单</Tag>
           case 3:
@@ -260,7 +260,7 @@ const SystemMenu = () => {
                 type='button'
                 options={[
                   {
-                    label: '目录',
+                    label: '应用',
                     value: 1,
                   },
                   {
@@ -363,4 +363,4 @@ const SystemMenu = () => {
     </>
   )
 }
-export default SystemMenu
+export default Manage

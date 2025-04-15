@@ -194,7 +194,21 @@
             "type": 2,
             "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
-            "sort": 1
+            "sort": 1,
+            "children":[
+              {
+                "id": "711",
+                "pid": "71",
+                "permission": "setting-app-manage",
+                "title": "菜单管理",
+                "path": "/setting/app/manage",
+                "is_icon": "IconApps",
+                "type": 2,
+                "start_time": "2025-01-24 11:57:56",
+                "is_hide": 1,
+                "sort": 1
+              }
+            ]
           },
           {
             "id": "72",
