@@ -13,6 +13,11 @@ export default defineConfig({
     port: 3000,
     host: '0.0.0.0',
   },
+  preview: {
+    open: true,
+    port: 3000,
+    host: '0.0.0.0',
+  },
   resolve: {
     alias: {
       src: resolve('src'),
@@ -68,16 +73,5 @@ export default defineConfig({
     target: 'esnext',
     minify: false,
     cssCodeSplit: false,
-    rollupOptions: {
-      output: {
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        chunkFileNames: 'assets/js/chunks/[name]-[hash].js',
-        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-        manualChunks: {
-          'chunk-vendor': ['react', 'react-dom', 'react-router', 'react-redux', '@reduxjs/toolkit', 'axios'],
-          'chunk-other': ['@arco-design/web-react'],
-        },
-      },
-    },
   },
 })
