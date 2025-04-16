@@ -13,11 +13,6 @@ export default defineConfig({
     port: 3000,
     host: '0.0.0.0',
   },
-  preview: {
-    open: true,
-    port: 3000,
-    host: '0.0.0.0',
-  },
   resolve: {
     alias: {
       src: resolve('src'),
@@ -40,32 +35,7 @@ export default defineConfig({
         // 人力资源
         hrmApp: 'https://hrm.jin337.top/assets/remoteEntry.js',
       },
-      shared: {
-        react: {
-          singleton: true,
-          requiredVersion: '^18.3.1',
-        },
-        'react-dom': {
-          singleton: true,
-          requiredVersion: '^18.3.1',
-        },
-        'react-router': {
-          singleton: true,
-          requiredVersion: '^7.4.1',
-        },
-        'react-redux': {
-          singleton: true,
-          requiredVersion: '^9.2.0',
-        },
-        '@reduxjs/toolkit': {
-          singleton: true,
-          requiredVersion: '^2.6.1',
-        },
-        axios: {
-          singleton: true,
-          requiredVersion: '^1.8.4',
-        },
-      },
+      shared: ['react', 'react-dom', 'react-router', 'react-redux', '@reduxjs/toolkit', 'axios'],
     }),
   ],
   build: {
