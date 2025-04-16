@@ -174,12 +174,12 @@ const Home = () => {
 
       <Drawer
         width={'50%'}
-        title={'消息提醒'}
+        title={'消息通知'}
         footer={null}
         visible={newsVisible}
         onOk={() => setNewsVisible(false)}
         onCancel={() => setNewsVisible(false)}>
-        <div>消息提醒</div>
+        <div>消息通知</div>
       </Drawer>
     </Layout>
   )
