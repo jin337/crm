@@ -12,12 +12,12 @@ import {
   Space,
   Switch,
   Table,
-  Tabs,
   Tag,
   TreeSelect,
 } from '@arco-design/web-react'
-import { IconDown, IconPlus, IconRefresh, IconRight, IconSearch } from '@arco-design/web-react/icon'
+import { IconDown, IconRefresh, IconRight, IconSearch } from '@arco-design/web-react/icon'
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router'
 
 // 组件
 import IconCustom from 'src/components/IconCustom'
@@ -25,21 +25,26 @@ import IconCustom from 'src/components/IconCustom'
 import Http from 'src/service/api'
 
 const Manage = () => {
+  const location = useLocation()
   const [formSearch] = Form.useForm()
+  const [params, setParams] = useState()
   const [dataTable, setDataTable] = useState([])
-  const [dataRightTable, setRightDataTable] = useState([])
 
   const [formItem] = Form.useForm()
   const [visibleEdit, setVisibleEdit] = useState(false)
 
   useEffect(() => {
-    Http.get('/mock/menu.json').then(({ code, data }) => {
-      if (code === 200) {
-        setDataTable(data.left || [])
-        setRightDataTable(data.right || [])
-      }
-    })
-  }, [])
+    setParams(location.state?.state)
+    const permission = location.state?.state.permission
+    if (permission) {
+      Http.get('/mock/menu.json').then(({ code, data }) => {
+        if (code === 200) {
+          const arr = [...data.left, ...data.right].filter((e) => e.permission === permission)
+          setDataTable(arr || [])
+        }
+      })
+    }
+  }, [location])
 
   // 流程管理-表头
   const columns = [
@@ -179,64 +184,32 @@ const Manage = () => {
             <Button type='secondary' icon={<IconRefresh />} onClick={() => onChangeSearch('refresh')}>
               重置
             </Button>
-            <Button type='primary' status='success' icon={<IconPlus />} onClick={() => editItem('add')}>
-              新增
-            </Button>
           </Space>
         </div>
 
-        <Tabs defaultActiveTab='1'>
-          <Tabs.TabPane key='1' title='应用菜单'>
-            {dataTable.length && (
-              <Table
-                borderCell
-                stripe
-                defaultExpandAllRows
-                rowKey='id'
-                columns={columns}
-                data={dataTable}
-                pagination={false}
-                expandProps={{
-                  icon: ({ expanded, record, ...restProps }) =>
-                    expanded ? (
-                      <button {...restProps} className='!bg-transparent'>
-                        <IconDown />
-                      </button>
-                    ) : (
-                      <button {...restProps} className='!bg-transparent'>
-                        <IconRight />
-                      </button>
-                    ),
-                }}
-              />
-            )}
-          </Tabs.TabPane>
-          <Tabs.TabPane key='2' title='系统菜单'>
-            {dataRightTable.length && (
-              <Table
-                borderCell
-                stripe
-                defaultExpandAllRows
-                rowKey='id'
-                columns={columns}
-                data={dataRightTable}
-                pagination={false}
-                expandProps={{
-                  icon: ({ expanded, record, ...restProps }) =>
-                    expanded ? (
-                      <button {...restProps} className='!bg-transparent'>
-                        <IconDown />
-                      </button>
-                    ) : (
-                      <button {...restProps} className='!bg-transparent'>
-                        <IconRight />
-                      </button>
-                    ),
-                }}
-              />
-            )}
-          </Tabs.TabPane>
-        </Tabs>
+        {dataTable.length && (
+          <Table
+            borderCell
+            stripe
+            defaultExpandAllRows
+            rowKey='id'
+            columns={columns}
+            data={dataTable}
+            pagination={false}
+            expandProps={{
+              icon: ({ expanded, record, ...restProps }) =>
+                expanded ? (
+                  <button {...restProps} className='!bg-transparent'>
+                    <IconDown />
+                  </button>
+                ) : (
+                  <button {...restProps} className='!bg-transparent'>
+                    <IconRight />
+                  </button>
+                ),
+            }}
+          />
+        )}
       </Card>
 
       {/* 编辑 */}

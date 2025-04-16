@@ -1,4 +1,4 @@
-import {} from 'react'
+import { } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { getMenuSelect } from 'src/store/reducers/common'
@@ -11,9 +11,9 @@ const useLink = () => {
 
   const link = (params) => {
     const path = params.path.replace(/\/[^/]+$/, '')
-    let item = flattenArray(initMenuData)?.find((item) => item.path === path)
+    let item = flattenArray(initMenuData)?.find((item) => item.path === path || item.path === params.path)
     if (!item) {
-      item = flattenArray(systemMenuData)?.find((item) => item.path === path)
+      item = flattenArray(systemMenuData)?.find((item) => item.path === path || item.path === params.path)
     }
     dispatch(getMenuSelect(item))
     navigate(params.path, { state: { ...item, ...params } })

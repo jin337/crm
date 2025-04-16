@@ -200,7 +200,7 @@
                 "id": "711",
                 "pid": "71",
                 "permission": "setting-app-manage",
-                "title": "菜单管理",
+                "title": "应用设置",
                 "path": "/setting/app/manage",
                 "is_icon": "IconApps",
                 "type": 2,

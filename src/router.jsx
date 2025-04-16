@@ -32,7 +32,6 @@ const SettingProject = lazy(() => import('src/pages/setting/project'))
 const SettingFinance = lazy(() => import('src/pages/setting/finance'))
 const SettingOA = lazy(() => import('src/pages/setting/oa'))
 const SettingHrm = lazy(() => import('src/pages/setting/hrm'))
-const SettingMenu = lazy(() => import('src/pages/setting/menu'))
 
 // 角色权限
 const SettingAuthSetting = lazy(() => import('src/pages/setting/auth/setting'))
@@ -112,7 +111,7 @@ const routes = [
         element: <SettingApplication />,
       },
       {
-        path: '/setting/app/manage',
+        path: '/setting/app/manage/:id',
         element: <SettingAppManage />,
       },
       {
@@ -154,10 +153,6 @@ const routes = [
       {
         path: '/setting/hrm',
         element: <SettingHrm />,
-      },
-      {
-        path: '/setting/menu',
-        element: <SettingMenu />,
       },
     ],
   },

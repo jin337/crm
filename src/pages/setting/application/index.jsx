@@ -2,12 +2,12 @@ import { Avatar, Card, Modal, Space, Switch, Tabs } from '@arco-design/web-react
 import { IconSettings } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
-
+// hooks
+import { useLink } from 'src/hooks'
 // 组件
 import IconCustom from 'src/components/IconCustom'
 const Application = () => {
-  const navigate = useNavigate()
+  const linkTo = useLink()
   const common = useSelector((state) => state.common)
   const [apps, setApps] = useState([])
 
@@ -27,7 +27,10 @@ const Application = () => {
   }
 
   const openSetting = (item) => {
-    // navigate('/setting/app/manage')
+    linkTo({
+      path: `/setting/app/manage/${item.permission}`,
+      state: item,
+    })
   }
 
   return (
