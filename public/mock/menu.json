@@ -20,7 +20,7 @@
         "pid": "0",
         "permission": "project",
         "title": "工程管理",
-        "describe": "工程管理",
+        "describe": "工程项目的管理",
         "path": "/project",
         "type": 2,
         "is_icon": "IconStamp",
@@ -33,7 +33,7 @@
         "pid": "0",
         "permission": "finance",
         "title": "财务管理",
-        "describe": "财务管理",
+        "describe": "管理你的财务",
         "path": "/finance",
         "type": 2,
         "is_icon": "IconStamp",
@@ -46,7 +46,7 @@
         "pid": "0",
         "permission": "oa",
         "title": "审批",
-        "describe": "审批",
+        "describe": "OA审批",
         "path": null,
         "type": 1,
         "is_icon": "IconStamp",
@@ -176,7 +176,7 @@
         "pid": "0",
         "permission": "setting",
         "title": "系统设置",
-        "describe": "系统设置",
+        "describe": "应用和系统管理",
         "path": null,
         "type": 1,
         "is_icon": "IconSettings",
@@ -200,13 +200,27 @@
                 "id": "711",
                 "pid": "71",
                 "permission": "setting-app-manage",
-                "title": "应用设置",
+                "title": "应用配置",
                 "path": "/setting/app/manage",
-                "is_icon": "IconApps",
+                "is_icon": null,
                 "type": 2,
                 "start_time": "2025-01-24 11:57:56",
                 "is_hide": 1,
-                "sort": 1
+                "sort": 1,
+                "children":[
+                  {
+                    "id": "7111",
+                    "pid": "711",
+                    "permission": "setting-app-create",
+                    "title": "新建应用",
+                    "path": null,
+                    "is_icon": null,
+                    "type": 3,
+                    "start_time": "2025-01-24 11:57:56",
+                    "is_hide": 1,
+                    "sort": 1
+                  }
+                ]
               }
             ]
           },

@@ -8,7 +8,6 @@ import {
   InputNumber,
   Popconfirm,
   Radio,
-  Select,
   Space,
   Switch,
   Table,
@@ -39,8 +38,16 @@ const Manage = () => {
     if (permission) {
       Http.get('/mock/menu.json').then(({ code, data }) => {
         if (code === 200) {
-          const arr = [...data.left, ...data.right].filter((e) => e.permission === permission)
-          setDataTable(arr || [])
+          let arr = [...data.left, ...data.right].filter((e) => e.permission === permission) || []
+          const addKeysToMenuItems = (items) => {
+            return items.map((item) => ({
+              ...item,
+              key: item.id,
+              children: item.children ? addKeysToMenuItems(item.children) : undefined,
+            }))
+          }
+          const list = addKeysToMenuItems(arr)
+          setDataTable(list)
         }
       })
     }
@@ -55,6 +62,7 @@ const Manage = () => {
         <Space>
           <IconCustom name={record.is_icon} />
           {record.title}
+          {record.describe && '：' + record.describe}
         </Space>
       ),
     },
@@ -68,7 +76,7 @@ const Manage = () => {
           case 2:
             return <Tag color='green'>菜单</Tag>
           case 3:
-            return <Tag color='gray'>按钮</Tag>
+            return <Tag color='gray'>功能</Tag>
           default:
             return <Tag>未知</Tag>
         }
@@ -120,21 +128,6 @@ const Manage = () => {
     },
   ]
 
-  // 查询条件
-  const searchOptinons = [
-    {
-      label: '菜单名称',
-      value: 'title',
-    },
-    {
-      label: '类型',
-      value: 'type',
-    },
-    {
-      label: '权限标识',
-      value: 'permission',
-    },
-  ]
   // 查询事件
   const onChangeSearch = (e) => {
     if (e === 'refresh') {
@@ -159,7 +152,6 @@ const Manage = () => {
     if (type === 'edit') {
       const obj = {
         ...record,
-        pid: [record.pid],
       }
       formItem.setFieldsValue(obj)
     }
@@ -170,9 +162,6 @@ const Manage = () => {
       <Card bordered={false}>
         <div className='mb-2 flex items-start justify-between'>
           <Form layout='inline' autoComplete='off' form={formSearch} initialValues={{ type: 'title' }}>
-            <Form.Item label='类型' field='type'>
-              <Select style={{ width: 181 }} options={searchOptinons} />
-            </Form.Item>
             <Form.Item label='关键字' field='keyword'>
               <Input placeholder='关键字' />
             </Form.Item>
@@ -241,7 +230,7 @@ const Manage = () => {
                     value: 2,
                   },
                   {
-                    label: '按钮',
+                    label: '功能',
                     value: 3,
                   },
                 ]}
