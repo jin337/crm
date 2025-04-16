@@ -27,29 +27,13 @@ export default defineConfig({
       filename: 'remoteEntry.js',
       remotes: {
         // 工程管理
-        projectApp: {
-          external: 'http://192.168.0.42:3001/assets/remoteEntry.js',
-          from: 'vite',
-          format: 'esm',
-        },
+        projectApp: 'http://192.168.0.42:3001/assets/remoteEntry.js',
         // 财务管理
-        financeApp: {
-          external: 'http://192.168.0.42:3002/assets/remoteEntry.js',
-          from: 'vite',
-          format: 'esm',
-        },
+        financeApp: 'http://192.168.0.42:3002/assets/remoteEntry.js',
         // 审批
-        oaApp: {
-          external: 'http://192.168.0.42:3003/assets/remoteEntry.js',
-          from: 'vite',
-          format: 'esm',
-        },
+        oaApp: 'https://oa.jin337.top/assets/remoteEntry.js',
         // 人力资源
-        hrmApp: {
-          external: 'http://192.168.0.42:3004/assets/remoteEntry.js',
-          from: 'vite',
-          format: 'esm',
-        },
+        hrmApp: 'https://hrm.jin337.top/assets/remoteEntry.js',
       },
       shared: {
         react: {
