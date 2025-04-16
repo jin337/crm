@@ -83,7 +83,7 @@ const Oa = () => {
     <div className='flex h-full gap-2'>
       <Card className='w-1/4' bordered={false}>
         <div className='mb-2 flex justify-end'>
-          <Button type='text' size='mini' icon={<IconPlus />}>
+          <Button type='text' size='small' icon={<IconPlus />}>
             创建角色
           </Button>
         </div>

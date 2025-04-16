@@ -1,10 +1,11 @@
 import { Drawer, Layout } from '@arco-design/web-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useLocation, useNavigate } from 'react-router'
 
 // 组件
 import { MenuCustom } from 'src/components'
+import Apps from './Apps'
 
 import { getMenu, getMenuSelect, getSystemMenu, setUserInfo } from 'src/store/reducers/common'
 // 公共方法
@@ -16,6 +17,7 @@ import { useColorTheme } from 'src/hooks'
 import Http from 'src/service/api'
 
 const Home = () => {
+  const refContent = useRef()
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -27,6 +29,7 @@ const Home = () => {
   const [headerSelect, setHeaderSelect] = useState()
 
   const [newsVisible, setNewsVisible] = useState(false)
+  const [appsVisible, setAppsVisible] = useState(false)
 
   // 判断登录权限
   useEffect(() => {
@@ -99,6 +102,7 @@ const Home = () => {
   }
   // 导航选择
   const onSelectMenu = (item) => {
+    setAppsVisible(false)
     if (item?.type === 2 && item?.path) {
       dispatch(getMenuSelect(item))
       navigate(item.path, { state: item })
@@ -125,17 +129,17 @@ const Home = () => {
   }
   // 系统功能
   const onSelectSystem = (type, obj) => {
-    // 退出
-    if (type === 'exit') {
-      sessionStorage.clear()
-      localStorage.removeItem('TOKEN')
-      navigate('/login') // 跳转登录页
+    // 打开应用弹窗
+    if (type === 'apps') {
+      setAppsVisible(true)
+    } else {
+      setAppsVisible(false)
     }
     // 切换主题
     if (type === 'theme') {
       updateTheme(obj)
     }
-    // 切换主题
+    // 消息通知
     if (type === 'notification') {
       setNewsVisible(true)
     }
@@ -144,6 +148,12 @@ const Home = () => {
       setHeaderSelect()
       dispatch(getMenuSelect(null))
       navigate('/person')
+    }
+    // 退出
+    if (type === 'exit') {
+      sessionStorage.clear()
+      localStorage.removeItem('TOKEN')
+      navigate('/login') // 跳转登录页
     }
   }
 
@@ -160,7 +170,7 @@ const Home = () => {
         onSelectSystem={onSelectSystem}
       />
 
-      <Layout className='overflow-hidden' hasSider>
+      <Layout className='overflow-hidden' hasSider ref={refContent}>
         {headerSelect?.type === 1 && (
           <MenuCustom.Sider items={headerSelect?.children} select={menuSelect} onSelectMenu={onSelectMenu} />
         )}
@@ -170,10 +180,25 @@ const Home = () => {
             <Outlet />
           </div>
         </Layout.Content>
+
+        {/* apps */}
+        <Drawer
+          footer={null}
+          placement='top'
+          height={'100%'}
+          closable={false}
+          bodyStyle={{ paddingTop: '9px' }}
+          getPopupContainer={() => refContent && refContent.current}
+          visible={appsVisible}
+          onOk={() => setAppsVisible(false)}
+          onCancel={() => setAppsVisible(false)}>
+          <Apps />
+        </Drawer>
       </Layout>
 
+      {/* 消息通知 */}
       <Drawer
-        width={'50%'}
+        width={'75%'}
         title={'消息通知'}
         footer={null}
         visible={newsVisible}

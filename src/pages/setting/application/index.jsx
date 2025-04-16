@@ -1,4 +1,4 @@
-import { Avatar, Card, Modal, Space, Switch, Tabs } from '@arco-design/web-react'
+import { Avatar, Button, Card, Modal, Space, Switch } from '@arco-design/web-react'
 import { IconSettings } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -35,58 +35,37 @@ const Application = () => {
 
   return (
     <>
-      <Tabs defaultActiveTab='1'>
-        <Tabs.TabPane key='1' title='核心应用'>
-          <div className='flex flex-wrap gap-3'>
-            {apps.map((item) => (
-              <Fragment key={item.id}>
-                <Card className='w-[calc(50%-6px)]'>
-                  <div className='group flex items-center justify-between'>
-                    <div className='flex items-center'>
-                      <Avatar size={32} shape='square' className='mr-2 !bg-[rgb(var(--primary-6))]'>
-                        <IconCustom name='IconFile' />
-                      </Avatar>
-                      <div>
-                        <div className='font-bold'>{item.title}</div>
-                        <div className='text-[var(--color-text-3)]'>{item.describe}</div>
-                      </div>
-                    </div>
-                    <Space>
-                      <IconSettings
-                        className='cursor-pointer text-xl opacity-0 group-hover:opacity-100'
-                        onClick={() => openSetting(item)}
-                      />
-                      <Switch checked onChange={(e) => onChange(e, item)} />
-                    </Space>
+      <div className='mb-2 text-right'>
+        <Button type='primary' size='small'>
+          新建应用
+        </Button>
+      </div>
+      <div className='flex flex-wrap gap-3'>
+        {apps.map((item) => (
+          <Fragment key={item.id}>
+            <Card className='w-[calc(50%-6px)]'>
+              <div className='group flex items-center justify-between'>
+                <div className='flex items-center'>
+                  <Avatar size={32} shape='square' className='mr-2 !bg-[rgb(var(--primary-6))]'>
+                    <IconCustom name='IconFile' />
+                  </Avatar>
+                  <div>
+                    <div className='font-bold'>{item.title}</div>
+                    <div className='text-[var(--color-text-3)]'>{item.describe}</div>
                   </div>
-                </Card>
-              </Fragment>
-            ))}
-          </div>
-        </Tabs.TabPane>
-        <Tabs.TabPane key='2' title='已停用的应用'>
-          <div className='flex flex-wrap gap-3'>
-            {apps.map((e) => (
-              <Fragment key={e.id}>
-                <Card className='w-[calc(50%-6px)]'>
-                  <div className='flex items-center justify-between'>
-                    <div className='flex items-center'>
-                      <Avatar size={32} shape='square' className='mr-2 bg-[rgb(var(--primary-6))]'>
-                        <IconCustom name='IconFile' />
-                      </Avatar>
-                      <div>
-                        <div className='font-bold'>{e.title}</div>
-                        <div className='text-[var(--color-text-3)]'>{e.describe}</div>
-                      </div>
-                    </div>
-                    <Switch />
-                  </div>
-                </Card>
-              </Fragment>
-            ))}
-          </div>
-        </Tabs.TabPane>
-      </Tabs>
+                </div>
+                <Space>
+                  <IconSettings
+                    className='cursor-pointer text-xl opacity-0 group-hover:opacity-100'
+                    onClick={() => openSetting(item)}
+                  />
+                  <Switch checked onChange={(e) => onChange(e, item)} />
+                </Space>
+              </div>
+            </Card>
+          </Fragment>
+        ))}
+      </div>
     </>
   )
 }

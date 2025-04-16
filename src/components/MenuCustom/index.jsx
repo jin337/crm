@@ -1,5 +1,5 @@
 import { Avatar, Button, ColorPicker, Dropdown, Form, Image, Layout, Menu, Modal, Space } from '@arco-design/web-react'
-import { IconDown, IconLeft, IconNotification, IconPalette, IconRight } from '@arco-design/web-react/icon'
+import { IconApps, IconDown, IconLeft, IconNotification, IconPalette, IconRight } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 // 组件
 import { IconCustom } from 'src/components'
@@ -60,6 +60,9 @@ const Header = (props) => {
           <div className={styles['logo']} onClick={() => onSelectMenu(leftMenus[0])}>
             <Image preview={false} simple={true} src={logo} />
             {title}
+          </div>
+          <div className={styles['apps']} onClick={() => onSelectSystem('apps')}>
+            <IconApps />
           </div>
           {leftMenus.map((item) => (
             <div
