@@ -14,7 +14,7 @@ import {
   Tag,
   TreeSelect,
 } from '@arco-design/web-react'
-import { IconDown, IconRefresh, IconRight, IconSearch } from '@arco-design/web-react/icon'
+import { IconDown, IconRight } from '@arco-design/web-react/icon'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router'
 
@@ -25,7 +25,6 @@ import Http from 'src/service/api'
 
 const Manage = () => {
   const location = useLocation()
-  const [formSearch] = Form.useForm()
   const [params, setParams] = useState()
   const [dataTable, setDataTable] = useState([])
 
@@ -56,7 +55,7 @@ const Manage = () => {
   // 流程管理-表头
   const columns = [
     {
-      title: '菜单名称',
+      title: '名称',
       dataIndex: 'title',
       render: (_, record) => (
         <Space>
@@ -128,16 +127,6 @@ const Manage = () => {
     },
   ]
 
-  // 查询事件
-  const onChangeSearch = (e) => {
-    if (e === 'refresh') {
-      formSearch.resetFields()
-    } else {
-      let obj = { ...formSearch.getFields() }
-      console.log(obj)
-    }
-  }
-
   // 新建&编辑
   const editItem = (type, record) => {
     setVisibleEdit(true)
@@ -160,22 +149,6 @@ const Manage = () => {
   return (
     <>
       <Card bordered={false}>
-        <div className='mb-2 flex items-start justify-between'>
-          <Form layout='inline' autoComplete='off' form={formSearch} initialValues={{ type: 'title' }}>
-            <Form.Item label='关键字' field='keyword'>
-              <Input placeholder='关键字' />
-            </Form.Item>
-          </Form>
-          <Space>
-            <Button type='primary' icon={<IconSearch />} onClick={onChangeSearch}>
-              查询
-            </Button>
-            <Button type='secondary' icon={<IconRefresh />} onClick={() => onChangeSearch('refresh')}>
-              重置
-            </Button>
-          </Space>
-        </div>
-
         {dataTable.length && (
           <Table
             borderCell
@@ -204,7 +177,7 @@ const Manage = () => {
       {/* 编辑 */}
       <Drawer
         width={'40%'}
-        title='组织信息'
+        title='配置信息'
         visible={visibleEdit}
         onOk={() => setVisibleEdit(false)}
         onCancel={() => setVisibleEdit(false)}>
@@ -282,6 +255,9 @@ const Manage = () => {
           </div>
           <Form.Item label='名称' field='title' rules={[{ required: true }]}>
             <Input placeholder='请输入名称……' />
+          </Form.Item>
+          <Form.Item label='简介' field='describe'>
+            <Input min={0} max={10} placeholder='请输入简介……' />
           </Form.Item>
           <Form.Item label='权限标识' field='permission' rules={[{ required: true }]}>
             <Input placeholder='请输入权限标识……' />

@@ -115,7 +115,7 @@ const Permissions = () => {
   // 表头
   const columns = [
     {
-      title: '组织',
+      title: '机构',
       dataIndex: 'name1',
     },
     {
@@ -129,6 +129,18 @@ const Permissions = () => {
     {
       title: '角色',
       dataIndex: 'name4',
+    },
+    {
+      title: '操作',
+      dataIndex: 'op',
+      align: 'center',
+      render: (_, record) => (
+        <Space>
+          <Button type='text' size='mini'>
+            切换
+          </Button>
+        </Space>
+      ),
     },
   ]
   return (

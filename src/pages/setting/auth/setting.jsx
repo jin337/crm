@@ -40,7 +40,7 @@ const Setting = () => {
       dataIndex: 'name1',
     },
     {
-      title: '组织',
+      title: '机构',
       dataIndex: 'name0',
     },
     {
@@ -123,7 +123,7 @@ const Setting = () => {
 
       <Card className='h-full w-3/4' bordered={false} bodyStyle={{ height: '100%' }}>
         <Tabs defaultActiveTab='1' justify>
-          <Tabs.TabPane key='1' title='角色员工'>
+          <Tabs.TabPane key='1' title='角色账号'>
             <div className='mb-2 flex items-start justify-between'>
               <Form layout='inline' autoComplete='off' size='small' form={formSearch} initialValues={{ type: 'title' }}>
                 <Form.Item field='keyword'>
@@ -138,7 +138,7 @@ const Setting = () => {
                   重置
                 </Button>
                 <Button type='primary' size='small' status='success' icon={<IconPlus />}>
-                  关联员工
+                  关联账号
                 </Button>
               </Space>
             </div>
