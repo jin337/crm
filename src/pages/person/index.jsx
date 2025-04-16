@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 // 组件
-import IconCustom from 'src/components/IconCustom'
+import { IconCustom } from 'src/components'
+// 样式
 import styles from './index.module.scss'
 
 const list = [

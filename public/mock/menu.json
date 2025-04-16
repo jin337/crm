@@ -206,21 +206,19 @@
                 "type": 2,
                 "start_time": "2025-01-24 11:57:56",
                 "is_hide": 1,
-                "sort": 1,
-                "children":[
-                  {
-                    "id": "7111",
-                    "pid": "711",
-                    "permission": "setting-app-create",
-                    "title": "新建应用",
-                    "path": null,
-                    "is_icon": null,
-                    "type": 3,
-                    "start_time": "2025-01-24 11:57:56",
-                    "is_hide": 1,
-                    "sort": 1
-                  }
-                ]
+                "sort": 1
+              },
+              {
+                "id": "712",
+                "pid": "71",
+                "permission": "setting-app-create",
+                "title": "新建应用",
+                "path": null,
+                "is_icon": null,
+                "type": 3,
+                "start_time": "2025-01-24 11:57:56",
+                "is_hide": 1,
+                "sort": 2
               }
             ]
           },

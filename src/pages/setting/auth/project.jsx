@@ -1,7 +1,9 @@
-import { Button, Card, Checkbox, Dropdown, Form, Input, Menu, Popconfirm, Space, Table, Tabs } from '@arco-design/web-react'
+import { Button, Card, Dropdown, Form, Input, Menu, Popconfirm, Space, Table, Tabs } from '@arco-design/web-react'
 import { IconPlus, IconRefresh, IconSearch, IconSettings } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+// 组件
+import { TreeCheck } from 'src/components'
 
 const list = [
   {
@@ -20,22 +22,7 @@ const Project = () => {
   const [active, setActive] = useState(0)
 
   const [dataTable, setDataTable] = useState([])
-  const [setting, setSetting] = useState([])
-  const [selectValue, setSelectValue] = useState([])
-  const [selectOptions, setSelectOptions] = useState([
-    {
-      label: '新建',
-      value: '1',
-    },
-    {
-      label: '编辑',
-      value: '2',
-    },
-    {
-      label: '删除',
-      value: '3',
-    },
-  ])
+  const [treeData, setTreeData] = useState([])
 
   const columns = [
     {
@@ -77,13 +64,11 @@ const Project = () => {
   ]
 
   useEffect(() => {
-    const arr = [...common.initMenuData, ...common.systemMenuData].filter((e) => e.permission === 'project')
+    const arr = common.initMenuData.filter((e) => e.permission === 'project')
     if (arr.length) {
-      const childrenList = arr[0].children?.filter((e) => e.type === 2) || []
-      const deepList = arr[0].children?.flatMap((item) => item?.children || []) || []
-      setSetting([...childrenList, ...deepList])
+      setTreeData(arr)
     }
-  }, [common?.initMenuData, common?.systemMenuData])
+  }, [common?.initMenuData])
   // 查询事件
   const onChangeSearch = (e) => {
     if (e === 'refresh') {
@@ -151,20 +136,12 @@ const Project = () => {
           </Tabs.TabPane>
 
           <Tabs.TabPane key='2' title='角色权限'>
-            <div className='h-full overflow-auto'>
-              {setting?.map((item) => (
-                <Fragment key={item.id}>
-                  <div className='mb-4'>
-                    <Checkbox>
-                      <span className='font-bold'>{item.title}</span>
-                    </Checkbox>
-                    <div>
-                      <Checkbox.Group value={selectValue} options={selectOptions} />
-                    </div>
-                  </div>
-                </Fragment>
-              ))}
+            <div className='mb-2 text-right'>
+              <Button type='primary' size='small'>
+                保存
+              </Button>
             </div>
+            <TreeCheck treeData={treeData} />
           </Tabs.TabPane>
         </Tabs>
       </Card>

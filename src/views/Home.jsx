@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useLocation, useNavigate } from 'react-router'
 
 // 组件
-import MenuCustom from 'src/components/MenuCustom/index'
+import { MenuCustom } from 'src/components'
 
 import { getMenu, getMenuSelect, getSystemMenu, setUserInfo } from 'src/store/reducers/common'
 // 公共方法

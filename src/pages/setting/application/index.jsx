@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 // hooks
 import { useLink } from 'src/hooks'
 // 组件
-import IconCustom from 'src/components/IconCustom'
+import { IconCustom } from 'src/components'
 const Application = () => {
   const linkTo = useLink()
   const common = useSelector((state) => state.common)
