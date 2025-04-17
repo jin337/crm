@@ -149,7 +149,7 @@ const Manage = () => {
   return (
     <>
       <Card bordered={false}>
-        {dataTable.length && (
+        {dataTable?.length > 0 && (
           <Table
             borderCell
             stripe
