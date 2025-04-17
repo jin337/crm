@@ -11,6 +11,7 @@ import {
   Radio,
   Space,
   Table,
+  Tabs,
   Tag,
   TreeSelect,
 } from '@arco-design/web-react'
@@ -26,7 +27,8 @@ import Http from 'src/service/api'
 const Manage = () => {
   const location = useLocation()
   const [params, setParams] = useState()
-  const [dataTable, setDataTable] = useState([])
+  const [appsTable, setAppsable] = useState([])
+  const [systemTable, setSystemTable] = useState([])
 
   const [formItem] = Form.useForm()
   const [visibleEdit, setVisibleEdit] = useState(false)
@@ -46,7 +48,8 @@ const Manage = () => {
             }))
           }
           const list = addKeysToMenuItems(arr)
-          setDataTable(list)
+          setAppsable(list)
+          setSystemTable(list)
         }
       })
     }
@@ -169,29 +172,58 @@ const Manage = () => {
   return (
     <>
       <Card bordered={false}>
-        {dataTable?.length > 0 && (
-          <Table
-            borderCell
-            stripe
-            defaultExpandAllRows
-            rowKey='id'
-            columns={columns}
-            data={dataTable}
-            pagination={false}
-            expandProps={{
-              icon: ({ expanded, record, ...restProps }) =>
-                expanded ? (
-                  <button {...restProps} className='!bg-transparent'>
-                    <IconDown />
-                  </button>
-                ) : (
-                  <button {...restProps} className='!bg-transparent'>
-                    <IconRight />
-                  </button>
-                ),
-            }}
-          />
-        )}
+        <Tabs defaultActiveTab='1'>
+          <Tabs.TabPane key='1' title='功能菜单'>
+            {appsTable?.length > 0 && (
+              <Table
+                borderCell
+                stripe
+                defaultExpandAllRows
+                rowKey='id'
+                columns={columns}
+                data={appsTable}
+                pagination={false}
+                expandProps={{
+                  icon: ({ expanded, record, ...restProps }) =>
+                    expanded ? (
+                      <button {...restProps} className='!bg-transparent'>
+                        <IconDown />
+                      </button>
+                    ) : (
+                      <button {...restProps} className='!bg-transparent'>
+                        <IconRight />
+                      </button>
+                    ),
+                }}
+              />
+            )}
+          </Tabs.TabPane>
+          <Tabs.TabPane key='2' title='配置菜单'>
+            {systemTable?.length > 0 && (
+              <Table
+                borderCell
+                stripe
+                defaultExpandAllRows
+                rowKey='id'
+                columns={columns}
+                data={systemTable}
+                pagination={false}
+                expandProps={{
+                  icon: ({ expanded, record, ...restProps }) =>
+                    expanded ? (
+                      <button {...restProps} className='!bg-transparent'>
+                        <IconDown />
+                      </button>
+                    ) : (
+                      <button {...restProps} className='!bg-transparent'>
+                        <IconRight />
+                      </button>
+                    ),
+                }}
+              />
+            )}
+          </Tabs.TabPane>
+        </Tabs>
       </Card>
 
       {/* 编辑 */}
@@ -207,7 +239,7 @@ const Manage = () => {
           autoComplete='off'
           validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
           <Form.Item label='上层菜单' field='pid' rules={[{ required: true }]}>
-            <TreeSelect treeData={[{ key: '0', title: '主类目', children: dataTable }]} />
+            <TreeSelect treeData={[{ key: '0', title: '主类目', children: appsTable }]} />
           </Form.Item>
           <div className='flex gap-4'>
             <Form.Item label='类型' field='type' rules={[{ required: true }]}>
