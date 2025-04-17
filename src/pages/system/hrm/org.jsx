@@ -1,10 +1,13 @@
 import { Button, Card, Form, Input, Space, Table, Tree } from '@arco-design/web-react'
 import { IconPlus, IconRefresh, IconSearch } from '@arco-design/web-react/icon'
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 // 接口
 import Http from 'src/service/api'
 const HrmOrg = () => {
+  const { title } = useSelector((state) => state.common)
+
   const [formSearch] = Form.useForm()
 
   const [dataTable, setDataTable] = useState([])
@@ -68,14 +71,14 @@ const HrmOrg = () => {
       <div className='flex h-full gap-2'>
         <Card bordered={false} className='w-1/4'>
           <div className='flex items-center justify-between gap-1'>
-            <span>企业组织架构</span>
+            <span>企业架构</span>
             <Button type='text' icon={<IconPlus />}>
               创建部门
             </Button>
           </div>
           {orgData.length > 0 && (
             <Tree
-              treeData={[{ key: '0', title: 'crm', children: orgData }]}
+              treeData={[{ key: '0', title: title, children: orgData }]}
               selectedKeys={orgSelected}
               onSelect={setOrgSelected}
             />

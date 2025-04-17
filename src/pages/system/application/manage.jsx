@@ -1,6 +1,7 @@
 import {
   Button,
   Card,
+  Checkbox,
   Drawer,
   Dropdown,
   Form,
@@ -9,7 +10,6 @@ import {
   Popconfirm,
   Radio,
   Space,
-  Switch,
   Table,
   Tag,
   TreeSelect,
@@ -68,6 +68,8 @@ const Manage = () => {
     {
       title: '类型',
       dataIndex: 'type',
+      align: 'center',
+      width: 60,
       render: (text) => {
         switch (text) {
           case 1:
@@ -93,16 +95,34 @@ const Manage = () => {
       title: '菜单隐藏',
       dataIndex: 'is_hide',
       align: 'center',
-      render: (text) => <Switch size='small' checked={text} />,
+      width: 74,
+      render: (text) => <Checkbox checked={text} />,
+    },
+    {
+      title: '外链',
+      dataIndex: 'out_link',
+      align: 'center',
+      width: 70,
+      render: (text) => <Checkbox checked={text} />,
+    },
+    {
+      title: '启用',
+      dataIndex: 'is_open',
+      align: 'center',
+      width: 70,
+      render: (text) => <Checkbox checked={text} />,
     },
     {
       title: '排序',
       dataIndex: 'sort',
+      align: 'center',
+      width: 70,
     },
     {
       title: '创建时间',
       dataIndex: 'start_time',
       align: 'center',
+      width: 160,
     },
     {
       title: '操作',
@@ -176,7 +196,7 @@ const Manage = () => {
 
       {/* 编辑 */}
       <Drawer
-        width={'40%'}
+        width={'50%'}
         title='配置信息'
         visible={visibleEdit}
         onOk={() => setVisibleEdit(false)}
@@ -189,7 +209,7 @@ const Manage = () => {
           <Form.Item label='上层菜单' field='pid' rules={[{ required: true }]}>
             <TreeSelect treeData={[{ key: '0', title: '主类目', children: dataTable }]} />
           </Form.Item>
-          <div className='flex gap-2'>
+          <div className='flex gap-4'>
             <Form.Item label='类型' field='type' rules={[{ required: true }]}>
               <Radio.Group
                 type='button'
@@ -212,7 +232,7 @@ const Manage = () => {
             <Form.Item shouldUpdate noStyle>
               {(values) =>
                 values.type !== 3 && (
-                  <Form.Item field='is_icon' label='菜单图标'>
+                  <Form.Item label='菜单图标' field='is_icon'>
                     <Dropdown
                       droplist={
                         <div className='mx-4 max-h-[400px] w-auto max-w-[calc(100%-16px)] overflow-y-auto border bg-white p-2'>
@@ -253,30 +273,21 @@ const Manage = () => {
               }
             </Form.Item>
           </div>
-          <Form.Item label='名称' field='title' rules={[{ required: true }]}>
-            <Input placeholder='请输入名称……' />
-          </Form.Item>
-          <Form.Item label='简介' field='describe'>
-            <Input min={0} max={10} placeholder='请输入简介……' />
-          </Form.Item>
-          <Form.Item label='权限标识' field='permission' rules={[{ required: true }]}>
-            <Input placeholder='请输入权限标识……' />
-          </Form.Item>
+          <div className='flex gap-4'>
+            <Form.Item label='名称' field='title' rules={[{ required: true }]}>
+              <Input placeholder='请输入名称……' />
+            </Form.Item>
+            <Form.Item label='权限标识' field='permission' rules={[{ required: true }]}>
+              <Input placeholder='请输入权限标识……' />
+            </Form.Item>
+          </div>
           <Form.Item shouldUpdate noStyle>
             {(values) =>
-              values.type === 2 && (
-                <Form.Item label='路由' field='path' rules={[{ required: true }]}>
-                  <Input placeholder='请输入路由……' />
-                </Form.Item>
-              )
-            }
-          </Form.Item>
-          <div className='flex gap-2'>
-            <Form.Item shouldUpdate noStyle>
-              {(values) =>
-                values.type !== 3 && (
-                  <Form.Item label='菜单隐藏' field='is_hide' rules={[{ required: true }]}>
+              values.type !== 3 && (
+                <>
+                  <Form.Item label='是否外链' field='out_link' rules={[{ required: true }]}>
                     <Radio.Group
+                      type='button'
                       options={[
                         {
                           label: '是',
@@ -289,13 +300,49 @@ const Manage = () => {
                       ]}
                     />
                   </Form.Item>
-                )
-              }
-            </Form.Item>
-            <Form.Item label='排序' field='sort'>
-              <InputNumber min={0} max={999} />
-            </Form.Item>
-          </div>
+                  <Form.Item label='路由' field='path' rules={[{ required: true }]}>
+                    <Input placeholder='请输入路由……' />
+                  </Form.Item>
+                  <Form.Item label='菜单隐藏' field='is_hide' rules={[{ required: true }]}>
+                    <Radio.Group
+                      type='button'
+                      options={[
+                        {
+                          label: '是',
+                          value: 1,
+                        },
+                        {
+                          label: '否',
+                          value: 0,
+                        },
+                      ]}
+                    />
+                  </Form.Item>
+                </>
+              )
+            }
+          </Form.Item>
+          <Form.Item label='是否启用' field='is_open' rules={[{ required: true }]}>
+            <Radio.Group
+              type='button'
+              options={[
+                {
+                  label: '是',
+                  value: 1,
+                },
+                {
+                  label: '否',
+                  value: 0,
+                },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item label='排序' field='sort'>
+            <InputNumber min={0} max={999} />
+          </Form.Item>
+          <Form.Item label='简介' field='describe'>
+            <Input min={0} max={10} placeholder='请输入简介……' />
+          </Form.Item>
         </Form>
       </Drawer>
     </>
