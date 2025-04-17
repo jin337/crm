@@ -11,9 +11,6 @@ const Workplace = lazy(() => import('src/pages/workplace'))
 const Project = lazy(() => import('src/pages/project'))
 // 财务管理
 const Finance = lazy(() => import('src/pages/finance'))
-// 人力资源
-const HrmOrg = lazy(() => import('hrmApp/org'))
-const HrmMember = lazy(() => import('hrmApp/member'))
 // OA
 const OAapply = lazy(() => import('oaApp/apply'))
 const OAtodo = lazy(() => import('oaApp/todo'))
@@ -28,10 +25,8 @@ const Person = lazy(() => import('src/pages/person/index'))
 const SettingApplication = lazy(() => import('src/pages/setting/application'))
 const SettingAppManage = lazy(() => import('src/pages/setting/application/manage'))
 const SettingAccount = lazy(() => import('src/pages/setting/account'))
-const SettingProject = lazy(() => import('src/pages/setting/project'))
-const SettingFinance = lazy(() => import('src/pages/setting/finance'))
-const SettingOA = lazy(() => import('src/pages/setting/oa'))
-const SettingHrm = lazy(() => import('src/pages/setting/hrm'))
+const SettingHrmOrg = lazy(() => import('src/pages/setting/hrm/org'))
+const SettingHrmMember = lazy(() => import('src/pages/setting/hrm/member'))
 
 // 角色权限
 const SettingAuthSetting = lazy(() => import('src/pages/setting/auth/setting'))
@@ -97,15 +92,6 @@ const routes = [
         path: '/oa/all',
         element: <OAall />,
       },
-      // 人力资源
-      {
-        path: '/hrm/org',
-        element: <HrmOrg />,
-      },
-      {
-        path: '/hrm/member',
-        element: <HrmMember />,
-      },
       {
         path: '/setting/application',
         element: <SettingApplication />,
@@ -139,20 +125,12 @@ const routes = [
         element: <SettingAuthHrm />,
       },
       {
-        path: '/setting/project',
-        element: <SettingProject />,
+        path: '/setting/hrm/org',
+        element: <SettingHrmOrg />,
       },
       {
-        path: '/setting/finance',
-        element: <SettingFinance />,
-      },
-      {
-        path: '/setting/oa',
-        element: <SettingOA />,
-      },
-      {
-        path: '/setting/hrm',
-        element: <SettingHrm />,
+        path: '/setting/hrm/member',
+        element: <SettingHrmMember />,
       },
     ],
   },

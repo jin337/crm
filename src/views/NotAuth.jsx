@@ -1,6 +1,6 @@
 import { Button, Result, Space } from '@arco-design/web-react'
 import { IconLeft, IconRight } from '@arco-design/web-react/icon'
-import {} from 'react'
+import { } from 'react'
 import { useNavigate } from 'react-router'
 
 const NotAuth = () => {

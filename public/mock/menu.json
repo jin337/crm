@@ -127,47 +127,6 @@
             "sort": 6
           }
         ]
-      },
-      {
-        "id": "5",
-        "pid": "0",
-        "permission": "hrm",
-        "title": "人力资源",
-        "describe": "人力资源",
-        "path": null,
-        "type": 1,
-        "is_icon": "IconStamp",
-        "start_time": "2025-01-24 11:57:56",
-        "is_hide": 0,
-        "sort": 2,
-        "children": [
-          {
-            "id": "51",
-            "pid": "5",
-            "permission": "hrm-org",
-            "title": "组织管理",
-            "describe": "组织管理",
-            "path": "/hrm/org",
-            "type": 2,
-            "is_icon": "IconStamp",
-            "start_time": "2025-01-24 11:57:56",
-            "is_hide": 0,
-            "sort": 1
-          },
-          {
-            "id": "52",
-            "pid": "5",
-            "permission": "hrm-member",
-            "title": "员工管理",
-            "describe": "员工管理",
-            "path": "/hrm/member",
-            "type": 2,
-            "is_icon": "IconStamp",
-            "start_time": "2025-01-24 11:57:56",
-            "is_hide": 0,
-            "sort": 2
-          }
-        ]
       }
     ],
     "right": [
@@ -195,7 +154,7 @@
             "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
             "sort": 1,
-            "children":[
+            "children": [
               {
                 "id": "711",
                 "pid": "71",
@@ -309,52 +268,42 @@
             "sort": 3
           },
           {
-            "id": "74",
-            "pid": "7",
-            "permission": "setting-project",
-            "title": "工程管理",
-            "path": "/setting/project",
-            "is_icon": "IconTool",
-            "type": 2,
-            "start_time": "2025-01-24 11:57:56",
-            "is_hide": 0,
-            "sort": 4
-          },
-          {
-            "id": "75",
-            "pid": "7",
-            "permission": "setting-finance",
-            "title": "财务管理",
-            "path": "/setting/finance",
-            "is_icon": "IconSafe",
-            "type": 2,
-            "start_time": "2025-01-24 11:57:56",
-            "is_hide": 0,
-            "sort": 5
-          },
-          {
-            "id": "76",
-            "pid": "7",
-            "permission": "setting-oa",
-            "title": "审批管理",
-            "path": "/setting/oa",
-            "is_icon": "IconTags",
-            "type": 2,
-            "start_time": "2025-01-24 11:57:56",
-            "is_hide": 0,
-            "sort": 6
-          },
-          {
             "id": "77",
             "pid": "7",
             "permission": "setting-hrm",
             "title": "人力资源管理",
-            "path": "/setting/hrm",
+            "path":null,
             "is_icon": "IconStamp",
-            "type": 2,
+            "type": 1,
             "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
-            "sort": 7
+            "sort": 7,
+            "children": [
+              {
+                "id": "771",
+                "pid": "77",
+                "permission": "setting-hrm-org",
+                "title": "组织管理",
+                "path": "/setting/hrm/org",
+                "is_icon": "IconStamp",
+                "type": 2,
+                "start_time": "2025-01-24 11:57:56",
+                "is_hide": 0,
+                "sort": 1
+              },
+              {
+                "id": "772",
+                "pid": "77",
+                "permission": "setting-hrm-member",
+                "title": "员工管理",
+                "path": "/setting/hrm/member",
+                "is_icon": "IconStamp",
+                "type": 2,
+                "start_time": "2025-01-24 11:57:56",
+                "is_hide": 0,
+                "sort": 2
+              }
+            ]
           }
         ]
       }

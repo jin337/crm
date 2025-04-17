@@ -32,8 +32,6 @@ export default defineConfig({
         financeApp: 'http://192.168.0.42:3002/assets/remoteEntry.js',
         // 审批
         oaApp: 'https://oa.jin337.top/assets/remoteEntry.js',
-        // 人力资源
-        hrmApp: 'https://hrm.jin337.top/assets/remoteEntry.js',
       },
       shared: ['react', 'react-dom', 'react-router', 'react-redux', '@reduxjs/toolkit', 'axios'],
     }),
