@@ -1,10 +1,10 @@
 import { Drawer, Layout } from '@arco-design/web-react'
-import { useEffect, useRef, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useLocation, useNavigate } from 'react-router'
 
 // 组件
-import { MenuCustom } from 'src/components'
+import { Loading, MenuCustom } from 'src/components'
 
 import { getMenu, getMenuSelect, getSystemMenu, setUserInfo } from 'src/store/reducers/common'
 // 公共方法
@@ -168,7 +168,9 @@ const Home = () => {
         <Layout.Content>
           <div className='page-title'>{menuSelect?.title}</div>
           <div className='relative mb-3 h-[calc(100%-72px)] overflow-y-auto px-6'>
-            <Outlet />
+            <Suspense fallback={<Loading dot size={20} />}>
+              <Outlet />
+            </Suspense>
           </div>
         </Layout.Content>
       </Layout>
