@@ -25,10 +25,6 @@ const Setting = () => {
       id: '4',
       title: '审批应用管理员',
     },
-    {
-      id: '5',
-      title: '人力资源应用管理员',
-    },
   ])
   const [active, setActive] = useState(0)
 

@@ -28,7 +28,7 @@ const Application = () => {
 
   const openSetting = (item) => {
     linkTo({
-      path: `/setting/app/manage/${item.permission}`,
+      path: `/system/app/manage/${item.permission}`,
       state: item,
     })
   }
