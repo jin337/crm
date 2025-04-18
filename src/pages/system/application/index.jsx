@@ -12,8 +12,8 @@ const Application = () => {
   const [apps, setApps] = useState([])
 
   useEffect(() => {
-    setApps([...common.initMenuData, ...common.systemMenuData])
-  }, [common?.initMenuData, common?.systemMenuData])
+    setApps(common.initMenuData)
+  }, [common?.initMenuData])
 
   // 修改状态
   const onChange = (type, item) => {
