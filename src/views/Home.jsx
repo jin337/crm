@@ -149,8 +149,9 @@ const Home = () => {
   }
 
   return (
-    <Layout className='h-screen w-screen'>
+    <Layout className='h-screen w-screen' ref={refContent}>
       <MenuCustom.Header
+        content={refContent}
         leftIitems={menuData}
         rightIitems={rightMenuData}
         select={headerSelect}
@@ -161,7 +162,7 @@ const Home = () => {
         onSelectSystem={onSelectSystem}
       />
 
-      <Layout className='overflow-hidden' hasSider ref={refContent}>
+      <Layout className='overflow-hidden' hasSider>
         {headerSelect?.type === 1 && (
           <MenuCustom.Sider items={headerSelect?.children} select={menuSelect} onSelectMenu={onSelectMenu} />
         )}

@@ -23,9 +23,6 @@
       height: 24px;
     }
   }
-  .apps {
-    cursor: pointer;
-  }
   .menu-content {
     display: flex;
     align-items: center;
@@ -183,5 +180,18 @@
   }
   .theme-reset {
     text-align: right;
+  }
+}
+.menu-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  border-radius: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background-color: rgb(var(--primary-6));
   }
 }

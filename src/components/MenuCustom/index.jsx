@@ -1,8 +1,9 @@
-import { Avatar, Button, ColorPicker, Dropdown, Form, Image, Layout, Menu, Modal, Space } from '@arco-design/web-react'
-import { IconDown, IconLeft, IconNotification, IconPalette, IconRight } from '@arco-design/web-react/icon'
+import { Avatar, Button, ColorPicker, Drawer, Dropdown, Form, Image, Layout, Menu, Modal, Space } from '@arco-design/web-react'
+import { IconApps, IconDown, IconLeft, IconNotification, IconPalette, IconRight } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 // 组件
 import { IconCustom } from 'src/components'
+import Apps from './apps'
 // 公共方法
 import { findRootNode } from 'src/utils/common'
 import styles from './index.module.scss'
@@ -22,11 +23,13 @@ const filterHiddenItems = (arr) => {
 }
 
 const Header = (props) => {
-  const { leftIitems = [], rightIitems = [], select, logo, title, userInfo, onSelectMenu, onSelectSystem } = props
+  const { content, leftIitems = [], rightIitems = [], select, logo, title, userInfo, onSelectMenu, onSelectSystem } = props
   const [formTheme] = Form.useForm()
   const [leftMenus, setLeftMenus] = useState([])
   const [rightMenus, setRightMenus] = useState([])
+
   const [visibleTheme, setVisibleTheme] = useState(false)
+  const [appsVisible, setAppsVisible] = useState(false)
 
   useEffect(() => {
     setLeftMenus(filterHiddenItems(leftIitems))
@@ -53,19 +56,28 @@ const Header = (props) => {
     })
   }
 
+  // 导航选择
+  const selectMenu = (e) => {
+    setAppsVisible(false)
+    onSelectMenu(e)
+  }
+
   return (
     <>
       <Layout.Header className={styles['header-menu-wrap']}>
         <div className={styles['menu-content']}>
-          <div className={styles['logo']} onClick={() => onSelectMenu(leftMenus[0])}>
+          <div className={styles['logo']} onClick={() => selectMenu(leftMenus[0])}>
             <Image preview={false} simple={true} src={logo} />
             {title}
+          </div>
+          <div className={styles['menu-icon']} onClick={() => setAppsVisible(!appsVisible)}>
+            <IconApps />
           </div>
           {leftMenus.map((item) => (
             <div
               key={item.permission}
               className={`${styles['left-item']} ${select?.permission === item.permission ? styles['active'] : ''}`}
-              onClick={() => onSelectMenu(item)}>
+              onClick={() => selectMenu(item)}>
               {item.title}
             </div>
           ))}
@@ -96,7 +108,7 @@ const Header = (props) => {
             </div>
             <div className={`${styles['right-item']} ${styles['divider']}`}></div>
             {rightMenus?.map((item) => (
-              <div key={item.permission} className={styles['right-item']} onClick={() => onSelectMenu(item)}>
+              <div key={item.permission} className={styles['right-item']} onClick={() => selectMenu(item)}>
                 <IconCustom name={item?.is_icon} />
               </div>
             ))}
@@ -118,7 +130,7 @@ const Header = (props) => {
       </Layout.Header>
 
       <Modal
-        title='颜色配置'
+        title='主题配置'
         visible={visibleTheme}
         onOk={() => toggleTheme(false)}
         onCancel={() => setVisibleTheme(false)}
@@ -131,7 +143,7 @@ const Header = (props) => {
             </Button>
           </div>
           <Form layout='vertical' autoComplete='off' form={formTheme}>
-            <Form.Item label='顶部导航颜色' field={'header'}>
+            <Form.Item label='顶部导航' field={'header'}>
               <ColorPicker format='rgb' disabledAlpha />
             </Form.Item>
             <Form.Item label='主按钮颜色' field={'button'}>
@@ -140,6 +152,20 @@ const Header = (props) => {
           </Form>
         </div>
       </Modal>
+
+      {/* apps */}
+      <Drawer
+        footer={null}
+        placement='top'
+        height={'100%'}
+        closable={false}
+        headerStyle={{ height: '57px' }}
+        getPopupContainer={() => content && content?.current}
+        visible={appsVisible}
+        onOk={() => setAppsVisible(false)}
+        onCancel={() => setAppsVisible(false)}>
+        <Apps items={leftIitems} onSelectMenu={selectMenu} />
+      </Drawer>
     </>
   )
 }
@@ -255,6 +281,7 @@ const Sider = (props) => {
     </div>
   )
 }
+
 const MenuCustom = () => {
   return null
 }

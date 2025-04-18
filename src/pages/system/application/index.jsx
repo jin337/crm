@@ -46,7 +46,7 @@ const Application = () => {
             <Card className='w-[calc(50%-6px)]'>
               <div className='group flex items-center justify-between'>
                 <div className='flex items-center'>
-                  <Avatar size={32} shape='square' className='mr-2 !bg-[rgb(var(--primary-6))]'>
+                  <Avatar size={36} shape='square' className='mr-2 !bg-[rgb(var(--primary-6))]'>
                     <IconCustom name='IconFile' />
                   </Avatar>
                   <div>
