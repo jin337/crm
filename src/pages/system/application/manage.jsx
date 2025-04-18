@@ -154,11 +154,13 @@ const Manage = () => {
   const editItem = (type, record) => {
     setVisibleEdit(true)
     formItem.resetFields()
-
     if (type === 'add') {
       formItem.setFieldsValue({
-        state: 1,
-        type: 1,
+        pid: record.id,
+        type: 2,
+        out_link: 0,
+        is_hide: 0,
+        is_open: 1,
       })
     }
     if (type === 'edit') {
@@ -238,28 +240,41 @@ const Manage = () => {
           layout='vertical'
           autoComplete='off'
           validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
-          <Form.Item label='上层菜单' field='pid' rules={[{ required: true }]}>
-            <TreeSelect treeData={[{ key: '0', title: '主类目', children: appsTable }]} />
+          <Form.Item shouldUpdate noStyle>
+            {(values) =>
+              values.type !== 1 && (
+                <Form.Item label='上层菜单' field='pid' rules={[{ required: true }]} disabled>
+                  <TreeSelect treeData={[{ key: '0', title: '主类目', children: appsTable }]} />
+                </Form.Item>
+              )
+            }
           </Form.Item>
           <div className='flex gap-4'>
-            <Form.Item label='类型' field='type' rules={[{ required: true }]}>
-              <Radio.Group
-                type='button'
-                options={[
-                  {
-                    label: '应用',
-                    value: 1,
-                  },
-                  {
-                    label: '菜单',
-                    value: 2,
-                  },
-                  {
-                    label: '功能',
-                    value: 3,
-                  },
-                ]}
-              />
+            <Form.Item shouldUpdate noStyle>
+              {(values) => (
+                <Form.Item label='类型' field='type' rules={[{ required: true }]}>
+                  <Radio.Group
+                    type='button'
+                    options={[
+                      {
+                        label: '应用',
+                        value: 1,
+                        disabled: [2, 3].includes(values.type),
+                      },
+                      {
+                        label: '菜单',
+                        value: 2,
+                        disabled: values.type === 1,
+                      },
+                      {
+                        label: '功能',
+                        value: 3,
+                        disabled: values.type === 1,
+                      },
+                    ]}
+                  />
+                </Form.Item>
+              )}
             </Form.Item>
             <Form.Item shouldUpdate noStyle>
               {(values) =>
@@ -332,25 +347,31 @@ const Manage = () => {
                       ]}
                     />
                   </Form.Item>
-                  <Form.Item label='路由' field='path' rules={[{ required: true }]}>
-                    <Input placeholder='请输入路由……' />
-                  </Form.Item>
-                  <Form.Item label='菜单隐藏' field='is_hide' rules={[{ required: true }]}>
-                    <Radio.Group
-                      type='button'
-                      options={[
-                        {
-                          label: '是',
-                          value: 1,
-                        },
-                        {
-                          label: '否',
-                          value: 0,
-                        },
-                      ]}
-                    />
+                  <Form.Item label='路由' field='path'>
+                    <Input addBefore={values.out_link === 1 ? 'http://' : undefined} placeholder='请输入路由……' />
                   </Form.Item>
                 </>
+              )
+            }
+          </Form.Item>
+          <Form.Item shouldUpdate noStyle>
+            {(values) =>
+              values.type !== 1 && (
+                <Form.Item label='菜单隐藏' field='is_hide' rules={[{ required: true }]}>
+                  <Radio.Group
+                    type='button'
+                    options={[
+                      {
+                        label: '是',
+                        value: 1,
+                      },
+                      {
+                        label: '否',
+                        value: 0,
+                      },
+                    ]}
+                  />
+                </Form.Item>
               )
             }
           </Form.Item>
@@ -372,8 +393,14 @@ const Manage = () => {
           <Form.Item label='排序' field='sort'>
             <InputNumber min={0} max={999} />
           </Form.Item>
-          <Form.Item label='简介' field='describe'>
-            <Input min={0} max={10} placeholder='请输入简介……' />
+          <Form.Item shouldUpdate noStyle>
+            {(values) =>
+              values.type === 1 && (
+                <Form.Item label='简介' field='describe'>
+                  <Input.TextArea showWordLimit maxLength={10} placeholder='请输入简介……' />
+                </Form.Item>
+              )
+            }
           </Form.Item>
         </Form>
       </Drawer>

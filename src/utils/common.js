@@ -138,7 +138,9 @@ export const localSetItem = (key, value, time) => {
   const now = Date.now()
   const item = {
     value: value,
-    expiry: now + time,
+  }
+  if (time) {
+    item.expiry = now + time
   }
   localStorage.setItem(key, JSON.stringify(item))
 }

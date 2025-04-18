@@ -58,7 +58,7 @@ const Login = () => {
       },
     }
     // 登录，保存登录状态
-    localSetItem('AUTHTOKEN', user, 3600000) // 1小时过期
+    localSetItem('AUTHTOKEN', user)
     navigate('/')
   }
 
