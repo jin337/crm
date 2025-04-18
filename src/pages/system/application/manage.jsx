@@ -150,7 +150,7 @@ const Manage = () => {
     },
   ]
 
-  // 新建&编辑
+  // 新增&编辑
   const editItem = (type, record) => {
     setVisibleEdit(true)
     formItem.resetFields()

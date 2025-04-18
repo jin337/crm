@@ -273,7 +273,7 @@ const HrmMember = () => {
               重置
             </Button>
             <Button type='primary' size='small' status='success' icon={<IconPlus />}>
-              新建
+              新增
             </Button>
           </Space>
         </div>

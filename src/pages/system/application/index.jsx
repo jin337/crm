@@ -59,7 +59,7 @@ const Application = () => {
     <>
       <div className='mb-2 text-right'>
         <Button type='primary' size='small' onClick={openCreate}>
-          新建应用
+          新增应用
         </Button>
       </div>
       <div className='flex flex-wrap gap-3'>
@@ -91,7 +91,7 @@ const Application = () => {
 
       <Drawer
         width={'30%'}
-        title='新建应用'
+        title='新增应用'
         visible={visibleEdit}
         onOk={() => setVisibleEdit(false)}
         onCancel={() => setVisibleEdit(false)}>

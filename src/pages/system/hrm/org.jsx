@@ -99,7 +99,7 @@ const HrmOrg = () => {
                 重置
               </Button>
               <Button type='primary' size='small' status='success' icon={<IconPlus />}>
-                新建员工
+                新增员工
               </Button>
             </Space>
           </div>
