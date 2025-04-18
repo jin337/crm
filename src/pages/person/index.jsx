@@ -62,15 +62,15 @@ const Information = ({ userInfo }) => {
                 ]}
               />
             </Form.Item>
-            <Form.Item label='部门' field={'department'}>
+            <Form.Item label='机构' field={'org'}>
               <Input disabled />
             </Form.Item>
           </div>
           <div className={styles['online']}>
-            <Form.Item label='岗位' field={'job'}>
+            <Form.Item label='部门' field={'department'}>
               <Input disabled />
             </Form.Item>
-            <Form.Item label='直属上级' field={'higher_up'}>
+            <Form.Item label='岗位' field={'job'}>
               <Input disabled />
             </Form.Item>
           </div>

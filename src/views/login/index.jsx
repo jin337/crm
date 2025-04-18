@@ -50,7 +50,7 @@ const Login = () => {
       gender: 1,
       department: '研发部',
       job: '前端',
-      higher_up: '王主管',
+      org: '创智南京',
       token: 'ABCDEFG',
       theme: {
         header: '#304156',
