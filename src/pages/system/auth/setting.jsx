@@ -1,5 +1,5 @@
-import { Button, Card, Dropdown, Form, Input, Menu, Popconfirm, Space, Table, Tabs } from '@arco-design/web-react'
-import { IconPlus, IconRefresh, IconSearch, IconSettings } from '@arco-design/web-react/icon'
+import { Button, Card, Dropdown, Form, Input, Menu, Modal, Popconfirm, Space, Table, Tabs } from '@arco-design/web-react'
+import { IconPlus, IconSettings } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -7,7 +7,8 @@ import { useSelector } from 'react-redux'
 import { TreeCheck } from 'src/components'
 const Setting = () => {
   const common = useSelector((state) => state.common)
-  const [formSearch] = Form.useForm()
+  const [searchForm] = Form.useForm()
+  const [createForm] = Form.useForm()
   const [items, setItems] = useState([
     {
       id: '1',
@@ -76,17 +77,35 @@ const Setting = () => {
 
   // 查询事件
   const onChangeSearch = (e) => {
-    if (e === 'refresh') {
-      formSearch.resetFields()
-    } else {
-      let obj = { ...formSearch.getFields() }
-      console.log(obj)
-    }
+    let obj = { ...searchForm.getFields() }
+    console.log(obj)
   }
 
   // 创建账号
   const onCreate = () => {
-    console.log('1', 1)
+    Modal.confirm({
+      title: '新增角色',
+      icon: null,
+      closable: true,
+      wrapClassName: 'modal-wrap',
+      content: (
+        <Form form={createForm} layout='vertical' autoComplete='off'>
+          <Form.Item field='role_name' rules={[{ required: true }]}>
+            <Input placeholder='请输入角色名' />
+          </Form.Item>
+        </Form>
+      ),
+      onOk: () => {
+        const obj = {
+          role_type: 1, //1系统角色2应用角色
+          role_group_id: common.userInfo.main_dept_id,
+        }
+        createForm.validate().then((values) => {
+          obj.role_name = values.role_name
+          console.log('新增角色数据', obj)
+        })
+      },
+    })
   }
 
   return (
@@ -94,7 +113,7 @@ const Setting = () => {
       <Card className='w-1/4' bordered={false}>
         <div className='mb-2 flex justify-end'>
           <Button type='text' size='small' icon={<IconPlus />} onClick={onCreate}>
-            创建角色
+            新增角色
           </Button>
         </div>
         {items.map((item, index) => (
@@ -124,19 +143,13 @@ const Setting = () => {
         <Tabs defaultActiveTab='1' justify>
           <Tabs.TabPane key='1' title='角色账号'>
             <div className='mb-2 flex items-start justify-between'>
-              <Form layout='inline' autoComplete='off' size='small' form={formSearch} initialValues={{ type: 'title' }}>
+              <Form layout='inline' autoComplete='off' size='small' form={searchForm} onChange={onChangeSearch}>
                 <Form.Item field='keyword'>
-                  <Input placeholder='请输入内容' />
+                  <Input.Search placeholder='请输入关键字' />
                 </Form.Item>
               </Form>
               <Space>
-                <Button type='primary' size='small' icon={<IconSearch />} onClick={onChangeSearch}>
-                  查询
-                </Button>
-                <Button type='secondary' size='small' icon={<IconRefresh />} onClick={() => onChangeSearch('refresh')}>
-                  重置
-                </Button>
-                <Button type='primary' size='small' status='success' icon={<IconPlus />}>
+                <Button type='primary' size='small' status='primary' icon={<IconPlus />}>
                   关联账号
                 </Button>
               </Space>

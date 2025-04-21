@@ -1,5 +1,5 @@
-import { Button, Card, Form, Input, Space, Table, Tree } from '@arco-design/web-react'
-import { IconPlus, IconRefresh, IconSearch } from '@arco-design/web-react/icon'
+import { Button, Card, Form, Input, Modal, Radio, Select, Space, Table, Tree } from '@arco-design/web-react'
+import { IconPlus, IconSettings } from '@arco-design/web-react/icon'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
@@ -8,7 +8,8 @@ import Http from 'src/service/api'
 const HrmOrg = () => {
   const { title } = useSelector((state) => state.common)
 
-  const [formSearch] = Form.useForm()
+  const [searchForm] = Form.useForm()
+  const [createForm] = Form.useForm()
 
   const [dataTable, setDataTable] = useState([])
   const [orgData, setOrgData] = useState([])
@@ -40,7 +41,7 @@ const HrmOrg = () => {
     },
     {
       title: '部门',
-      dataIndex: 'name2',
+      dataIndex: 'dept_name',
     },
     {
       title: '岗位',
@@ -57,28 +58,81 @@ const HrmOrg = () => {
   ]
 
   // 查询事件
-  const onChangeSearch = (e) => {
-    if (e === 'refresh') {
-      formSearch.resetFields()
+  const onChangeSearch = () => {
+    let obj = { ...searchForm.getFields() }
+    console.log(obj)
+  }
+
+  // 新增
+  const onCreate = (e) => {
+    createForm.resetFields()
+    if (e) {
+      createForm.setFieldsValue(e?.dataRef)
     } else {
-      let obj = { ...formSearch.getFields() }
-      console.log(obj)
+      createForm.setFieldsValue({
+        dept_type: 1,
+      })
     }
+    Modal.confirm({
+      title: '新增部门',
+      icon: null,
+      closable: true,
+      wrapClassName: 'modal-wrap',
+      content: (
+        <Form form={createForm} layout='vertical' autoComplete='off'>
+          <Form.Item label='组织类型' field='dept_type' rules={[{ required: true }]}>
+            <Radio.Group
+              type='button'
+              options={[
+                {
+                  label: '机构',
+                  value: 1,
+                },
+                {
+                  label: '部门',
+                  value: 2,
+                },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item label='组织部门名称' field='dept_name' rules={[{ required: true }]}>
+            <Input placeholder='请输入内容' />
+          </Form.Item>
+          <Form.Item label='上级组织' field='dept_pid' rules={[{ required: true }]}>
+            <Select mode='multiple' options={[]} placeholder='请选择' />
+          </Form.Item>
+          <Form.Item label='组织负责人' field='dept_admin' rules={[{ required: true }]}>
+            <Select mode='multiple' options={[]} placeholder='请选择' />
+          </Form.Item>
+        </Form>
+      ),
+      onOk: () => {
+        createForm.validate().then((values) => {
+          console.log('新增账号数据', values)
+        })
+      },
+    })
   }
 
   return (
     <>
       <div className='flex h-full gap-2'>
         <Card bordered={false} className='w-1/4'>
-          <div className='flex items-center justify-between gap-1'>
-            <span>企业架构</span>
-            <Button type='text' icon={<IconPlus />}>
-              创建部门
+          <div className='mb-2 flex justify-end'>
+            <Button type='text' icon={<IconPlus />} onClick={() => onCreate()}>
+              新增部门
             </Button>
           </div>
           {orgData.length > 0 && (
             <Tree
-              treeData={[{ key: '0', title: title, children: orgData }]}
+              blockNode
+              renderExtra={(node) => (
+                <div className='settings' onClick={() => onCreate(node)}>
+                  <IconSettings />
+                </div>
+              )}
+              fieldNames={{ key: 'key', title: 'dept_name' }}
+              treeData={[{ key: '0', dept_name: title, children: orgData }]}
               selectedKeys={orgSelected}
               onSelect={setOrgSelected}
             />
@@ -86,19 +140,13 @@ const HrmOrg = () => {
         </Card>
         <Card bordered={false} className='w-3/4'>
           <div className='mb-2 flex items-start justify-between'>
-            <Form layout='inline' autoComplete='off' form={formSearch} initialValues={{ type: 'title' }}>
-              <Form.Item label='关键字' field='keyword'>
-                <Input placeholder='关键字' />
+            <Form layout='inline' autoComplete='off' form={searchForm} onChange={onChangeSearch}>
+              <Form.Item field='keyword'>
+                <Input.Search placeholder='请输入关键字' />
               </Form.Item>
             </Form>
             <Space>
-              <Button type='primary' size='small' icon={<IconSearch />} onClick={onChangeSearch}>
-                查询
-              </Button>
-              <Button type='secondary' size='small' icon={<IconRefresh />} onClick={() => onChangeSearch('refresh')}>
-                重置
-              </Button>
-              <Button type='primary' size='small' status='success' icon={<IconPlus />}>
+              <Button type='primary' size='small' status='primary' icon={<IconPlus />}>
                 新增员工
               </Button>
             </Space>

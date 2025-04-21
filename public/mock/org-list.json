@@ -4,36 +4,36 @@
     "list": [
       {
         "key": "1",
-        "title": "公司1",
-        "sort": 1,
+        "dept_name": "公司1",
+        "dept_type": 1,
         "start_time": "2022-01-01 00:00:00",
         "pid": "0",
         "children": [
           {
             "key": "11",
-            "title": "部门1",
-            "sort": 1,
+            "dept_name": "部门1",
+            "dept_type": 2,
             "start_time": "2022-01-01 00:00:00",
             "pid": "1"
           },
           {
             "key": "12",
-            "title": "部门2",
-            "sort": 2,
+            "dept_name": "部门2",
+            "dept_type": 2,
             "start_time": "2022-01-01 00:00:00",
             "pid": "1"
           },
           {
             "key": "13",
-            "title": "部门3",
-            "sort": 3,
+            "dept_name": "部门3",
+            "dept_type": 2,
             "start_time": "2022-01-01 00:00:00",
             "pid": "1"
           },
           {
             "key": "14",
-            "title": "部门4",
-            "sort": 4,
+            "dept_name": "部门4",
+            "dept_type": 2,
             "start_time": "2022-01-01 00:00:00",
             "pid": "1"
           }
@@ -41,22 +41,22 @@
       },
       {
         "key": "2",
-        "title": "公司2",
-        "sort": 2,
+        "dept_name": "公司2",
+        "dept_type": 1,
         "start_time": "2022-01-01 00:00:00",
         "pid": "0",
         "children": [
           {
             "key": "21",
-            "title": "部门1",
-            "sort": 1,
+            "dept_name": "部门1",
+            "dept_type": 2,
             "start_time": "2022-01-01 00:00:00",
             "pid": "2"
           },
           {
             "key": "22",
-            "title": "部门2",
-            "sort": 2,
+            "dept_name": "部门2",
+            "dept_type": 2,
             "start_time": "2022-01-01 00:00:00",
             "pid": "2"
           }

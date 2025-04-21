@@ -1,24 +1,33 @@
-import { Button, Card, Form, Input, Table } from '@arco-design/web-react'
+import { Button, Card, Form, Input, Modal, Table } from '@arco-design/web-react'
 import { IconPlus } from '@arco-design/web-react/icon'
 import { useState } from 'react'
 
 const Account = () => {
-  const [formSearch] = Form.useForm()
+  const [searchForm] = Form.useForm()
+  const [createForm] = Form.useForm()
   const [tableData, setTableData] = useState({})
 
   // 表头
   const columns = [
     {
-      title: '姓名',
-      dataIndex: 'name1',
+      title: '账户名',
+      dataIndex: 'account_name',
     },
     {
-      title: '手机号（登录名）',
-      dataIndex: 'name2',
+      title: '登录名',
+      dataIndex: 'login_name',
     },
     {
-      title: '角色权限',
-      dataIndex: 'name9',
+      title: '手机号',
+      dataIndex: 'account_mobile',
+    },
+    {
+      title: '状态',
+      dataIndex: 'account_status_name',
+    },
+    {
+      title: '账号认证',
+      dataIndex: 'account_auth_name',
     },
     {
       title: '操作',
@@ -32,16 +41,44 @@ const Account = () => {
     },
   ]
 
+  // 创建
+  const onCreate = () => {
+    Modal.confirm({
+      title: '新增账号',
+      icon: null,
+      closable: true,
+      wrapClassName: 'modal-wrap',
+      content: (
+        <Form form={createForm} layout='vertical' autoComplete='off'>
+          <Form.Item label='登录名' field='login_name' rules={[{ required: true }]}>
+            <Input placeholder='请输入角色名' />
+          </Form.Item>
+          <Form.Item label='手机号' field='account_mobile' rules={[{ required: true }]}>
+            <Input placeholder='请输入角色名' />
+          </Form.Item>
+          <Form.Item label='账号名' field='account_name' rules={[{ required: true }]}>
+            <Input placeholder='请输入角色名' />
+          </Form.Item>
+        </Form>
+      ),
+      onOk: () => {
+        createForm.validate().then((values) => {
+          console.log('新增账号数据', values)
+        })
+      },
+    })
+  }
+
   return (
     <>
       <Card bordered={false}>
         <div className='mb-2 flex items-start justify-between'>
-          <Form layout='inline' autoComplete='off' size='small' form={formSearch}>
-            <Form.Item label='' field='keyword'>
+          <Form layout='inline' autoComplete='off' size='small' form={searchForm}>
+            <Form.Item field='keyword'>
               <Input.Search placeholder='请输入员工名称/手机号' />
             </Form.Item>
           </Form>
-          <Button type='primary' size='small' icon={<IconPlus />}>
+          <Button type='primary' size='small' icon={<IconPlus />} onClick={onCreate}>
             新增账号
           </Button>
         </div>

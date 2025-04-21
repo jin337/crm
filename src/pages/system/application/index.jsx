@@ -12,7 +12,7 @@ import {
   Space,
   Switch,
 } from '@arco-design/web-react'
-import { IconSettings } from '@arco-design/web-react/icon'
+import { IconPlus, IconSettings } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 // hooks
@@ -58,7 +58,7 @@ const Application = () => {
   return (
     <>
       <div className='mb-2 text-right'>
-        <Button type='primary' size='small' onClick={openCreate}>
+        <Button type='primary' size='small' icon={<IconPlus />} onClick={openCreate}>
           新增应用
         </Button>
       </div>

@@ -6,6 +6,7 @@
 
   /* 边框颜色 */
   --border-color: #dfe1e6;
+  --box-shadow: 1px 0 6px rgba(34, 42, 85, 0.102);
 
   /* 默认背景色 */
 
@@ -70,11 +71,11 @@ strong {
     padding: 20px;
   }
   .arco-modal-header {
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     text-align-last: left;
   }
   .arco-modal-footer {
-    margin-top: 12px;
+    margin-top: 16px;
     text-align: right;
   }
 }
@@ -85,6 +86,21 @@ strong {
   font-weight: 500;
   margin: 12px 24px;
 }
+// tab内容默认高度
 .arco-tabs-content-inner {
   height: 100%;
+}
+// tree定制额外节点显示内容
+.arco-tree-node {
+  .settings {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    display: none;
+  }
+  &:hover {
+    .settings {
+      display: block;
+    }
+  }
 }

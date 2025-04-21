@@ -1,8 +1,8 @@
 import { Button, Card, Dropdown, Form, Input, Menu, Space, Table } from '@arco-design/web-react'
-import { IconMore, IconPlus, IconRefresh, IconSearch } from '@arco-design/web-react/icon'
+import { IconMore, IconPlus } from '@arco-design/web-react/icon'
 import { useState } from 'react'
 const HrmMember = () => {
-  const [formSearch] = Form.useForm()
+  const [searchForm] = Form.useForm()
 
   const [dataTable, setDataTable] = useState([])
 
@@ -246,13 +246,9 @@ const HrmMember = () => {
   ]
 
   // 查询事件
-  const onChangeSearch = (e) => {
-    if (e === 'refresh') {
-      formSearch.resetFields()
-    } else {
-      let obj = { ...formSearch.getFields() }
-      console.log(obj)
-    }
+  const onChangeSearch = () => {
+    let obj = { ...searchForm.getFields() }
+    console.log(obj)
   }
 
   // 提交
@@ -260,20 +256,14 @@ const HrmMember = () => {
     <>
       <Card bordered={false}>
         <div className='mb-2 flex items-start justify-between'>
-          <Form layout='inline' autoComplete='off' form={formSearch} initialValues={{ type: 'title' }}>
-            <Form.Item label='关键字' field='keyword'>
-              <Input placeholder='关键字' />
+          <Form layout='inline' autoComplete='off' form={searchForm} onChange={onChangeSearch}>
+            <Form.Item field='keyword'>
+              <Input.Search placeholder='请输入关键字' />
             </Form.Item>
           </Form>
           <Space>
-            <Button type='primary' size='small' icon={<IconSearch />} onClick={onChangeSearch}>
-              查询
-            </Button>
-            <Button type='secondary' size='small' icon={<IconRefresh />} onClick={() => onChangeSearch('refresh')}>
-              重置
-            </Button>
-            <Button type='primary' size='small' status='success' icon={<IconPlus />}>
-              新增
+            <Button type='primary' size='small' status='primary' icon={<IconPlus />}>
+              新增员工
             </Button>
           </Space>
         </div>
