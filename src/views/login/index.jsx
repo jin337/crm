@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router'
 import { localSetItem } from 'src/utils/common'
 import styles from './index.module.scss'
 
+// 接口
+import Http from 'src/service/api'
 const Login = () => {
   const navigate = useNavigate()
   const [formLogin] = Form.useForm()
@@ -42,24 +44,13 @@ const Login = () => {
   }
 
   // 登录
-  const handleLogin = (e) => {
-    const user = {
-      role: 1,
-      name: 'Admin',
-      phone: '13888888888',
-      gender: 1,
-      department: '研发部',
-      job: '前端',
-      org: '创智南京',
-      token: 'ABCDEFG',
-      theme: {
-        header: '#304156',
-        button: '#165DFF',
-      },
+  const handleLogin = async (e) => {
+    const { code, data } = await Http.get('/mock/user-info.json')
+    if (code === 200) {
+      // 登录，保存登录状态
+      localSetItem('AUTHTOKEN', data)
+      navigate('/')
     }
-    // 登录，保存登录状态
-    localSetItem('AUTHTOKEN', user)
-    navigate('/')
   }
 
   return (

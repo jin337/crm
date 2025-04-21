@@ -126,8 +126,13 @@ const Home = () => {
   }
   // 系统功能
   const onSelectSystem = (type, obj) => {
+    // 切换机构
+    if (type === 'role') {
+      console.log('切换机构', obj)
+    }
     // 切换主题
     if (type === 'theme') {
+      console.log('切换主题', obj)
       updateTheme(obj)
     }
     // 消息通知

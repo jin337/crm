@@ -51,8 +51,8 @@ const Header = (props) => {
   // 恢复系统默认
   const resetTheme = () => {
     formTheme.setFieldsValue({
-      header: '#304156',
-      button: '#165DFF',
+      menu_color: '#304156',
+      button_color: '#165DFF',
     })
   }
 
@@ -89,13 +89,14 @@ const Header = (props) => {
                 position='br'
                 trigger='click'
                 droplist={
-                  <Menu>
-                    <Menu.Item key='person'>创智南京</Menu.Item>
-                    <Menu.Item key='exit'>B机构</Menu.Item>
+                  <Menu onClickMenuItem={(e) => onSelectSystem('role', e)}>
+                    {userInfo?.roles?.map((r) => (
+                      <Menu.Item key={r.dept_id}>{r.dept_name}</Menu.Item>
+                    ))}
                   </Menu>
                 }>
                 <div className={styles['org']}>
-                  <span className={styles['txt']}>创智南京</span>
+                  <span className={styles['txt']}>{userInfo?.user_info?.main_dept_name}</span>
                   <IconDown />
                 </div>
               </Dropdown>
@@ -123,7 +124,7 @@ const Header = (props) => {
               </Menu>
             }>
             <Avatar size={32} style={{ backgroundColor: '#fff', color: '#1d2129' }} className='cursor-pointer'>
-              {userInfo?.name}
+              {userInfo?.user_info?.user_name}
             </Avatar>
           </Dropdown>
         </Space>
@@ -143,10 +144,10 @@ const Header = (props) => {
             </Button>
           </div>
           <Form layout='vertical' autoComplete='off' form={formTheme}>
-            <Form.Item label='顶部导航' field={'header'}>
+            <Form.Item label='顶部导航' field={'menu_color'}>
               <ColorPicker format='rgb' disabledAlpha />
             </Form.Item>
-            <Form.Item label='主按钮颜色' field={'button'}>
+            <Form.Item label='主按钮颜色' field={'button_color'}>
               <ColorPicker format='rgb' disabledAlpha />
             </Form.Item>
           </Form>

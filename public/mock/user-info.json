@@ -1,0 +1,31 @@
+{
+  "code": 200,
+  "message": "切换机构成功",
+  "data": {
+    "token": "sadasdasdasdasdasd",
+    "user_info": {
+      "user_name": "Admin",
+      "user_mobile": 13888888888,
+      "main_dept_name": "南京公司/南京研发中心/研发部",
+      "main_dept_id": 1
+    },
+    "roles": [
+      {
+        "name": "系统管理员",
+        "dept_name": "南京公司/南京研发中心/研发部",
+        "dept_id": 1,
+        "id": 1
+      },
+      {
+        "name": "会计",
+        "dept_name": "上海公司/研发中心/研发部",
+        "dept_id": 2,
+        "id": 1
+      }
+    ],
+    "theme": {
+      "menu_color": "#304156",
+      "button_color": "#165DFF"
+    }
+  }
+}
