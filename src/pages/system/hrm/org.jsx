@@ -66,15 +66,15 @@ const HrmOrg = () => {
   // 新增
   const onCreate = (e) => {
     createForm.resetFields()
+    let obj = {}
     if (e) {
-      createForm.setFieldsValue(e?.dataRef)
+      obj = e?.dataRef
     } else {
-      createForm.setFieldsValue({
-        dept_type: 1,
-      })
+      obj = { dept_type: 1 }
     }
+    createForm.setFieldsValue(obj)
     Modal.confirm({
-      title: '新增部门',
+      title: obj?.key ? '编辑部门' : '新增部门',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',

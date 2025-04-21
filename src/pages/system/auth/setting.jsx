@@ -12,19 +12,19 @@ const Setting = () => {
   const [items, setItems] = useState([
     {
       id: '1',
-      title: '超级管理员',
+      role_name: '超级管理员',
     },
     {
       id: '2',
-      title: '工程应用管理员',
+      role_name: '工程应用管理员',
     },
     {
       id: '3',
-      title: '财务应用管理员',
+      role_name: '财务应用管理员',
     },
     {
       id: '4',
-      title: '审批应用管理员',
+      role_name: '审批应用管理员',
     },
   ])
   const [active, setActive] = useState(0)
@@ -82,9 +82,15 @@ const Setting = () => {
   }
 
   // 创建账号
-  const onCreate = () => {
+  const onCreate = (e) => {
+    createForm.resetFields()
+    let obj = {}
+    if (e) {
+      obj = e
+    }
+    createForm.setFieldsValue(obj)
     Modal.confirm({
-      title: '新增角色',
+      title: e?.id ? '编辑角色' : '新增角色',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',
@@ -112,7 +118,7 @@ const Setting = () => {
     <div className='flex h-full gap-2'>
       <Card className='w-1/4' bordered={false}>
         <div className='mb-2 flex justify-end'>
-          <Button type='text' size='small' icon={<IconPlus />} onClick={onCreate}>
+          <Button type='text' size='small' icon={<IconPlus />} onClick={() => onCreate()}>
             新增角色
           </Button>
         </div>
@@ -121,14 +127,16 @@ const Setting = () => {
             <div
               className={`group mb-2 flex cursor-pointer items-center justify-between rounded-md border px-3 py-2 hover:border-[rgb(var(--primary-6))] hover:bg-[var(--hover-color)] ${active === index ? 'border-[rgb(var(--primary-6))] bg-[var(--hover-color)]' : 'border-white'}`}
               onClick={() => setActive(index)}>
-              {item.title}
+              {item.role_name}
               <Dropdown
                 trigger='click'
                 position='bottom'
                 droplist={
                   <Menu>
                     <Menu.Item key='1'>复制</Menu.Item>
-                    <Menu.Item key='2'>编辑</Menu.Item>
+                    <Menu.Item key='2' onClick={() => onCreate(item)}>
+                      编辑
+                    </Menu.Item>
                     <Menu.Item key='3'>删除</Menu.Item>
                   </Menu>
                 }>
