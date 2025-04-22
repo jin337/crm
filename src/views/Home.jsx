@@ -6,7 +6,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router'
 // 组件
 import { Loading, MenuCustom } from 'src/components'
 
-import { getMenu, getMenuSelect, getSystemMenu, setUserInfo } from 'src/store/reducers/common'
+import { setMenu, setMenuSelect, setRoles, setSystemMenu, setTheme, setUserInfo } from 'src/store/reducers/common'
 // 公共方法
 import { findRootNode, flattenArray, localGetItem } from 'src/utils/common'
 // hooks
@@ -21,7 +21,7 @@ const Home = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const updateTheme = useColorTheme()
-  const { initMenuData, systemMenuData, menuSelect, logo, title, userInfo } = useSelector((state) => state.common)
+  const { initMenuData, systemMenuData, menuSelect, logo, title, userInfo, roles, theme } = useSelector((state) => state.common)
 
   const [menuData, setMenuData] = useState(initMenuData)
   const [rightMenuData, setRightMenu] = useState(systemMenuData)
@@ -33,8 +33,11 @@ const Home = () => {
   useEffect(() => {
     const user = localGetItem('AUTHTOKEN')
     if (user) {
-      dispatch(setUserInfo(user))
-      updateTheme(user?.theme) //获取主题
+      dispatch(setUserInfo(user.user_info)) //用户信息
+      dispatch(setRoles(user.roles)) //角色信息
+      dispatch(setTheme(user.theme)) //主题信息
+
+      updateTheme(user?.theme) //设置主题
       // 获取导航数据
       if (initMenuData.length === 0) {
         createMenu()
@@ -61,11 +64,11 @@ const Home = () => {
     if (code === 200) {
       const left = data.left || []
       setMenuData(left)
-      dispatch(getMenu(left))
+      dispatch(setMenu(left))
 
       const right = data.right || []
       setRightMenu(right)
-      dispatch(getSystemMenu(right))
+      dispatch(setSystemMenu(right))
       // 重新选中导航
       if (!menuSelect) {
         const key = location?.state?.permission
@@ -82,7 +85,7 @@ const Home = () => {
   const createSelect = (left, right, key) => {
     const leftItem = flattenArray(left)?.find((e) => e.permission === key)
     if (leftItem) {
-      dispatch(getMenuSelect(leftItem))
+      dispatch(setMenuSelect(leftItem))
       const parent = findRootNode(left, leftItem.id)
       if (parent?.length > 0) {
         setHeaderSelect(parent[0])
@@ -91,7 +94,7 @@ const Home = () => {
 
     const rightItem = flattenArray(right)?.find((e) => e.permission === key)
     if (rightItem) {
-      dispatch(getMenuSelect(rightItem))
+      dispatch(setMenuSelect(rightItem))
       const parent = findRootNode(right, rightItem.id)
       if (parent?.length > 0) {
         setHeaderSelect(parent[0])
@@ -101,7 +104,7 @@ const Home = () => {
   // 导航选择
   const onSelectMenu = (item) => {
     if (item?.type === 2 && item?.path) {
-      dispatch(getMenuSelect(item))
+      dispatch(setMenuSelect(item))
       navigate(item.path, { state: item })
     }
     if ([0, '0'].includes(item?.pid)) {
@@ -142,7 +145,7 @@ const Home = () => {
     // 个人信息
     if (type === 'person') {
       setHeaderSelect()
-      dispatch(getMenuSelect(null))
+      dispatch(setMenuSelect(null))
       navigate('/person')
     }
     // 退出
@@ -163,6 +166,8 @@ const Home = () => {
         logo={logo}
         title={title}
         userInfo={userInfo}
+        roles={roles}
+        theme={theme}
         onSelectMenu={onSelectMenu}
         onSelectSystem={onSelectSystem}
       />

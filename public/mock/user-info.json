@@ -2,8 +2,8 @@
   "code": 200,
   "message": "切换机构成功",
   "data": {
-    "token": "sadasdasdasdasdasd",
     "user_info": {
+      "token": "sadasdasdasdasdasd",
       "user_name": "Admin",
       "user_mobile": 13888888888,
       "main_dept_name": "南京公司/南京研发中心/研发部",

@@ -40,18 +40,15 @@ const Information = ({ data }) => {
       <div className={styles['information-wrap']}>
         <Form layout='vertical' autoComplete='off' form={informationForm}>
           <div className={styles['online']}>
-            <Form.Item label='姓名' field={'user_name'} rules={[{ required: true, message: '姓名不能为空' }]}>
-              <Input placeholder='请输入姓名' />
+            <Form.Item label='用户名' field={'user_name'} rules={[{ required: true, message: '用户名不能为空' }]}>
+              <Input placeholder='请输入内容' />
             </Form.Item>
-            <Form.Item
-              label='手机号(登录名)'
-              field={'user_mobile'}
-              rules={[{ required: true, message: '手机号(登录名)不能为空' }]}>
+            <Form.Item label='账号' field={'user_account'} rules={[{ required: true, message: '账号不能为空' }]}>
               <Input disabled />
             </Form.Item>
           </div>
           <div className={styles['online']}>
-            <Form.Item label='性别' field={'gender'}>
+            <Form.Item label='性别' field={'user_sex'}>
               <Select
                 options={[
                   {
@@ -65,18 +62,21 @@ const Information = ({ data }) => {
                 ]}
               />
             </Form.Item>
-            <Form.Item label='机构' field={'org'}>
+            <Form.Item label='手机号' field={'user_mobile'} rules={[{ required: true, message: '手机号不能为空' }]}>
               <Input disabled />
             </Form.Item>
           </div>
           <div className={styles['online']}>
-            <Form.Item label='部门' field={'department'}>
+            <Form.Item label='主部门' field={'user_dept_main'}>
               <Input disabled />
             </Form.Item>
-            <Form.Item label='岗位' field={'job'}>
+            <Form.Item label='附属部门' field={'user_depts'}>
               <Input disabled />
             </Form.Item>
           </div>
+          <Form.Item label='岗位' field={'job'}>
+            <Input disabled />
+          </Form.Item>
           <Form.Item>
             <Button type='primary'>保存</Button>
           </Form.Item>
@@ -88,66 +88,49 @@ const Information = ({ data }) => {
 // 账号密码
 const Password = () => {
   const [passwordForm] = Form.useForm()
+  const submitPsw = async () => {
+    const result = await passwordForm.validate()
+    const { new_pass1, ...rest } = result
+    console.log('修改密码', rest)
+  }
 
   return (
     <>
       <div className={styles['wrap-title']}>账号密码</div>
       <div className={styles['password-wrap']}>
         <Form layout='vertical' autoComplete='off' form={passwordForm}>
-          <Form.Item label='原密码' field={'username'} rules={[{ required: true, message: '原密码不能为空' }]}>
+          <Form.Item label='原密码' field={'old_pass'} rules={[{ required: true, message: '原密码不能为空' }]}>
             <Input className={styles['input-width']} placeholder='请输入原密码' />
           </Form.Item>
           <div className={styles['online']}>
             <Form.Item
               className={styles['input-width']}
               label='新密码'
-              field={'password'}
-              rules={[
-                { required: true, message: '新密码不能为空' },
-                {
-                  validator: async (value, callback) => {
-                    return new Promise((resolve) => {
-                      const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,16}$/
-                      if (!regex.test(value)) {
-                        setTimeout(() => {
-                          callback('新密码需要是：6-16位，必须包含字母、数字')
-                          resolve()
-                        }, 1000)
-                      } else {
-                        resolve()
-                      }
-                    })
-                  },
-                },
-              ]}>
+              field={'new_pass1'}
+              rules={[{ required: true, message: '新密码不能为空' }]}>
               <Input.Password className={styles['input-width']} placeholder='请输入新密码' />
             </Form.Item>
             <div className={styles['txt']}>密码规则：6-16位，必须包含字母、数字。</div>
           </div>
           <Form.Item
             label='确认密码'
-            field={'password2'}
+            field={'new_pass'}
             rules={[
               { required: true, message: '确认密码不能为空' },
               {
-                validator: async (value, callback) => {
-                  return new Promise((resolve) => {
-                    if (value !== passwordForm.getFieldValue('password')) {
-                      setTimeout(() => {
-                        callback('两次密码不一致')
-                        resolve()
-                      }, 1000)
-                    } else {
-                      resolve()
-                    }
-                  })
+                validator: (value, callback) => {
+                  if (value !== passwordForm.getFieldValue('new_pass1')) {
+                    callback('两次密码不一致')
+                  }
                 },
               },
             ]}>
             <Input.Password className={styles['input-width']} placeholder='请再次输入确认密码' />
           </Form.Item>
           <Form.Item>
-            <Button type='primary'>保存</Button>
+            <Button type='primary' onClick={submitPsw}>
+              保存
+            </Button>
           </Form.Item>
         </Form>
       </div>
@@ -186,7 +169,7 @@ const Permissions = ({ data = [] }) => {
   )
 }
 const Person = () => {
-  const { userInfo } = useSelector((state) => state.common)
+  const { userInfo, roles } = useSelector((state) => state.common)
   const [navList, setNavList] = useState(list)
   const [select, setSelect] = useState(0)
 
@@ -212,9 +195,9 @@ const Person = () => {
         </ul>
       </div>
       <div className={styles['right-wrap']}>
-        {select === 0 && <Information data={userInfo?.user_info} />}
+        {select === 0 && <Information data={userInfo} />}
         {select === 1 && <Password />}
-        {select === 2 && <Permissions data={userInfo?.roles} />}
+        {select === 2 && <Permissions data={roles} />}
       </div>
     </div>
   )

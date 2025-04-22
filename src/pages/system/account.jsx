@@ -42,22 +42,22 @@ const Account = () => {
   ]
 
   // 创建
-  const onCreate = () => {
+  const onCreate = (e) => {
     Modal.confirm({
-      title: '新增账号',
+      title: (e?.key ? '编辑' : '新增') + '账号',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',
       content: (
         <Form form={createForm} layout='vertical' autoComplete='off'>
           <Form.Item label='登录名' field='login_name' rules={[{ required: true }]}>
-            <Input placeholder='请输入角色名' />
-          </Form.Item>
-          <Form.Item label='手机号' field='account_mobile' rules={[{ required: true }]}>
-            <Input placeholder='请输入角色名' />
+            <Input placeholder='请输入内容' />
           </Form.Item>
           <Form.Item label='账号名' field='account_name' rules={[{ required: true }]}>
-            <Input placeholder='请输入角色名' />
+            <Input placeholder='请输入内容' />
+          </Form.Item>
+          <Form.Item label='手机号' field='account_mobile' rules={[{ required: true }]}>
+            <Input placeholder='请输入内容' />
           </Form.Item>
         </Form>
       ),

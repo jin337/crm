@@ -23,7 +23,19 @@ const filterHiddenItems = (arr) => {
 }
 
 const Header = (props) => {
-  const { content, leftIitems = [], rightIitems = [], select, logo, title, userInfo, onSelectMenu, onSelectSystem } = props
+  const {
+    content,
+    leftIitems = [],
+    rightIitems = [],
+    select,
+    logo,
+    title,
+    userInfo,
+    roles,
+    theme,
+    onSelectMenu,
+    onSelectSystem,
+  } = props
   const [formTheme] = Form.useForm()
   const [leftMenus, setLeftMenus] = useState([])
   const [rightMenus, setRightMenus] = useState([])
@@ -43,7 +55,7 @@ const Header = (props) => {
   const toggleTheme = (type) => {
     setVisibleTheme(type)
     if (type) {
-      formTheme.setFieldsValue(userInfo?.theme)
+      formTheme.setFieldsValue(theme)
     } else {
       onSelectSystem('theme', formTheme.getFieldsValue())
     }
@@ -90,13 +102,13 @@ const Header = (props) => {
                 trigger='click'
                 droplist={
                   <Menu onClickMenuItem={(e) => onSelectSystem('role', e)}>
-                    {userInfo?.roles?.map((r) => (
+                    {roles?.map((r) => (
                       <Menu.Item key={r.dept_id}>{r.dept_name}</Menu.Item>
                     ))}
                   </Menu>
                 }>
                 <div className={styles['org']}>
-                  <span className={styles['txt']}>{userInfo?.user_info?.main_dept_name}</span>
+                  <span className={styles['txt']}>{userInfo?.main_dept_name}</span>
                   <IconDown />
                 </div>
               </Dropdown>
@@ -124,7 +136,7 @@ const Header = (props) => {
               </Menu>
             }>
             <Avatar size={32} style={{ backgroundColor: '#fff', color: '#1d2129' }} className='cursor-pointer'>
-              {userInfo?.user_info?.user_name}
+              {userInfo?.user_name}
             </Avatar>
           </Dropdown>
         </Space>

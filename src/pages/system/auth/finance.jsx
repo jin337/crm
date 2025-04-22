@@ -81,7 +81,7 @@ const Finance = () => {
     console.log(obj)
   }
 
-  // 创建账号
+  // 角色
   const onCreate = (e) => {
     createForm.resetFields()
     let obj = {}
@@ -90,7 +90,7 @@ const Finance = () => {
     }
     createForm.setFieldsValue(obj)
     Modal.confirm({
-      title: e?.id ? '编辑角色' : '新增角色',
+      title: (e?.id ? '编辑' : '新增') + '角色',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',

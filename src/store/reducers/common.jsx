@@ -8,6 +8,10 @@ const initialState = {
   company: '中电创智（南京）科技有限公司',
   // 用户数据
   userInfo: null,
+  // 用户权限
+  roles: null,
+  // 用户主题
+  theme: null,
   // 导航选中
   menuSelect: null,
   // 导航数据
@@ -19,20 +23,26 @@ export const common = createSlice({
   name: 'common',
   initialState,
   reducers: {
-    getMenu: (state, action) => {
-      state.initMenuData = action.payload
-    },
-    getSystemMenu: (state, action) => {
-      state.systemMenuData = action.payload
-    },
-    getMenuSelect: (state, action) => {
-      state.menuSelect = action.payload
-    },
     setUserInfo: (state, action) => {
       state.userInfo = action.payload
+    },
+    setRoles: (state, action) => {
+      state.roles = action.payload
+    },
+    setTheme: (state, action) => {
+      state.theme = action.payload
+    },
+    setMenu: (state, action) => {
+      state.initMenuData = action.payload
+    },
+    setSystemMenu: (state, action) => {
+      state.systemMenuData = action.payload
+    },
+    setMenuSelect: (state, action) => {
+      state.menuSelect = action.payload
     },
   },
 })
 
-export const { setUserInfo, getMenu, getSystemMenu, getMenuSelect } = common.actions
+export const { setUserInfo, setRoles, setTheme, setMenu, setSystemMenu, setMenuSelect } = common.actions
 export default common.reducer

@@ -1,7 +1,7 @@
 import { } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { getMenuSelect } from 'src/store/reducers/common'
+import { setMenuSelect } from 'src/store/reducers/common'
 import { flattenArray } from 'src/utils/common'
 
 const useLink = () => {
@@ -15,7 +15,7 @@ const useLink = () => {
     if (!item) {
       item = flattenArray(systemMenuData)?.find((item) => item.path === path || item.path === params.path)
     }
-    dispatch(getMenuSelect(item))
+    dispatch(setMenuSelect(item))
     navigate(params.path, { state: { ...item, ...params } })
   }
   return link

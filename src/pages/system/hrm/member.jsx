@@ -1,229 +1,71 @@
-import { Button, Card, Dropdown, Form, Input, Menu, Space, Table } from '@arco-design/web-react'
+import { Button, Card, Dropdown, Form, Input, Menu, Modal, Space, Table } from '@arco-design/web-react'
 import { IconMore, IconPlus } from '@arco-design/web-react/icon'
 import { useState } from 'react'
+
+import CreateForm from './create'
 const HrmMember = () => {
   const [searchForm] = Form.useForm()
+  const [createForm] = Form.useForm()
 
   const [dataTable, setDataTable] = useState([])
+  const [visibleEdit, setVisibleEdit] = useState(false)
 
   // 流程管理-表头
   const columns = [
     {
-      title: '姓名',
-      dataIndex: 'name1',
-      width: 100,
-      fixed: 'left',
-    },
-    {
-      title: '手机',
-      dataIndex: 'name2',
-      width: 100,
-    },
-    {
-      title: '证件类型',
-      dataIndex: 'name3',
-      width: 100,
-    },
-    {
-      title: '证件号码',
-      dataIndex: 'name4',
-      width: 100,
-    },
-    {
-      title: '性别',
-      dataIndex: 'name5',
-      width: 100,
-    },
-    {
-      title: '出生日期',
-      dataIndex: 'name6',
-      width: 100,
-    },
-    {
-      title: '生日',
-      dataIndex: 'name7',
-      width: 100,
-    },
-    {
-      title: '年龄',
-      dataIndex: 'name8',
-      width: 100,
-    },
-    {
-      title: '是否已婚',
-      dataIndex: 'name9',
-      width: 100,
-    },
-    {
-      title: '是否已育',
-      dataIndex: 'name10',
-      width: 100,
-    },
-    {
-      title: '国家地区',
-      dataIndex: 'name11',
-      width: 100,
-    },
-    {
-      title: '民族',
-      dataIndex: 'name12',
-      width: 100,
-    },
-    {
-      title: '政治面貌',
-      dataIndex: 'name13',
-      width: 100,
-    },
-    {
-      title: '籍贯',
-      dataIndex: 'name14',
-      width: 100,
-    },
-    {
-      title: '户籍所在地',
-      dataIndex: 'name15',
+      title: '用户名',
+      dataIndex: 'user_name',
       width: 120,
     },
     {
-      title: '健康状态',
-      dataIndex: 'name16',
-      width: 100,
+      title: '用户账号',
+      dataIndex: 'user_account',
+      width: 120,
     },
     {
-      title: '最高学历',
-      dataIndex: 'name17',
-      width: 100,
+      title: '手机号',
+      dataIndex: 'user_mobile',
+      width: 120,
     },
     {
-      title: '入职日期',
-      dataIndex: 'name18',
-      width: 100,
+      title: '性别',
+      dataIndex: 'user_sex',
+      width: 80,
     },
     {
-      title: '试用期',
-      dataIndex: 'name19',
-      width: 100,
+      title: '主部门',
+      dataIndex: 'user_dept_main',
+      width: 120,
     },
     {
-      title: '转正日期',
-      dataIndex: 'name20',
-      width: 100,
-    },
-    {
-      title: '工号',
-      dataIndex: 'name21',
-      width: 100,
-    },
-    {
-      title: '部门',
-      dataIndex: 'name22',
-      width: 100,
-    },
-    {
-      title: '直属上级',
-      dataIndex: 'name23',
-      width: 100,
+      title: '附属部门',
+      dataIndex: 'user_depts',
+      width: 120,
     },
     {
       title: '岗位',
-      dataIndex: 'name24',
-      width: 100,
+      dataIndex: 'job',
+      width: 120,
     },
     {
-      title: '职级',
-      dataIndex: 'name25',
-      width: 100,
+      title: '状态',
+      dataIndex: 'status',
+      width: 80,
     },
     {
-      title: '工作地点',
-      dataIndex: 'name26',
-      width: 100,
+      title: '入职时间',
+      dataIndex: 'create_time',
+      width: 120,
     },
     {
-      title: '详细工作地点',
-      dataIndex: 'name27',
-      width: 150,
-    },
-    {
-      title: '工作城市',
-      dataIndex: 'name28',
-      width: 100,
-    },
-    {
-      title: '招聘渠道',
-      dataIndex: 'name29',
-      width: 100,
-    },
-    {
-      title: '员工状态',
-      dataIndex: 'name30',
-      width: 100,
-    },
-    {
-      title: '聘用形式',
-      dataIndex: 'name31',
-      width: 100,
-    },
-    {
-      title: '司龄开始日期',
-      dataIndex: 'name32',
-      width: 150,
-    },
-    {
-      title: '司龄',
-      dataIndex: 'name33',
-      width: 100,
-    },
-    {
-      title: '合同类型',
-      dataIndex: 'name34',
-      width: 100,
-    },
-    {
-      title: '现合同结束日期',
-      dataIndex: 'name35',
-      width: 150,
-    },
-    {
-      title: '现合同期限',
-      dataIndex: 'name36',
-      width: 150,
-    },
-    {
-      title: '工资卡卡号',
-      dataIndex: 'name37',
-      width: 150,
-    },
-    {
-      title: '工资卡开户城市',
-      dataIndex: 'name38',
-      width: 150,
-    },
-    {
-      title: '银行名称',
-      dataIndex: 'name39',
-      width: 100,
-    },
-    {
-      title: '工资卡开户行',
-      dataIndex: 'name40',
-      width: 150,
-    },
-    {
-      title: '个人社保账号',
-      dataIndex: 'name41',
-      width: 150,
-    },
-    {
-      title: '个人公积金账号',
-      dataIndex: 'name42',
-      width: 150,
+      title: '最后登录时间',
+      dataIndex: 'last_login_time',
+      width: 120,
     },
     {
       title: '操作',
       dataIndex: 'op',
       align: 'center',
-      fixed: 'right',
       width: 80,
       render: (_, record) => (
         <Dropdown
@@ -251,6 +93,26 @@ const HrmMember = () => {
     console.log(obj)
   }
 
+  // 新增
+  const onCreate = (e) => {
+    createForm.resetFields()
+    let obj = {}
+    createForm.setFieldsValue(obj)
+
+    Modal.confirm({
+      title: (e?.key ? '编辑' : '新增') + '员工',
+      icon: null,
+      closable: true,
+      wrapClassName: 'modal-wrap',
+      content: <CreateForm form={createForm} />,
+      onOk: () => {
+        createForm.validate().then((values) => {
+          console.log('数据', values)
+        })
+      },
+    })
+  }
+
   // 提交
   return (
     <>
@@ -262,13 +124,13 @@ const HrmMember = () => {
             </Form.Item>
           </Form>
           <Space>
-            <Button type='primary' size='small' status='primary' icon={<IconPlus />}>
+            <Button type='primary' size='small' status='primary' icon={<IconPlus />} onClick={() => onCreate()}>
               新增员工
             </Button>
           </Space>
         </div>
-
-        <Table borderCell stripe rowKey='id' columns={columns} data={dataTable} scroll={{ x: true }} />
+        {/* scroll={{ x: true }} */}
+        <Table borderCell stripe rowKey='id' columns={columns} data={dataTable} />
       </Card>
     </>
   )

@@ -5,22 +5,20 @@ import { useSelector } from 'react-redux'
 
 // 接口
 import Http from 'src/service/api'
+
+import CreateForm from './create'
 const HrmOrg = () => {
   const { title } = useSelector((state) => state.common)
 
   const [searchForm] = Form.useForm()
-  const [createForm] = Form.useForm()
+  const [orgForm] = Form.useForm()
+  const [memberForm] = Form.useForm()
 
   const [dataTable, setDataTable] = useState([])
   const [orgData, setOrgData] = useState([])
   const [orgSelected, setOrgSelected] = useState([])
 
   useEffect(() => {
-    Http.get('/mock/member-list.json').then(({ code, data }) => {
-      if (code === 200) {
-        setDataTable(data.list || [])
-      }
-    })
     Http.get('/mock/org-list.json').then(({ code, data }) => {
       if (code === 200) {
         setOrgData(data.list || [])
@@ -32,24 +30,24 @@ const HrmOrg = () => {
   // 流程管理-表头
   const columns = [
     {
-      title: '姓名',
-      dataIndex: 'title',
+      title: '用户账号',
+      dataIndex: 'user_account',
     },
     {
-      title: '工号',
-      dataIndex: 'name1',
+      title: '主部门',
+      dataIndex: 'user_dept_main',
     },
     {
-      title: '部门',
-      dataIndex: 'dept_name',
+      title: '附属部门',
+      dataIndex: 'user_depts',
     },
     {
       title: '岗位',
-      dataIndex: 'name3',
+      dataIndex: 'job',
     },
     {
-      title: '聘用形式',
-      dataIndex: 'name4',
+      title: '状态',
+      dataIndex: 'status',
     },
     {
       title: '入职时间',
@@ -63,23 +61,23 @@ const HrmOrg = () => {
     console.log(obj)
   }
 
-  // 新增
-  const onCreate = (e) => {
-    createForm.resetFields()
+  // 新增/编辑部门
+  const onCreateOrg = (e) => {
+    orgForm.resetFields()
     let obj = {}
     if (e) {
       obj = e?.dataRef
     } else {
       obj = { dept_type: 1 }
     }
-    createForm.setFieldsValue(obj)
+    orgForm.setFieldsValue(obj)
     Modal.confirm({
-      title: obj?.key ? '编辑部门' : '新增部门',
+      title: (e?.key ? '编辑' : '新增') + '部门',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',
       content: (
-        <Form form={createForm} layout='vertical' autoComplete='off'>
+        <Form form={orgForm} layout='vertical' autoComplete='off'>
           <Form.Item label='组织类型' field='dept_type' rules={[{ required: true }]}>
             <Radio.Group
               type='button'
@@ -107,8 +105,28 @@ const HrmOrg = () => {
         </Form>
       ),
       onOk: () => {
-        createForm.validate().then((values) => {
+        orgForm.validate().then((values) => {
           console.log('新增账号数据', values)
+        })
+      },
+    })
+  }
+
+  // 新增员工
+  const onCreateMember = (e) => {
+    memberForm.resetFields()
+    let obj = {}
+    memberForm.setFieldsValue(obj)
+
+    Modal.confirm({
+      title: (e?.key ? '编辑' : '新增') + '员工',
+      icon: null,
+      closable: true,
+      wrapClassName: 'modal-wrap',
+      content: <CreateForm form={memberForm} />,
+      onOk: () => {
+        memberForm.validate().then((values) => {
+          console.log('数据', values)
         })
       },
     })
@@ -119,7 +137,7 @@ const HrmOrg = () => {
       <div className='flex h-full gap-2'>
         <Card bordered={false} className='w-1/4'>
           <div className='mb-2 flex justify-end'>
-            <Button type='text' icon={<IconPlus />} onClick={() => onCreate()}>
+            <Button type='text' icon={<IconPlus />} onClick={() => onCreateOrg()}>
               新增部门
             </Button>
           </div>
@@ -127,7 +145,7 @@ const HrmOrg = () => {
             <Tree
               blockNode
               renderExtra={(node) => (
-                <div className='settings' onClick={() => onCreate(node)}>
+                <div className='settings' onClick={() => onCreateOrg(node)}>
                   <IconSettings />
                 </div>
               )}
@@ -146,7 +164,7 @@ const HrmOrg = () => {
               </Form.Item>
             </Form>
             <Space>
-              <Button type='primary' size='small' status='primary' icon={<IconPlus />}>
+              <Button type='primary' size='small' status='primary' icon={<IconPlus />} onClick={() => onCreateMember()}>
                 新增员工
               </Button>
             </Space>
