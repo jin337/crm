@@ -29,6 +29,7 @@ const Finance = () => {
 
   const [dataTable, setDataTable] = useState([])
   const [treeData, setTreeData] = useState([])
+  const [checkTree, setCheckTree] = useState([])
 
   const columns = [
     {
@@ -81,7 +82,7 @@ const Finance = () => {
     console.log(obj)
   }
 
-  // 角色
+  // 新增/编辑角色
   const onCreate = (e) => {
     createForm.resetFields()
     let obj = {}
@@ -112,6 +113,11 @@ const Finance = () => {
         })
       },
     })
+  }
+
+  // 保存角色
+  const submitRole = () => {
+    console.log('保存', checkTree)
   }
 
   return (
@@ -167,12 +173,16 @@ const Finance = () => {
           </Tabs.TabPane>
 
           <Tabs.TabPane key='2' title='角色权限'>
-            <div className='mb-2 text-right'>
-              <Button type='primary' size='small'>
-                保存
-              </Button>
-            </div>
-            <TreeCheck treeData={treeData} />
+            {treeData[0]?.children?.length > 0 && (
+              <>
+                <div className='mb-2 text-right'>
+                  <Button type='primary' size='small' onClick={submitRole}>
+                    保存
+                  </Button>
+                </div>
+                <TreeCheck treeData={treeData[0]?.children || []} onChange={setCheckTree} />
+              </>
+            )}
           </Tabs.TabPane>
         </Tabs>
       </Card>
