@@ -180,7 +180,7 @@ const Finance = () => {
                     保存
                   </Button>
                 </div>
-                <TreeCheck treeData={treeData[0]?.children || []} onChange={setCheckTree} />
+                <TreeCheck treeData={treeData || []} onChange={setCheckTree} />
               </>
             )}
           </Tabs.TabPane>
