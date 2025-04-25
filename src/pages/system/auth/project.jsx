@@ -18,14 +18,20 @@ const list = [
 const Project = () => {
   const common = useSelector((state) => state.common)
   const [searchForm] = Form.useForm()
-  const [createForm] = Form.useForm()
+  const [roleForm] = Form.useForm()
+
+  // 角色列表
   const [items, setItems] = useState(list)
+  // 当前角色
   const [active, setActive] = useState(0)
 
+  // 角色账号列表
   const [dataTable, setDataTable] = useState([])
+  // 角色权限列表
   const [treeData, setTreeData] = useState([])
+  // 已选角色
   const [checkTree, setCheckTree] = useState([])
-
+  // 表头
   const columns = [
     {
       title: '姓名',
@@ -79,19 +85,19 @@ const Project = () => {
 
   // 新增/编辑角色
   const onCreate = (e) => {
-    createForm.resetFields()
+    roleForm.resetFields()
     let obj = {}
     if (e) {
       obj = e
     }
-    createForm.setFieldsValue(obj)
+    roleForm.setFieldsValue(obj)
     Modal.confirm({
       title: (e?.id ? '编辑' : '新增') + '角色',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',
       content: (
-        <Form form={createForm} layout='vertical' autoComplete='off'>
+        <Form form={roleForm} layout='vertical' autoComplete='off'>
           <Form.Item field='role_name' rules={[{ required: true }]}>
             <Input placeholder='请输入角色名' />
           </Form.Item>
@@ -102,7 +108,7 @@ const Project = () => {
           role_type: 2, //1系统角色2应用角色
           role_group_id: common.userInfo.main_dept_id,
         }
-        createForm.validate().then((values) => {
+        roleForm.validate().then((values) => {
           obj.role_name = values.role_name
           console.log('新增角色数据', obj)
         })

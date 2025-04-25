@@ -5,34 +5,42 @@ import { useSelector } from 'react-redux'
 
 // 组件
 import { TreeCheck } from 'src/components'
+
+const list = [
+  {
+    id: '1',
+    role_name: '超级管理员',
+  },
+  {
+    id: '2',
+    role_name: '工程应用管理员',
+  },
+  {
+    id: '3',
+    role_name: '财务应用管理员',
+  },
+  {
+    id: '4',
+    role_name: '审批应用管理员',
+  },
+]
 const Setting = () => {
   const common = useSelector((state) => state.common)
   const [searchForm] = Form.useForm()
-  const [createForm] = Form.useForm()
-  const [items, setItems] = useState([
-    {
-      id: '1',
-      role_name: '超级管理员',
-    },
-    {
-      id: '2',
-      role_name: '工程应用管理员',
-    },
-    {
-      id: '3',
-      role_name: '财务应用管理员',
-    },
-    {
-      id: '4',
-      role_name: '审批应用管理员',
-    },
-  ])
+  const [roleForm] = Form.useForm()
+
+  // 角色列表
+  const [items, setItems] = useState(list)
+  // 当前角色
   const [active, setActive] = useState(0)
 
+  // 角色账号列表
   const [dataTable, setDataTable] = useState([])
+  // 角色权限列表
   const [treeData, setTreeData] = useState([])
+  // 已选角色
   const [checkTree, setCheckTree] = useState([])
-
+  // 表头
   const columns = [
     {
       title: '姓名',
@@ -84,19 +92,19 @@ const Setting = () => {
 
   // 新增/编辑角色
   const onCreate = (e) => {
-    createForm.resetFields()
+    roleForm.resetFields()
     let obj = {}
     if (e) {
       obj = e
     }
-    createForm.setFieldsValue(obj)
+    roleForm.setFieldsValue(obj)
     Modal.confirm({
       title: (e?.id ? '编辑' : '新增') + '角色',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',
       content: (
-        <Form form={createForm} layout='vertical' autoComplete='off'>
+        <Form form={roleForm} layout='vertical' autoComplete='off'>
           <Form.Item field='role_name' rules={[{ required: true }]}>
             <Input placeholder='请输入角色名' />
           </Form.Item>
@@ -107,7 +115,7 @@ const Setting = () => {
           role_type: 1, //1系统角色2应用角色
           role_group_id: common.userInfo.main_dept_id,
         }
-        createForm.validate().then((values) => {
+        roleForm.validate().then((values) => {
           obj.role_name = values.role_name
           console.log('新增角色数据', obj)
         })
