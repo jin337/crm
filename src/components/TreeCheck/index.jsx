@@ -1,6 +1,9 @@
 import { Checkbox } from '@arco-design/web-react'
 import { useEffect, useState } from 'react'
 
+// 样式
+import styles from './index.module.scss'
+
 const TreeCheck = (props) => {
   const { treeData, onChange } = props
   const [items, setItems] = useState([])
@@ -19,40 +22,73 @@ const TreeCheck = (props) => {
     }, [])
   }
 
-  const { selectAll, isSelected, unSelectAll, isAllSelected, isPartialSelected, setValueSelected, selected } =
-    Checkbox.useCheckbox(
-      flattenItems(items).map((x) => x.id),
-      []
-    )
+  const allOptions = flattenItems(items).map((x) => x.id)
+  const { setValueSelected, selected } = Checkbox.useCheckbox(allOptions, [])
+
   // 当前选中
   useEffect(() => {
     onChange(selected)
   }, [selected])
 
+  // 内容渲染
   const renderTree = (data) => {
+    // 当前选中
+    const changeChecked = (checked, item) => {
+      const getAllIds = (e) => [e.id, ...flattenItems(e.children || []).map((x) => x.id)]
+      const getLeaf = (e) => {
+        const parent = flattenItems(items).find((x) => x.id === e.pid)
+        if (parent) {
+          const newSelected = checked ? [...selected, e.id] : selected.filter((x) => x !== e.id)
+          const allPid = parent.children.map((x) => x.id)
+          const containsAll = allPid.every((x) => newSelected.includes(x))
+          if (checked) {
+            return containsAll ? [e.pid, e.id] : [e.id]
+          } else {
+            return [e.pid, e.id]
+          }
+        }
+      }
+      const idsToUpdate = item.children ? getAllIds(item) : getLeaf(item)
+      setValueSelected(idsToUpdate, checked)
+    }
+    // 获取父级状态
+    const getParentStatus = (item) => {
+      const allChildren = flattenItems(item.children || [])
+      const selectedCount = allChildren.filter((child) => selected.includes(child.id)).length
+      if (allChildren.length === 0) return selected.includes(item.id)
+
+      if (selectedCount === 0) return false
+      if (selectedCount === allChildren.length) return true
+      return 'indeterminate'
+    }
+
     return data.map((option) => (
-      <div className='mb-3' key={option.id}>
-        <Checkbox value={option.id} checked={isSelected(option.id)} onChange={(checked) => setValueSelected(option.id, checked)}>
-          {option.title}
+      <div className={styles['item']} key={option.id}>
+        <Checkbox
+          value={option.id}
+          checked={getParentStatus(option)}
+          onChange={(checked) => changeChecked(checked, option)}
+          indeterminate={getParentStatus(option) === 'indeterminate'}>
+          {option.title}（{option.id}）
         </Checkbox>
-        {option?.children?.length > 0 && <div className='flex'>{renderTree(option.children)}</div>}
+        {option?.children?.length > 0 && <div className={styles['box']}>{renderTree(option.children)}</div>}
       </div>
     ))
   }
 
+  // 全选
+  const allChecked = (checked) => {
+    const allIds = flattenItems(items).map((x) => x.id)
+    setValueSelected(allIds, checked)
+  }
+
   return (
-    <div className='treecheck-wrap'>
-      <div className='mb-3'>
+    <div className={styles['treecheck-wrap']}>
+      <div className={styles['item']}>
         <Checkbox
-          onChange={(checked) => {
-            if (checked) {
-              selectAll()
-            } else {
-              unSelectAll()
-            }
-          }}
-          checked={isAllSelected()}
-          indeterminate={isPartialSelected()}>
+          onChange={allChecked}
+          checked={selected.length === flattenItems(items).length}
+          indeterminate={selected.length > 0 && selected.length < flattenItems(items).length}>
           全部
         </Checkbox>
       </div>

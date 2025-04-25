@@ -1,0 +1,16 @@
+.treecheck-wrap {
+  width: 100%;
+  .item {
+    margin-bottom: 20px;
+  }
+  .box {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 4px;
+
+    gap: 6px;
+    .item {
+      margin-bottom: 0;
+    }
+  }
+}
