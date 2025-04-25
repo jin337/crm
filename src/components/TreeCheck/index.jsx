@@ -34,7 +34,9 @@ const TreeCheck = (props) => {
   const renderTree = (data) => {
     // 当前选中
     const changeChecked = (checked, item) => {
+      // 获取所有子节点的 ID（包括自身）
       const getAllIds = (e) => [e.id, ...flattenItems(e.children || []).map((x) => x.id)]
+      // 获取叶子节点的更新逻辑
       const getLeaf = (e) => {
         const parent = flattenItems(items).find((x) => x.id === e.pid)
         if (parent) {
@@ -46,9 +48,13 @@ const TreeCheck = (props) => {
           } else {
             return [e.pid, e.id]
           }
+        } else {
+          return [e.id]
         }
       }
+      // 根据是否有子节点决定调用哪个方法
       const idsToUpdate = item.children ? getAllIds(item) : getLeaf(item)
+      // 更新选中状态
       setValueSelected(idsToUpdate, checked)
     }
     // 获取父级状态
