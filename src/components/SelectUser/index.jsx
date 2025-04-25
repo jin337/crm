@@ -1,4 +1,4 @@
-import { Avatar, Empty, Input, Modal, Tabs, Tree } from '@arco-design/web-react'
+import { Avatar, Button, Empty, Input, Modal, Tabs, Tree } from '@arco-design/web-react'
 import { IconCloseCircleFill, IconUser } from '@arco-design/web-react/icon'
 import { useEffect, useState } from 'react'
 
@@ -78,9 +78,9 @@ const SelectUser = (props) => {
         <div className={styles['select-box']}>
           <div className={styles['header']}>
             <span>已选择</span>
-            <span className={styles['clear']} onClick={() => setUser([])}>
+            <Button size='small' disabled={user?.length === 0} onClick={() => setUser([])}>
               清空已选
-            </span>
+            </Button>
           </div>
           <div className={styles['content']}>
             {user?.length > 0 ? (
