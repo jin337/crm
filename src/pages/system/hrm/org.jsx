@@ -150,7 +150,7 @@ const HrmOrg = () => {
                 </div>
               )}
               fieldNames={{ key: 'key', title: 'dept_name' }}
-              treeData={[{ key: '0', dept_name: title, children: orgData }]}
+              treeData={orgData}
               selectedKeys={orgSelected}
               onSelect={setOrgSelected}
             />

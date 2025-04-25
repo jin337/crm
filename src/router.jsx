@@ -28,10 +28,7 @@ const SystemHrmOrg = lazy(() => import('src/pages/system/hrm/org'))
 const SystemHrmMember = lazy(() => import('src/pages/system/hrm/member'))
 
 // 角色权限
-const AuthSetting = lazy(() => import('src/pages/system/auth/setting'))
-const AuthProject = lazy(() => import('src/pages/system/auth/project'))
-const AuthFinance = lazy(() => import('src/pages/system/auth/finance'))
-const AuthOA = lazy(() => import('src/pages/system/auth/oa'))
+const Auth = lazy(() => import('src/pages/system/auth'))
 
 const routes = [
   {
@@ -65,6 +62,34 @@ const routes = [
         path: '/finance',
         element: <Finance />,
       },
+      // 应用管理
+      {
+        path: '/system/application',
+        element: <SystemApplication />,
+      },
+      {
+        path: '/system/app/manage/:id',
+        element: <SystemAppManage />,
+      },
+      // 账号管理
+      {
+        path: '/system/account',
+        element: <SystemAccount />,
+      },
+      // 角色权限
+      {
+        path: '/system/auth/:id',
+        element: <Auth />,
+      },
+      // 人力资源管理
+      {
+        path: '/system/hrm/org',
+        element: <SystemHrmOrg />,
+      },
+      {
+        path: '/system/hrm/member',
+        element: <SystemHrmMember />,
+      },
       // OA
       {
         path: '/oa/apply',
@@ -89,42 +114,6 @@ const routes = [
       {
         path: '/oa/all',
         element: <OAall />,
-      },
-      {
-        path: '/system/application',
-        element: <SystemApplication />,
-      },
-      {
-        path: '/system/app/manage/:id',
-        element: <SystemAppManage />,
-      },
-      {
-        path: '/system/account',
-        element: <SystemAccount />,
-      },
-      {
-        path: '/system/auth/setting',
-        element: <AuthSetting />,
-      },
-      {
-        path: '/system/auth/project',
-        element: <AuthProject />,
-      },
-      {
-        path: '/system/auth/finance',
-        element: <AuthFinance />,
-      },
-      {
-        path: '/system/auth/oa',
-        element: <AuthOA />,
-      },
-      {
-        path: '/system/hrm/org',
-        element: <SystemHrmOrg />,
-      },
-      {
-        path: '/system/hrm/member',
-        element: <SystemHrmMember />,
       },
     ],
   },

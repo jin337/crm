@@ -2,35 +2,93 @@ import { Button, Card, Dropdown, Form, Input, Menu, Modal, Popconfirm, Space, Ta
 import { IconPlus, IconSettings } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-// 组件
-import { TreeCheck } from 'src/components'
+import { useLocation } from 'react-router'
 
-const list = [
-  {
-    id: 1,
-    role_name: '管理员',
-  },
-  {
-    id: 2,
-    role_name: '员工',
-  },
-]
-const Oa = () => {
+// 组件
+import { SelectUser, TreeCheck } from 'src/components'
+
+// 接口
+import Http from 'src/service/api'
+
+const roleList = {
+  setting: [
+    {
+      id: '1',
+      role_name: '超级管理员',
+    },
+    {
+      id: '2',
+      role_name: '工程应用管理员',
+    },
+    {
+      id: '3',
+      role_name: '财务应用管理员',
+    },
+    {
+      id: '4',
+      role_name: '审批应用管理员',
+    },
+  ],
+  finance: [
+    {
+      id: 1,
+      role_name: '主管',
+    },
+    {
+      id: 2,
+      role_name: '查看者',
+    },
+    {
+      id: 3,
+      role_name: '会计',
+    },
+  ],
+  oa: [
+    {
+      id: 1,
+      role_name: '管理员',
+    },
+    {
+      id: 2,
+      role_name: '员工',
+    },
+  ],
+  project: [
+    {
+      id: 1,
+      role_name: '主管',
+    },
+    {
+      id: 2,
+      role_name: '管理员',
+    },
+  ],
+}
+
+const Setting = () => {
   const common = useSelector((state) => state.common)
+  const location = useLocation()
+  const [params, setParams] = useState()
+
   const [searchForm] = Form.useForm()
   const [roleForm] = Form.useForm()
 
   // 角色列表
-  const [items, setItems] = useState(list)
+  const [items, setItems] = useState([])
   // 当前角色
   const [active, setActive] = useState(0)
 
   // 角色账号列表
   const [dataTable, setDataTable] = useState([])
+  // 关联账号弹窗
+  const [visibleSelect, setVisibleSelect] = useState(false)
+  const [userTabs, setUserTabs] = useState([])
+  const [userData, setUserData] = useState([])
   // 角色权限列表
   const [treeData, setTreeData] = useState([])
   // 已选角色
   const [checkTree, setCheckTree] = useState([])
+
   // 表头
   const columns = [
     {
@@ -72,11 +130,23 @@ const Oa = () => {
   ]
 
   useEffect(() => {
-    const arr = common.initMenuData.filter((e) => e.permission === 'oa')
-    if (arr.length) {
-      setTreeData(arr)
+    const permission = location.state?.permission
+    permission && setParams(permission.slice(12))
+  }, [location])
+
+  useEffect(() => {
+    setItems(roleList[params] || [])
+
+    if (params === 'setting') {
+      setTreeData(common.systemMenuData)
+    } else {
+      const arr = common.initMenuData.filter((e) => e.permission === params)
+      if (arr.length) {
+        setTreeData(arr)
+      }
     }
-  }, [common?.initMenuData])
+  }, [params, common?.systemMenuData, common?.initMenuData])
+
   // 查询事件
   const onChangeSearch = (e) => {
     let obj = { ...searchForm.getFields() }
@@ -105,7 +175,7 @@ const Oa = () => {
       ),
       onOk: () => {
         const obj = {
-          role_type: 2, //1系统角色2应用角色
+          role_type: 1, //1系统角色2应用角色
           role_group_id: common.userInfo.main_dept_id,
         }
         roleForm.validate().then((values) => {
@@ -114,6 +184,51 @@ const Oa = () => {
         })
       },
     })
+  }
+
+  // 打开弹窗-关联账号
+  const openSelect = () => {
+    const list = [
+      {
+        id: 1,
+        title: '常用',
+        tree: 0,
+        children: [],
+      },
+      {
+        id: 2,
+        title: '机构',
+        tree: 1,
+        children: [],
+      },
+    ]
+    setUserTabs(list)
+    onTabChange(list[0].id)
+
+    setUserData([])
+
+    setVisibleSelect(true)
+  }
+  // 切换关联账号类型
+  const onTabChange = async (key) => {
+    const { code, data } = await Http.get('/mock/org-list.json')
+    if (code === 200) {
+      const children = Number(key) === 1 ? data.list1 : data.list || []
+      setUserTabs((prev) => {
+        return prev.map((e) => {
+          if (Number(e.id) === Number(key)) {
+            e.children = children
+          }
+          return e
+        })
+      })
+    }
+  }
+  // 关联账号
+  const onChangeUser = (arr) => {
+    console.log('关联账号', arr)
+    setUserData(arr)
+    setVisibleSelect(false)
   }
 
   // 保存角色
@@ -160,11 +275,11 @@ const Oa = () => {
             <div className='mb-2 flex items-start justify-between'>
               <Form layout='inline' autoComplete='off' size='small' form={searchForm} onChange={onChangeSearch}>
                 <Form.Item field='keyword'>
-                  <Input.Search placeholder='请输入关键字' />
+                  <Input.Search allowClear placeholder='请输入关键字' />
                 </Form.Item>
               </Form>
               <Space>
-                <Button type='primary' size='small' status='primary' icon={<IconPlus />}>
+                <Button type='primary' size='small' status='primary' icon={<IconPlus />} onClick={openSelect}>
                   关联账号
                 </Button>
               </Space>
@@ -187,7 +302,17 @@ const Oa = () => {
           </Tabs.TabPane>
         </Tabs>
       </Card>
+
+      <SelectUser
+        title='关联账号'
+        visible={visibleSelect}
+        setVisible={setVisibleSelect}
+        tabs={userTabs}
+        onTabChange={onTabChange}
+        select={userData}
+        onChange={onChangeUser}
+      />
     </div>
   )
 }
-export default Oa
+export default Setting

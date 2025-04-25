@@ -3,64 +3,165 @@
   "data": {
     "list": [
       {
-        "key": "1",
-        "dept_name": "公司1",
-        "dept_type": 1,
-        "start_time": "2022-01-01 00:00:00",
-        "pid": "0",
+        "key": "0",
+        "dept_name": "CRM",
         "children": [
           {
-            "key": "11",
-            "dept_name": "部门1",
-            "dept_type": 2,
+            "key": "1",
+            "dept_name": "公司1",
+            "dept_type": 1,
             "start_time": "2022-01-01 00:00:00",
-            "pid": "1"
+            "pid": "0",
+            "children": [
+              {
+                "key": "11",
+                "dept_name": "部门1",
+                "dept_type": 2,
+                "start_time": "2022-01-01 00:00:00",
+                "pid": "1"
+              },
+              {
+                "key": "12",
+                "dept_name": "部门2",
+                "dept_type": 2,
+                "start_time": "2022-01-01 00:00:00",
+                "pid": "1"
+              },
+              {
+                "key": "13",
+                "dept_name": "部门3",
+                "dept_type": 2,
+                "start_time": "2022-01-01 00:00:00",
+                "pid": "1"
+              },
+              {
+                "key": "14",
+                "dept_name": "部门4",
+                "dept_type": 2,
+                "start_time": "2022-01-01 00:00:00",
+                "pid": "1"
+              },
+              {
+                "key": "15",
+                "dept_name": "部门5",
+                "dept_type": 2,
+                "start_time": "2022-01-01 00:00:00",
+                "pid": "1"
+              },
+              {
+                "key": "16",
+                "dept_name": "部门6",
+                "dept_type": 2,
+                "start_time": "2022-01-01 00:00:00",
+                "pid": "1"
+              },
+              {
+                "key": "17",
+                "dept_name": "部门7",
+                "dept_type": 2,
+                "start_time": "2022-01-01 00:00:00",
+                "pid": "1"
+              },
+              {
+                "key": "18",
+                "dept_name": "部门8",
+                "dept_type": 2,
+                "start_time": "2022-01-01 00:00:00",
+                "pid": "1"
+              },
+              {
+                "key": "19",
+                "dept_name": "部门9",
+                "dept_type": 2,
+                "start_time": "2022-01-01 00:00:00",
+                "pid": "1"
+              },
+              {
+                "key": "20",
+                "dept_name": "部门10",
+                "dept_type": 2,
+                "start_time": "2022-01-01 00:00:00",
+                "pid": "1"
+              }
+            ]
           },
           {
-            "key": "12",
-            "dept_name": "部门2",
-            "dept_type": 2,
+            "key": "2",
+            "dept_name": "公司2",
+            "dept_type": 1,
             "start_time": "2022-01-01 00:00:00",
-            "pid": "1"
-          },
-          {
-            "key": "13",
-            "dept_name": "部门3",
-            "dept_type": 2,
-            "start_time": "2022-01-01 00:00:00",
-            "pid": "1"
-          },
-          {
-            "key": "14",
-            "dept_name": "部门4",
-            "dept_type": 2,
-            "start_time": "2022-01-01 00:00:00",
-            "pid": "1"
+            "pid": "0",
+            "children": [
+              {
+                "key": "21",
+                "dept_name": "部门1",
+                "dept_type": 2,
+                "start_time": "2022-01-01 00:00:00",
+                "pid": "2"
+              },
+              {
+                "key": "22",
+                "dept_name": "部门2",
+                "dept_type": 2,
+                "start_time": "2022-01-01 00:00:00",
+                "pid": "2"
+              }
+            ]
           }
         ]
+      }
+    ],
+    "list1": [
+      {
+        "id": 1,
+        "name": "张三",
+        "dept_name": "南京公司/南京研发中心/研发部"
       },
       {
-        "key": "2",
-        "dept_name": "公司2",
-        "dept_type": 1,
-        "start_time": "2022-01-01 00:00:00",
-        "pid": "0",
-        "children": [
-          {
-            "key": "21",
-            "dept_name": "部门1",
-            "dept_type": 2,
-            "start_time": "2022-01-01 00:00:00",
-            "pid": "2"
-          },
-          {
-            "key": "22",
-            "dept_name": "部门2",
-            "dept_type": 2,
-            "start_time": "2022-01-01 00:00:00",
-            "pid": "2"
-          }
-        ]
+        "id": 2,
+        "name": "李四",
+        "dept_name": "上海公司/研发中心/研发部"
+      },
+      {
+        "id": 3,
+        "name": "王五",
+        "dept_name": "北京公司/研发中心/研发部"
+      },
+      {
+        "id": 4,
+        "name": "赵六",
+        "dept_name": "南京公司/南京研发中心/研发部"
+      },
+      {
+        "id": 5,
+        "name": "孙七",
+        "dept_name": "南京公司/南京研发中心/研发部"
+      },
+      {
+        "id": 6,
+        "name": "周八",
+        "dept_name": "南京公司/南京研发中心/研发部"
+      },
+      {
+        "id": 7,
+        "name": "吴九",
+        "dept_name": "南京公司/南京研发中心/研发部"
+      },
+      {
+        "id": 8,
+        "name": "郑十",
+        "dept_name": "南京公司/南京研发中心/研发部"
+      }
+      ,
+      {
+        "id": 9,
+        "name": "钱十一",
+        "dept_name": "南京公司/南京研发中心/研发部"
+      },
+      {
+        "id": 10,
+        "name": "孙十二",
+        "dept_name": "南京公司/南京研发中心/研发部"
       }
     ]
   }

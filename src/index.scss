@@ -79,6 +79,12 @@ strong {
     text-align: right;
   }
 }
+// 人员选择弹窗
+.modal-select-user {
+  .arco-modal-content {
+    padding: 0;
+  }
+}
 // 页面标题
 .page-title {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
