@@ -192,7 +192,7 @@ const Manage = () => {
               )
             }
           </Form.Item>
-          <div className='flex gap-4'>
+          <div className='flex gap-6'>
             <Form.Item shouldUpdate noStyle>
               {(values) => (
                 <Form.Item label='类型' field='type' rules={[{ required: true }]}>
@@ -255,7 +255,11 @@ const Manage = () => {
                       }
                       trigger='click'>
                       <Button long>
-                        <IconCustom className='text-base' name={values.is_icon} />
+                        {values.is_icon ? (
+                          <IconCustom className='text-base' name={values.is_icon} />
+                        ) : (
+                          <span className='text-[var(--color-text-3)]'>请选择图标……</span>
+                        )}
                       </Button>
                     </Dropdown>
                   </Form.Item>
@@ -263,7 +267,7 @@ const Manage = () => {
               }
             </Form.Item>
           </div>
-          <div className='flex gap-2'>
+          <div className='flex gap-6'>
             <Form.Item label='名称' field='title' rules={[{ required: true }]}>
               <Input placeholder='请输入名称……' />
             </Form.Item>

@@ -63,55 +63,64 @@ const Application = () => {
           layout='vertical'
           autoComplete='off'
           validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
-          <div className='flex gap-2'>
+          <div className='flex gap-6'>
             <Form.Item label='名称' field='title' rules={[{ required: true }]}>
               <Input placeholder='请输入名称……' />
             </Form.Item>
             <Form.Item shouldUpdate noStyle>
-              {(values) => (
-                <Form.Item label='菜单图标' field='is_icon'>
-                  <Dropdown
-                    droplist={
-                      <div className='max-h-[400px] w-auto overflow-y-auto border border-[var(--border-color)] bg-white p-2'>
-                        <ul className='flex flex-wrap'>
-                          {[
-                            'IconHome',
-                            'IconStamp',
-                            'IconPalette',
-                            'IconSettings',
-                            'IconFile',
-                            'IconCheckCircle',
-                            'IconCheckSquare',
-                            'IconStar',
-                            'IconClockCircle',
-                            'IconCalendar',
-                            'IconCalendarClock',
-                            'IconHistory',
-                            'IconUpload',
-                            'IconApps',
-                          ]?.map((item) => (
-                            <li key={item} className='cursor-pointer' onClick={() => formItem.setFieldsValue({ is_icon: item })}>
-                              <IconCustom className='m-2 text-base' name={item} />
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    }
-                    trigger='click'>
-                    <Button long>
-                      {values.is_icon ? <IconCustom className='text-base' name={values.is_icon} /> : '请选择图标……'}
-                    </Button>
-                  </Dropdown>
-                </Form.Item>
-              )}
+              {(values) =>
+                values.type !== 3 && (
+                  <Form.Item label='菜单图标' field='is_icon'>
+                    <Dropdown
+                      droplist={
+                        <div className='max-h-[400px] w-auto overflow-y-auto border border-[var(--border-color)] bg-white p-2'>
+                          <ul className='flex flex-wrap'>
+                            {[
+                              'IconHome',
+                              'IconStamp',
+                              'IconPalette',
+                              'IconSettings',
+                              'IconFile',
+                              'IconCheckCircle',
+                              'IconCheckSquare',
+                              'IconStar',
+                              'IconClockCircle',
+                              'IconCalendar',
+                              'IconCalendarClock',
+                              'IconHistory',
+                              'IconUpload',
+                              'IconApps',
+                            ]?.map((item) => (
+                              <li
+                                key={item}
+                                className='cursor-pointer'
+                                onClick={() => appsForm.setFieldsValue({ is_icon: item })}>
+                                <IconCustom className='m-2 text-base' name={item} />
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      }
+                      trigger='click'>
+                      <Button long>
+                        {values.is_icon ? (
+                          <IconCustom className='text-base' name={values.is_icon} />
+                        ) : (
+                          <span className='text-[var(--color-text-3)]'>请选择图标……</span>
+                        )}
+                      </Button>
+                    </Dropdown>
+                  </Form.Item>
+                )
+              }
             </Form.Item>
           </div>
-          <div className='flex gap-2'>
+          <div className='flex gap-6'>
             <Form.Item label='权限标识' field='permission' rules={[{ required: true }]}>
               <Input placeholder='请输入权限标识……' />
             </Form.Item>
             <Form.Item label='排序' field='sort'>
-              <InputNumber min={0} max={999} mode='button' />
+              <InputNumber min={0} max={999} />
             </Form.Item>
           </div>
           <Grid.Row gutter={24}>
