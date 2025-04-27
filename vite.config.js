@@ -6,7 +6,7 @@ import { resolve } from 'path'
 import compression from 'vite-plugin-compression'
 
 import federation from '@originjs/vite-plugin-federation'
-import { terser } from 'rollup-plugin-terser'; // 引入 terser 插件
+import { terser } from 'rollup-plugin-terser'
 
 export default defineConfig({
   server: {
