@@ -2,11 +2,10 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 
+import federation from '@originjs/vite-plugin-federation'
 import { resolve } from 'path'
 import compression from 'vite-plugin-compression'
-import minipic from 'vite-plugin-minipic'
-
-import federation from '@originjs/vite-plugin-federation'
+import VitePluginImageTools from 'vite-plugin-image-tools'
 
 export default defineConfig({
   server: {
@@ -30,12 +29,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
     compression({ threshold: 10240 }),
-    minipic({
-      sharpOptions: {
-        png: {
-          quality: 50,
-        },
-      },
+    VitePluginImageTools({
+      quality: 50,
+      enableWebp: true,
     }),
     federation({
       name: 'hostApp',
