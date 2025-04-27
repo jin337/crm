@@ -23,7 +23,6 @@ export default defineConfig({
     react(),
     tailwindcss(),
     compression({ threshold: 10240 }),
-    terser(),
     federation({
       name: 'hostApp',
       filename: 'remoteEntry.js',
@@ -49,6 +48,7 @@ export default defineConfig({
         chunkFileNames: 'assets/js/chunks/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
       },
+      plugins: [terser()],
     },
   },
 })
