@@ -30,7 +30,6 @@ export default defineConfig({
     react(),
     tailwindcss(),
     compression({ threshold: 10240 }),
-    terser(),
     federation({
       name: 'hostApp',
       filename: 'remoteEntry.js',
@@ -49,7 +48,6 @@ export default defineConfig({
     modulePreload: false,
     target: 'esnext',
     minify: 'terser',
-    cssCodeSplit: true,
     rollupOptions: {
       output: {
         entryFileNames: 'assets/js/[name]-[hash].js',
