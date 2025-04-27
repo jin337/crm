@@ -30,7 +30,13 @@ export default defineConfig({
     react(),
     tailwindcss(),
     compression({ threshold: 10240 }),
-    minipic(),
+    minipic({
+      sharpOptions: {
+        png: {
+          quality: 70,
+        },
+      },
+    }),
     federation({
       name: 'hostApp',
       filename: 'remoteEntry.js',
