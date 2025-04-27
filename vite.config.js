@@ -33,7 +33,7 @@ export default defineConfig({
     minipic({
       sharpOptions: {
         png: {
-          quality: 70,
+          quality: 50,
         },
       },
     }),
