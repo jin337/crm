@@ -44,6 +44,8 @@ export default defineConfig({
     }),
   ],
   build: {
+    modulePreload: false,
+    target: 'esnext',
     minify: 'terser',
     rollupOptions: {
       output: {
