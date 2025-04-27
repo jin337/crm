@@ -6,7 +6,7 @@ import { resolve } from 'path'
 import compression from 'vite-plugin-compression'
 
 import federation from '@originjs/vite-plugin-federation'
-import { terser } from 'rollup-plugin-terser'
+import terser from '@rollup/plugin-terser'
 
 export default defineConfig({
   server: {
@@ -23,6 +23,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     compression({ threshold: 10240 }),
+    terser(),
     federation({
       name: 'hostApp',
       filename: 'remoteEntry.js',
@@ -36,7 +37,6 @@ export default defineConfig({
       },
       shared: ['react', 'react-dom', 'react-router', 'react-redux', '@reduxjs/toolkit', 'axios'],
     }),
-    terser(),
   ],
   build: {
     modulePreload: false,
