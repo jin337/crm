@@ -19,6 +19,13 @@ export default defineConfig({
       src: resolve('src'),
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        silenceDeprecations: ['legacy-js-api'],
+      },
+    },
+  },
   plugins: [
     react(),
     tailwindcss(),
