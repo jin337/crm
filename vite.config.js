@@ -6,6 +6,7 @@ import { resolve } from 'path'
 import compression from 'vite-plugin-compression'
 
 import federation from '@originjs/vite-plugin-federation'
+import { terser } from 'rollup-plugin-terser'; // 引入 terser 插件
 
 export default defineConfig({
   server: {
@@ -35,6 +36,7 @@ export default defineConfig({
       },
       shared: ['react', 'react-dom', 'react-router', 'react-redux', '@reduxjs/toolkit', 'axios'],
     }),
+    terser(),
   ],
   build: {
     modulePreload: false,
