@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 
 import { resolve } from 'path'
 import compression from 'vite-plugin-compression'
+import minipic from 'vite-plugin-minipic'
 
 import federation from '@originjs/vite-plugin-federation'
 
@@ -29,6 +30,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     compression({ threshold: 10240 }),
+    minipic(),
     federation({
       name: 'hostApp',
       filename: 'remoteEntry.js',
