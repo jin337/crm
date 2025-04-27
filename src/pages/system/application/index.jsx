@@ -65,7 +65,7 @@ const Application = () => {
           validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
           <div className='flex gap-6'>
             <Form.Item label='名称' field='title' rules={[{ required: true }]}>
-              <Input placeholder='请输入名称……' />
+              <Input placeholder='请输入内容' />
             </Form.Item>
             <Form.Item shouldUpdate noStyle>
               {(values) =>
@@ -106,7 +106,7 @@ const Application = () => {
                         {values.is_icon ? (
                           <IconCustom className='text-base' name={values.is_icon} />
                         ) : (
-                          <span className='text-[var(--color-text-3)]'>请选择图标……</span>
+                          <span className='text-[var(--color-text-3)]'>请选择</span>
                         )}
                       </Button>
                     </Dropdown>
@@ -117,7 +117,7 @@ const Application = () => {
           </div>
           <div className='flex gap-6'>
             <Form.Item label='权限标识' field='permission' rules={[{ required: true }]}>
-              <Input placeholder='请输入权限标识……' />
+              <Input placeholder='请输入内容' />
             </Form.Item>
             <Form.Item label='排序' field='sort'>
               <InputNumber min={0} max={999} />
@@ -145,14 +145,14 @@ const Application = () => {
               <Form.Item shouldUpdate noStyle>
                 {(values) => (
                   <Form.Item label='路由' field='path'>
-                    <Input addBefore={values.out_link === 1 ? 'http://' : undefined} placeholder='请输入路由……' />
+                    <Input addBefore={values.out_link === 1 ? 'http://' : undefined} placeholder='请输入内容' />
                   </Form.Item>
                 )}
               </Form.Item>
             </Grid.Col>
           </Grid.Row>
           <Form.Item label='简介' field='describe'>
-            <Input.TextArea showWordLimit maxLength={10} placeholder='请输入简介……' />
+            <Input.TextArea showWordLimit maxLength={10} placeholder='请输入内容' />
           </Form.Item>
         </Form>
       ),

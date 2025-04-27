@@ -169,7 +169,7 @@ const Setting = () => {
       content: (
         <Form form={roleForm} layout='vertical' autoComplete='off'>
           <Form.Item field='role_name' rules={[{ required: true }]}>
-            <Input placeholder='请输入角色名' />
+            <Input placeholder='请输入内容' />
           </Form.Item>
         </Form>
       ),
@@ -275,7 +275,7 @@ const Setting = () => {
             <div className='mb-2 flex items-start justify-between'>
               <Form layout='inline' autoComplete='off' size='small' form={searchForm} onChange={onChangeSearch}>
                 <Form.Item field='keyword'>
-                  <Input.Search allowClear placeholder='请输入关键字' />
+                  <Input.Search allowClear placeholder='请输入内容' />
                 </Form.Item>
               </Form>
               <Space>

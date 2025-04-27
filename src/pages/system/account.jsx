@@ -49,7 +49,11 @@ const Account = () => {
       closable: true,
       wrapClassName: 'modal-wrap',
       content: (
-        <Form form={createForm} layout='vertical' autoComplete='off'>
+        <Form
+          form={createForm}
+          layout='vertical'
+          autoComplete='off'
+          validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
           <Form.Item label='登录名' field='login_name' rules={[{ required: true }]}>
             <Input placeholder='请输入内容' />
           </Form.Item>

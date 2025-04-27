@@ -89,12 +89,17 @@ const Login = () => {
       <div className={styles['login-form']}>
         <div className={styles['login-form-content']}>
           <div className={styles['form-title']}>欢迎登录系统</div>
-          <Form size='large' layout='vertical' autoComplete='off' form={formLogin}>
-            <Form.Item label='用户名' field={'username'} rules={[{ required: true, message: '用户名不能为空' }]}>
-              <Input placeholder='请输入用户名/手机号' />
+          <Form
+            size='large'
+            layout='vertical'
+            autoComplete='off'
+            form={formLogin}
+            validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
+            <Form.Item label='用户名' field={'username'} rules={[{ required: true }]}>
+              <Input placeholder='请输入账号' />
             </Form.Item>
-            <Form.Item label='密码' field={'password'} rules={[{ required: true, message: '密码不能为空' }]}>
-              <Input.Password placeholder='请输入密码/验证码' />
+            <Form.Item label='密码' field={'password'} rules={[{ required: true }]}>
+              <Input.Password placeholder='请输入密码' />
             </Form.Item>
             <Form.Item>
               <Checkbox checked={isChecked} onChange={(checked) => setIsChecked(checked)}>

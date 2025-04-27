@@ -120,7 +120,7 @@ const HrmMember = () => {
         <div className='mb-2 flex items-start justify-between'>
           <Form layout='inline' autoComplete='off' form={searchForm} onChange={onChangeSearch}>
             <Form.Item field='keyword'>
-              <Input.Search placeholder='请输入关键字' />
+              <Input.Search placeholder='请输入内容' />
             </Form.Item>
           </Form>
           <Space>
