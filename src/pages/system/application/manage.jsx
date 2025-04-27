@@ -2,11 +2,12 @@ import {
   Button,
   Card,
   Checkbox,
-  Drawer,
   Dropdown,
   Form,
+  Grid,
   Input,
   InputNumber,
+  Modal,
   Popconfirm,
   Radio,
   Space,
@@ -17,6 +18,7 @@ import {
 } from '@arco-design/web-react'
 import { IconDown, IconRight } from '@arco-design/web-react/icon'
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
 
 // 组件
@@ -25,12 +27,13 @@ import { IconCustom } from 'src/components'
 import Http from 'src/service/api'
 
 const Manage = () => {
+  const common = useSelector((state) => state.common)
   const location = useLocation()
   const [params, setParams] = useState()
   const [appsTable, setAppsable] = useState([])
   const [systemTable, setSystemTable] = useState([])
 
-  const [formItem] = Form.useForm()
+  const [appsForm] = Form.useForm()
   const [visibleEdit, setVisibleEdit] = useState(false)
 
   useEffect(() => {
@@ -134,10 +137,10 @@ const Manage = () => {
       width: 60,
       render: (_, record) => (
         <Space>
-          <Button type='text' size='mini' status='success' onClick={() => editItem('add', record)}>
+          <Button type='text' size='mini' status='success' onClick={() => onCreate('add', record)}>
             添加
           </Button>
-          <Button type='text' size='mini' onClick={() => editItem('edit', record)}>
+          <Button type='text' size='mini' onClick={() => onCreate('edit', record)}>
             编辑
           </Button>
           <Popconfirm focusLock title='提醒' content='是否确定删除当前项？'>
@@ -151,24 +154,225 @@ const Manage = () => {
   ]
 
   // 新增&编辑
-  const editItem = (type, record) => {
-    setVisibleEdit(true)
-    formItem.resetFields()
+  const onCreate = (type, record) => {
+    appsForm.resetFields()
+    let obj = {}
     if (type === 'add') {
-      formItem.setFieldsValue({
+      obj = {
         pid: record.id,
         type: 2,
         out_link: 0,
         is_hide: 0,
         is_open: 1,
-      })
+      }
     }
     if (type === 'edit') {
-      const obj = {
+      obj = {
         ...record,
       }
-      formItem.setFieldsValue(obj)
     }
+    appsForm.setFieldsValue(obj)
+    Modal.confirm({
+      title: '新增应用',
+      icon: null,
+      closable: true,
+      wrapClassName: 'modal-wrap',
+      content: (
+        <Form
+          form={appsForm}
+          layout='vertical'
+          autoComplete='off'
+          validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
+          <Form.Item shouldUpdate noStyle>
+            {(values) =>
+              values.type !== 1 && (
+                <Form.Item label='上层菜单' field='pid' rules={[{ required: true }]} disabled>
+                  <TreeSelect treeData={[{ key: '0', title: '主类目', children: appsTable }]} />
+                </Form.Item>
+              )
+            }
+          </Form.Item>
+          <div className='flex gap-4'>
+            <Form.Item shouldUpdate noStyle>
+              {(values) => (
+                <Form.Item label='类型' field='type' rules={[{ required: true }]}>
+                  <Radio.Group
+                    type='button'
+                    options={[
+                      {
+                        label: '应用',
+                        value: 1,
+                        disabled: [2, 3].includes(values.type),
+                      },
+                      {
+                        label: '菜单',
+                        value: 2,
+                        disabled: values.type === 1,
+                      },
+                      {
+                        label: '功能',
+                        value: 3,
+                        disabled: values.type === 1,
+                      },
+                    ]}
+                  />
+                </Form.Item>
+              )}
+            </Form.Item>
+            <Form.Item shouldUpdate noStyle>
+              {(values) =>
+                values.type !== 3 && (
+                  <Form.Item label='菜单图标' field='is_icon'>
+                    <Dropdown
+                      droplist={
+                        <div className='max-h-[400px] w-auto overflow-y-auto border border-[var(--border-color)] bg-white p-2'>
+                          <ul className='flex flex-wrap'>
+                            {[
+                              'IconHome',
+                              'IconStamp',
+                              'IconPalette',
+                              'IconSettings',
+                              'IconFile',
+                              'IconCheckCircle',
+                              'IconCheckSquare',
+                              'IconStar',
+                              'IconClockCircle',
+                              'IconCalendar',
+                              'IconCalendarClock',
+                              'IconHistory',
+                              'IconUpload',
+                              'IconApps',
+                            ]?.map((item) => (
+                              <li
+                                key={item}
+                                className='cursor-pointer'
+                                onClick={() => appsForm.setFieldsValue({ is_icon: item })}>
+                                <IconCustom className='m-2 text-base' name={item} />
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      }
+                      trigger='click'>
+                      <Button long>
+                        <IconCustom className='text-base' name={values.is_icon} />
+                      </Button>
+                    </Dropdown>
+                  </Form.Item>
+                )
+              }
+            </Form.Item>
+          </div>
+          <div className='flex gap-2'>
+            <Form.Item label='名称' field='title' rules={[{ required: true }]}>
+              <Input placeholder='请输入名称……' />
+            </Form.Item>
+            <Form.Item label='权限标识' field='permission' rules={[{ required: true }]}>
+              <Input placeholder='请输入权限标识……' />
+            </Form.Item>
+          </div>
+          <Form.Item shouldUpdate noStyle>
+            {(values) =>
+              values.type !== 3 && (
+                <Grid.Row gutter={24}>
+                  <Grid.Col span={6}>
+                    <Form.Item label='是否外链' field='out_link' rules={[{ required: true }]}>
+                      <Radio.Group
+                        type='button'
+                        options={[
+                          {
+                            label: '是',
+                            value: 1,
+                          },
+                          {
+                            label: '否',
+                            value: 0,
+                          },
+                        ]}
+                      />
+                    </Form.Item>
+                  </Grid.Col>
+                  <Grid.Col span={18}>
+                    <Form.Item shouldUpdate noStyle>
+                      {(values) => (
+                        <Form.Item label='路由' field='path'>
+                          <Input addBefore={values.out_link === 1 ? 'http://' : undefined} placeholder='请输入路由……' />
+                        </Form.Item>
+                      )}
+                    </Form.Item>
+                  </Grid.Col>
+                </Grid.Row>
+              )
+            }
+          </Form.Item>
+          <Grid.Row gutter={24}>
+            <Form.Item shouldUpdate noStyle>
+              {(values) =>
+                values.type !== 1 && (
+                  <Grid.Col span={6}>
+                    <Form.Item label='菜单隐藏' field='is_hide' rules={[{ required: true }]}>
+                      <Radio.Group
+                        type='button'
+                        options={[
+                          {
+                            label: '是',
+                            value: 1,
+                          },
+                          {
+                            label: '否',
+                            value: 0,
+                          },
+                        ]}
+                      />
+                    </Form.Item>
+                  </Grid.Col>
+                )
+              }
+            </Form.Item>
+            <Grid.Col span={6}>
+              <Form.Item label='是否启用' field='is_open' rules={[{ required: true }]}>
+                <Radio.Group
+                  type='button'
+                  options={[
+                    {
+                      label: '是',
+                      value: 1,
+                    },
+                    {
+                      label: '否',
+                      value: 0,
+                    },
+                  ]}
+                />
+              </Form.Item>
+            </Grid.Col>
+            <Grid.Col flex='auto'>
+              <Form.Item label='排序' field='sort'>
+                <InputNumber min={0} max={999} />
+              </Form.Item>
+            </Grid.Col>
+          </Grid.Row>
+          <Form.Item shouldUpdate noStyle>
+            {(values) =>
+              values.type === 1 && (
+                <Form.Item label='简介' field='describe'>
+                  <Input.TextArea showWordLimit maxLength={10} placeholder='请输入简介……' />
+                </Form.Item>
+              )
+            }
+          </Form.Item>
+        </Form>
+      ),
+      onOk: () => {
+        appsForm.validate().then((values) => {
+          const obj = {
+            role_group_id: common.userInfo.main_dept_id,
+            ...values,
+          }
+          console.log('新增应用', obj)
+        })
+      },
+    })
   }
 
   return (
@@ -227,183 +431,6 @@ const Manage = () => {
           </Tabs.TabPane>
         </Tabs>
       </Card>
-
-      {/* 编辑 */}
-      <Drawer
-        width={'50%'}
-        title='配置信息'
-        visible={visibleEdit}
-        onOk={() => setVisibleEdit(false)}
-        onCancel={() => setVisibleEdit(false)}>
-        <Form
-          form={formItem}
-          layout='vertical'
-          autoComplete='off'
-          validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
-          <Form.Item shouldUpdate noStyle>
-            {(values) =>
-              values.type !== 1 && (
-                <Form.Item label='上层菜单' field='pid' rules={[{ required: true }]} disabled>
-                  <TreeSelect treeData={[{ key: '0', title: '主类目', children: appsTable }]} />
-                </Form.Item>
-              )
-            }
-          </Form.Item>
-          <div className='flex gap-4'>
-            <Form.Item shouldUpdate noStyle>
-              {(values) => (
-                <Form.Item label='类型' field='type' rules={[{ required: true }]}>
-                  <Radio.Group
-                    type='button'
-                    options={[
-                      {
-                        label: '应用',
-                        value: 1,
-                        disabled: [2, 3].includes(values.type),
-                      },
-                      {
-                        label: '菜单',
-                        value: 2,
-                        disabled: values.type === 1,
-                      },
-                      {
-                        label: '功能',
-                        value: 3,
-                        disabled: values.type === 1,
-                      },
-                    ]}
-                  />
-                </Form.Item>
-              )}
-            </Form.Item>
-            <Form.Item shouldUpdate noStyle>
-              {(values) =>
-                values.type !== 3 && (
-                  <Form.Item label='菜单图标' field='is_icon'>
-                    <Dropdown
-                      droplist={
-                        <div className='mx-4 max-h-[400px] w-auto max-w-[calc(100%-16px)] overflow-y-auto border bg-white p-2'>
-                          <ul className='flex flex-wrap'>
-                            {[
-                              'IconHome',
-                              'IconStamp',
-                              'IconPalette',
-                              'IconSettings',
-                              'IconFile',
-                              'IconCheckCircle',
-                              'IconCheckSquare',
-                              'IconStar',
-                              'IconClockCircle',
-                              'IconCalendar',
-                              'IconCalendarClock',
-                              'IconHistory',
-                              'IconUpload',
-                              'IconApps',
-                            ]?.map((item) => (
-                              <li
-                                key={item}
-                                className='cursor-pointer'
-                                onClick={() => formItem.setFieldsValue({ is_icon: item })}>
-                                <IconCustom className='m-2 text-base' name={item} />
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      }
-                      trigger='click'>
-                      <Button long>
-                        <IconCustom className='text-base' name={values.is_icon} />
-                      </Button>
-                    </Dropdown>
-                  </Form.Item>
-                )
-              }
-            </Form.Item>
-          </div>
-          <div className='flex gap-4'>
-            <Form.Item label='名称' field='title' rules={[{ required: true }]}>
-              <Input placeholder='请输入名称……' />
-            </Form.Item>
-            <Form.Item label='权限标识' field='permission' rules={[{ required: true }]}>
-              <Input placeholder='请输入权限标识……' />
-            </Form.Item>
-          </div>
-          <Form.Item shouldUpdate noStyle>
-            {(values) =>
-              values.type !== 3 && (
-                <>
-                  <Form.Item label='是否外链' field='out_link' rules={[{ required: true }]}>
-                    <Radio.Group
-                      type='button'
-                      options={[
-                        {
-                          label: '是',
-                          value: 1,
-                        },
-                        {
-                          label: '否',
-                          value: 0,
-                        },
-                      ]}
-                    />
-                  </Form.Item>
-                  <Form.Item label='路由' field='path'>
-                    <Input addBefore={values.out_link === 1 ? 'http://' : undefined} placeholder='请输入路由……' />
-                  </Form.Item>
-                </>
-              )
-            }
-          </Form.Item>
-          <Form.Item shouldUpdate noStyle>
-            {(values) =>
-              values.type !== 1 && (
-                <Form.Item label='菜单隐藏' field='is_hide' rules={[{ required: true }]}>
-                  <Radio.Group
-                    type='button'
-                    options={[
-                      {
-                        label: '是',
-                        value: 1,
-                      },
-                      {
-                        label: '否',
-                        value: 0,
-                      },
-                    ]}
-                  />
-                </Form.Item>
-              )
-            }
-          </Form.Item>
-          <Form.Item label='是否启用' field='is_open' rules={[{ required: true }]}>
-            <Radio.Group
-              type='button'
-              options={[
-                {
-                  label: '是',
-                  value: 1,
-                },
-                {
-                  label: '否',
-                  value: 0,
-                },
-              ]}
-            />
-          </Form.Item>
-          <Form.Item label='排序' field='sort'>
-            <InputNumber min={0} max={999} />
-          </Form.Item>
-          <Form.Item shouldUpdate noStyle>
-            {(values) =>
-              values.type === 1 && (
-                <Form.Item label='简介' field='describe'>
-                  <Input.TextArea showWordLimit maxLength={10} placeholder='请输入简介……' />
-                </Form.Item>
-              )
-            }
-          </Form.Item>
-        </Form>
-      </Drawer>
     </>
   )
 }

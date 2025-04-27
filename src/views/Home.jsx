@@ -140,6 +140,7 @@ const Home = () => {
     }
     // 消息通知
     if (type === 'notification') {
+      console.log('消息通知')
       setNewsVisible(true)
     }
     // 个人信息
