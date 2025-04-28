@@ -12,9 +12,6 @@ import { findRootNode, flattenArray, localGetItem } from 'src/utils/common'
 // hooks
 import { useColorTheme } from 'src/hooks'
 
-// 接口
-import Http from 'src/service/api'
-
 const Home = () => {
   const refContent = useRef()
   const location = useLocation()

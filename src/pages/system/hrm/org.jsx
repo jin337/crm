@@ -1,15 +1,9 @@
 import { Button, Card, Form, Input, Modal, Radio, Select, Space, Table, Tree } from '@arco-design/web-react'
 import { IconPlus, IconSettings } from '@arco-design/web-react/icon'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-
-// 接口
-import Http from 'src/service/api'
 
 import CreateForm from './create'
 const HrmOrg = () => {
-  const { title } = useSelector((state) => state.common)
-
   const [searchForm] = Form.useForm()
   const [orgForm] = Form.useForm()
   const [memberForm] = Form.useForm()

@@ -5,10 +5,8 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 // 公共方法
 import { localSetItem } from 'src/utils/common'
+// 样式
 import styles from './index.module.scss'
-
-// 接口
-import Http from 'src/service/api'
 const Login = () => {
   const navigate = useNavigate()
   const [formLogin] = Form.useForm()

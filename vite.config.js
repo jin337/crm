@@ -4,6 +4,7 @@ import { defineConfig } from 'vite'
 
 import viteFederation from '@originjs/vite-plugin-federation'
 import viteTailwindcss from '@tailwindcss/vite'
+import viteAutoImport from 'unplugin-auto-import/vite'
 import viteCompression from 'vite-plugin-compression'
 import vitePluginImageTools from 'vite-plugin-image-tools'
 
@@ -18,16 +19,13 @@ export default defineConfig({
       src: resolve('src'),
     },
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        silenceDeprecations: ['legacy-js-api'],
-      },
-    },
-  },
   plugins: [
     react(),
     viteTailwindcss(),
+    viteAutoImport({
+      imports: [{ 'src/service/api': [['default', 'Http']] }],
+      dts: true,
+    }),
     vitePluginImageTools({
       quality: 50,
       enableWebp: true,

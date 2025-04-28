@@ -9,6 +9,7 @@ export default [
   { ignores: ['dist'] },
   {
     files: ['**/*.{js,jsx}'],
+    extends: ['./.eslintrc-auto-import.json'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
