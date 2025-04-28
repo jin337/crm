@@ -9,8 +9,4 @@ const components = Object.entries(modules).reduce((acc, [path, module]) => {
   return acc
 }, {})
 
-export const Loading = components.Loading
-export const IconCustom = components.IconCustom
-export const MenuCustom = components.MenuCustom
-export const SelectUser = components.SelectUser
-export const TreeCheck = components.TreeCheck
+export default components

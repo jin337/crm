@@ -5,7 +5,8 @@ import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
 
 // 组件
-import { SelectUser, TreeCheck } from 'src/config/components'
+import components from 'src/config/components'
+const { SelectUser, TreeCheck } = components
 
 // 接口
 import Http from 'src/service/api'
