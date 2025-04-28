@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 // redux
 import { Provider } from 'react-redux'
@@ -6,7 +7,7 @@ import { store } from './config/store'
 import { RouterProvider } from 'react-router'
 import { router } from './router'
 // 样式
-import { Loading } from 'src/components'
+import { Loading } from 'src/config/components'
 import 'src/index.scss' // 过渡效果
 
 createRoot(document.getElementById('root')).render(
