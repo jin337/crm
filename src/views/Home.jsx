@@ -43,6 +43,7 @@ const Home = () => {
     } else {
       onSelectSystem('exit')
     }
+    console.log('1', 1)
   }, [location])
 
   // 默认进入页面
