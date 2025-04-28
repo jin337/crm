@@ -13,7 +13,6 @@
   "dependencies": {
     "@arco-design/color": "^0.4.0",
     "@arco-design/web-react": "^2.64.1",
-    "@originjs/vite-plugin-federation": "^1.4.1",
     "@reduxjs/toolkit": "^2.6.1",
     "axios": "^1.8.4",
     "react": "^18.3.1",
@@ -25,6 +24,7 @@
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
     "@eslint/js": "^9.21.0",
+    "@originjs/vite-plugin-federation": "^1.4.1",
     "@tailwindcss/postcss": "^4.1.2",
     "@tailwindcss/vite": "^4.1.2",
     "@types/react": "^18.3.12",
