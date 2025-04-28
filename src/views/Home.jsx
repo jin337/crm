@@ -6,7 +6,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router'
 // 组件
 import { Loading, MenuCustom } from 'src/components'
 
-import { setMenu, setMenuSelect, setRoles, setSystemMenu, setTheme, setUserInfo } from 'src/store/reducers/common'
+import { setMenu, setMenuSelect, setRoles, setSystemMenu, setTheme, setUserInfo } from 'src/store/common'
 // 公共方法
 import { findRootNode, flattenArray, localGetItem } from 'src/utils/common'
 

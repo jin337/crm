@@ -23,7 +23,7 @@ export default defineConfig({
     react(),
     viteTailwindcss(),
     viteAutoImport({
-      imports: [{ 'src/service/api': [['default', 'Http']] }, { 'src/hooks': [['default', 'Hooks']] }],
+      imports: [{ 'src/service/api': [['default', 'Http']] }, { 'src/config/hooks': [['default', 'Hooks']] }],
       dts: true,
     }),
     vitePluginImageTools({

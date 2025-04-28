@@ -1,7 +1,7 @@
 import { } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { setMenuSelect } from 'src/store/reducers/common'
+import { setMenuSelect } from 'src/store/common'
 import { flattenArray } from 'src/utils/common'
 
 const useLink = () => {

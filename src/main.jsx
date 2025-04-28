@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client'
 // redux
 import { Provider } from 'react-redux'
-import { store } from './store'
+import { store } from './config/store'
 // 路由
 import { RouterProvider } from 'react-router'
 import { router } from './router'
