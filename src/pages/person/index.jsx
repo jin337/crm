@@ -4,8 +4,7 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
 // 组件
-import components from 'src/config/components'
-const { IconCustom } = components
+import { IconCustom } from 'src/config/components'
 
 import Information from './Information'
 import Password from './Password'

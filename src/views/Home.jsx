@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useLocation, useNavigate } from 'react-router'
 
 // 组件
-import components from 'src/config/components'
-const { Loading, MenuCustom } = components
+import { Loading, MenuCustom } from 'src/config/components'
 
 import { setMenu, setMenuSelect, setRoles, setSystemMenu, setTheme, setUserInfo } from 'src/store/common'
 // 公共方法

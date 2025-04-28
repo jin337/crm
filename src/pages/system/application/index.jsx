@@ -16,8 +16,7 @@ import { IconPlus, IconSettings } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 // 组件
-import components from 'src/config/components'
-const { IconCustom } = components
+import { IconCustom } from 'src/config/components'
 const Application = () => {
   const linkTo = Hooks.useLink()
   const common = useSelector((state) => state.common)
