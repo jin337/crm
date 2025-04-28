@@ -1,5 +1,5 @@
 import { Spin } from '@arco-design/web-react'
-import { } from 'react'
+import {} from 'react'
 
 const Loading = (props) => {
   return (

@@ -1,6 +1,6 @@
 import { Avatar, Button, Space, Tabs } from '@arco-design/web-react'
 // 组件
-import { IconCustom } from 'src/components'
+import IconCustom from 'src/components/IconCustom'
 const Apps = (props) => {
   const { items, onSelectMenu } = props
 

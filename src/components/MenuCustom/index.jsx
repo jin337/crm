@@ -2,7 +2,7 @@ import { Avatar, Button, ColorPicker, Drawer, Dropdown, Form, Image, Layout, Men
 import { IconApps, IconDown, IconLeft, IconNotification, IconPalette, IconRight } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 // 组件
-import { IconCustom } from 'src/components'
+import IconCustom from 'src/components/IconCustom'
 import Apps from './apps'
 // 公共方法
 import { findRootNode } from 'src/utils/common'
