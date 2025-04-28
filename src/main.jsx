@@ -6,10 +6,13 @@ import { store } from './config/store'
 import { RouterProvider } from 'react-router'
 import { router } from './router'
 // 样式
-import 'src/index.scss'
+import { Loading } from 'src/components'
+import 'src/index.scss' // 过渡效果
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <RouterProvider router={router} />
+    <Suspense fallback={<Loading dot size={20} />}>
+      <RouterProvider router={router} />
+    </Suspense>
   </Provider>
 )
