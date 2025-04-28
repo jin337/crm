@@ -1,119 +1,90 @@
 import { lazy } from 'react'
 import { createBrowserRouter } from 'react-router'
 
-const Home = lazy(() => import('src/views/Home'))
-const Login = lazy(() => import('src/views/login'))
-const NotAuth = lazy(() => import('src/views/NotAuth'))
-
-const Workplace = lazy(() => import('src/pages/demo'))
-const Project = lazy(() => import('src/pages/demo'))
-const Finance = lazy(() => import('src/pages/demo'))
-
-// OA
-const OAapply = lazy(() => import('oaApp/apply'))
-const OAtodo = lazy(() => import('oaApp/todo'))
-const OAtrace = lazy(() => import('oaApp/trace'))
-const OAarchive = lazy(() => import('oaApp/archive'))
-const OAdraft = lazy(() => import('oaApp/draft'))
-const OAall = lazy(() => import('oaApp/all'))
-
-// 用户信息
-const Person = lazy(() => import('src/pages/person/index'))
-
-// 系统管理
-const SystemApplication = lazy(() => import('src/pages/system/application'))
-const SystemAppManage = lazy(() => import('src/pages/system/application/manage'))
-const SystemAccount = lazy(() => import('src/pages/system/account'))
-const SystemHrmOrg = lazy(() => import('src/pages/system/hrm/org'))
-const SystemHrmMember = lazy(() => import('src/pages/system/hrm/member'))
-
-// 角色权限
-const Auth = lazy(() => import('src/pages/system/auth'))
-
 const routes = [
   {
     path: '/*',
-    element: <NotAuth />,
+    Component: lazy(() => import('src/views/NotAuth')),
   },
   {
     path: '/login',
-    element: <Login />,
+    Component: lazy(() => import('src/views/login')),
   },
   {
     path: '/',
-    element: <Home />,
+    Component: lazy(() => import('src/views/Home')),
     children: [
       {
         path: '/workplace',
-        element: <Workplace />,
-      },
-      // 个人信息
-      {
-        path: '/person',
-        element: <Person />,
+        Component: lazy(() => import('src/pages/demo')),
       },
       // 工程管理
       {
         path: '/project',
-        element: <Project />,
+        Component: lazy(() => import('src/pages/demo')),
       },
       // 财务管理
       {
         path: '/finance',
-        element: <Finance />,
+        Component: lazy(() => import('src/pages/demo')),
+      },
+      // 个人信息
+      {
+        path: '/person',
+        Component: lazy(() => import('src/pages/person/index')),
       },
       // 应用管理
       {
         path: '/system/application',
-        element: <SystemApplication />,
+        Component: lazy(() => import('src/pages/system/application')),
       },
       {
         path: '/system/app/manage/:id',
-        element: <SystemAppManage />,
+        Component: lazy(() => import('src/pages/system/application/manage')),
       },
       // 账号管理
       {
         path: '/system/account',
-        element: <SystemAccount />,
+        Component: lazy(() => import('src/pages/system/account')),
       },
       // 角色权限
       {
         path: '/system/auth/:id',
-        element: <Auth />,
+        Component: lazy(() => import('src/pages/system/auth')),
       },
       // 人力资源管理
       {
         path: '/system/hrm/org',
-        element: <SystemHrmOrg />,
+        Component: lazy(() => import('src/pages/system/hrm/org')),
       },
       {
         path: '/system/hrm/member',
-        element: <SystemHrmMember />,
+        Component: lazy(() => import('src/pages/system/hrm/member')),
       },
       // OA
       {
         path: '/oa/apply',
-        element: <OAapply />,
+        Component: lazy(() => import('oaApp/apply')),
       },
       {
         path: '/oa/todo',
-        element: <OAtodo />,
+        Component: lazy(() => import('oaApp/todo')),
       },
       {
         path: '/oa/trace',
-        element: <OAtrace />,
+        Component: lazy(() => import('oaApp/trace')),
       },
       {
         path: '/oa/archive',
-        element: <OAarchive />,
+        Component: lazy(() => import('oaApp/archive')),
       },
       {
         path: '/oa/draft',
-        element: <OAdraft />,
+        Component: lazy(() => import('oaApp/draft')),
       },
       {
         path: '/oa/all',
-        element: <OAall />,
+        Component: lazy(() => import('oaApp/all')),
       },
     ],
   },

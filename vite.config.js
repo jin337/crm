@@ -1,11 +1,11 @@
-import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react-swc'
+import { resolve } from 'path'
 import { defineConfig } from 'vite'
 
-import federation from '@originjs/vite-plugin-federation'
-import { resolve } from 'path'
-import compression from 'vite-plugin-compression'
-import VitePluginImageTools from 'vite-plugin-image-tools'
+import viteFederation from '@originjs/vite-plugin-federation'
+import viteTailwindcss from '@tailwindcss/vite'
+import viteCompression from 'vite-plugin-compression'
+import vitePluginImageTools from 'vite-plugin-image-tools'
 
 export default defineConfig({
   server: {
@@ -27,13 +27,12 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    tailwindcss(),
-    compression({ threshold: 10240 }),
-    VitePluginImageTools({
+    viteTailwindcss(),
+    vitePluginImageTools({
       quality: 50,
       enableWebp: true,
     }),
-    federation({
+    viteFederation({
       name: 'hostApp',
       filename: 'remoteEntry.js',
       remotes: {
@@ -46,6 +45,7 @@ export default defineConfig({
       },
       shared: ['react', 'react-dom', 'react-router', 'react-redux', '@reduxjs/toolkit', 'axios'],
     }),
+    viteCompression({ threshold: 10240 }),
   ],
   build: {
     modulePreload: false,
