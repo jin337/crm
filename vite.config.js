@@ -49,6 +49,15 @@ export default defineConfig({
     modulePreload: false,
     target: 'esnext',
     minify: 'terser',
+    terserOptions: {
+      format: {
+        comments: false,
+      },
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       output: {
         entryFileNames: 'assets/js/[name]-[hash].js',
