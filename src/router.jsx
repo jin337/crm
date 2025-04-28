@@ -1,7 +1,7 @@
 import { lazy } from 'react'
 import { createBrowserRouter } from 'react-router'
 
-const routes = [
+export const router = createBrowserRouter([
   {
     path: '/*',
     Component: lazy(() => import('src/views/NotAuth')),
@@ -88,6 +88,4 @@ const routes = [
       },
     ],
   },
-]
-
-export const router = createBrowserRouter(routes)
+])

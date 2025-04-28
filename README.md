@@ -21,7 +21,7 @@ git push
 
 ## 无特殊情况，勿动
 
-- .husky文
+- .husky
 - .prettierrc
 - eslint.config.js
 - commitlint.config.cjs

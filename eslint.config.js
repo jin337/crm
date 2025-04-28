@@ -9,7 +9,6 @@ export default [
   { ignores: ['dist'] },
   {
     files: ['**/*.{js,jsx}'],
-    extends: ['./.eslintrc-auto-import.json'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
@@ -20,6 +19,7 @@ export default [
       },
     },
     settings: { react: { version: '18.3' } },
+    extends: ['plugin:prettier/recommended', './.eslintrc-auto-import.json'],
     plugins: {
       react,
       prettier,
@@ -32,6 +32,7 @@ export default [
       'prettier/prettier': 'error',
       indent: ['error', 2, { SwitchCase: 1 }],
       eqeqeq: ['error', 'smart'],
+      semi: ['error', 'never'],
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'react/jsx-no-duplicate-props': ['error', { ignoreCase: false }],
       'react-hooks/exhaustive-deps': 'off',
@@ -39,7 +40,6 @@ export default [
       'no-duplicate-imports': 'error',
       'keyword-spacing': 2,
       'no-unused-vars': 'off',
-      semi: ['error', 'never'], // 禁用分号
       'react/display-name': 'off',
     },
   },
