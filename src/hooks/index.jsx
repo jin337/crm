@@ -1,4 +1,3 @@
-import useColorTheme from './useColorTheme'
-import useLink from './useLink'
+const modules = import.meta.glob('./use*.jsx', { eager: true })
 
-export { useColorTheme, useLink }
+export default Object.fromEntries(Object.entries(modules).map(([path, module]) => [path.match(/use\w+/)[0], module.default]))

@@ -15,12 +15,10 @@ import {
 import { IconPlus, IconSettings } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-// hooks
-import { useLink } from 'src/hooks'
 // 组件
 import { IconCustom } from 'src/components'
 const Application = () => {
-  const linkTo = useLink()
+  const linkTo = Hooks.useLink()
   const common = useSelector((state) => state.common)
   const [appsForm] = Form.useForm()
 

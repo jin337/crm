@@ -9,15 +9,13 @@ import { Loading, MenuCustom } from 'src/components'
 import { setMenu, setMenuSelect, setRoles, setSystemMenu, setTheme, setUserInfo } from 'src/store/reducers/common'
 // 公共方法
 import { findRootNode, flattenArray, localGetItem } from 'src/utils/common'
-// hooks
-import { useColorTheme } from 'src/hooks'
 
 const Home = () => {
   const refContent = useRef()
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const updateTheme = useColorTheme()
+  const updateTheme = Hooks.useColorTheme()
   const { initMenuData, systemMenuData, menuSelect, logo, title, userInfo, roles, theme } = useSelector((state) => state.common)
 
   const [menuData, setMenuData] = useState(initMenuData)

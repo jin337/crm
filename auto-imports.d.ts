@@ -6,5 +6,6 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const Hooks: typeof import('src/hooks')['default']
   const Http: typeof import('src/service/api')['default']
 }

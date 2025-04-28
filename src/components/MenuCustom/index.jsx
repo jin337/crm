@@ -156,10 +156,10 @@ const Header = (props) => {
             </Button>
           </div>
           <Form layout='vertical' autoComplete='off' form={formTheme}>
-            <Form.Item label='顶部导航' field={'menu_color'}>
+            <Form.Item label='顶部导航' field='menu_color'>
               <ColorPicker format='rgb' disabledAlpha />
             </Form.Item>
-            <Form.Item label='主按钮颜色' field={'button_color'}>
+            <Form.Item label='主按钮颜色' field='button_color'>
               <ColorPicker format='rgb' disabledAlpha />
             </Form.Item>
           </Form>
