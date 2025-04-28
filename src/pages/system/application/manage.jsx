@@ -22,7 +22,7 @@ import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
 
 // 组件
-import { IconCustom } from 'src/components'
+import { IconCustom } from 'src/config/components'
 // 接口
 import Http from 'src/service/api'
 

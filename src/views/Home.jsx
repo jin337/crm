@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useLocation, useNavigate } from 'react-router'
 
 // 组件
-import { Loading, MenuCustom } from 'src/components'
+import { Loading, MenuCustom } from 'src/config/components'
 
 import { setMenu, setMenuSelect, setRoles, setSystemMenu, setTheme, setUserInfo } from 'src/store/common'
 // 公共方法
@@ -175,7 +175,7 @@ const Home = () => {
         <Layout.Content>
           <div className='page-title'>{menuSelect?.title}</div>
           <div className='relative mb-3 h-[calc(100%-72px)] overflow-y-auto px-6'>
-            <Suspense fallback={<Loading dot size={20} />}>
+            <Suspense fallback={<Loading dot size={10} />}>
               <Outlet />
             </Suspense>
           </div>
