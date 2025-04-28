@@ -13,7 +13,7 @@ import { Loading } from 'src/config/components'
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <Suspense fallback={<Loading dot size={20} />}>
+    <Suspense fallback={<Loading screen dot size={20} />}>
       <RouterProvider router={router} />
     </Suspense>
   </Provider>
