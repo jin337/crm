@@ -55,12 +55,6 @@ export default defineConfig({
         entryFileNames: 'assets/js/[name]-[hash].js',
         chunkFileNames: 'assets/js/chunks/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-        manualChunks(id) {
-          if (id.includes('arco-design')) {
-            const currentPage = getCurrentPage()
-            return `arco-${currentPage}`
-          }
-        },
       },
     },
   },
