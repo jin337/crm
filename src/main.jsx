@@ -9,7 +9,7 @@ import { router } from './router'
 // 样式
 import 'src/index.scss'
 // 过渡效果
-import { Loading } from 'src/config/components'
+import { Loading } from 'src/components'
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
