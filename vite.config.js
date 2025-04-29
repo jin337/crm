@@ -34,8 +34,6 @@ export default defineConfig({
       name: 'hostApp',
       filename: 'remoteEntry.js',
       remotes: {
-        // 工程管理
-        projectApp: 'http://192.168.0.42:3001/assets/remoteEntry.js',
         // 财务管理
         financeApp: 'http://192.168.0.42:3002/assets/remoteEntry.js',
         // 审批

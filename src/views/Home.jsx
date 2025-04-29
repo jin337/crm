@@ -43,8 +43,6 @@ const Home = () => {
     } else {
       onSelectSystem('exit')
     }
-    console.log('1', 1)
-    // 注释文件
   }, [location])
 
   // 默认进入页面
