@@ -58,13 +58,12 @@ export default defineConfig({
         manualChunks(id) {
           // 按模块拆分
           if (id.includes('node_modules')) {
-            return id.toString().split('node_modules/')[1].split('/')[0].toString()
-          }
-
-          // 按业务模块拆分
-          if (id.includes('src/pages')) {
-            const match = id.match(/src\/pages\/(.*?)\//)
-            return match ? `page-${match[1]}` : null
+            if (id.includes('react')) return 'vendor-react'
+            if (id.includes('react-dom')) return 'vendor-react-dom'
+            if (id.includes('react-router')) return 'vendor-react-router'
+            if (id.includes('react-redux')) return 'vendor-react-redux'
+            if (id.includes('axios')) return 'vendor-axios'
+            return 'vendor'
           }
         },
       },
