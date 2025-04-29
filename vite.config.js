@@ -40,7 +40,7 @@ export default defineConfig({
       },
       shared: ['react', 'react-dom', 'react-router', 'react-redux', '@reduxjs/toolkit', 'axios'],
     }),
-    viteCompression({ threshold: 10240 }),
+    viteCompression(),
   ],
   build: {
     modulePreload: false,
@@ -56,7 +56,7 @@ export default defineConfig({
         chunkFileNames: 'assets/js/chunks/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
         manualChunks: {
-          'chunk-vendor': ['react', 'react-dom', 'react-router', 'react-redux', 'axios'],
+          'chunk-vendor': ['react-router', 'react-redux', '@reduxjs/toolkit', 'axios'],
         },
       },
     },
