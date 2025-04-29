@@ -16,7 +16,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      src: resolve('src'),
+      src: resolve(__dirname, 'src'),
     },
   },
   plugins: [
@@ -55,6 +55,20 @@ export default defineConfig({
         entryFileNames: 'assets/js/[name]-[hash].js',
         chunkFileNames: 'assets/js/chunks/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+        manualChunks(id) {
+          // 按模块拆分
+          if (id.includes('node_modules')) {
+            if (id.includes('react')) return 'vendor-react'
+            if (id.includes('lodash')) return 'vendor-lodash'
+            return 'vendor'
+          }
+
+          // 按业务模块拆分
+          if (id.includes('src/pages')) {
+            const match = id.match(/src\/pages\/(.*?)\//)
+            return match ? `page-${match[1]}` : null
+          }
+        },
       },
     },
   },
