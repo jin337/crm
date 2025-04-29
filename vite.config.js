@@ -24,7 +24,6 @@ export default defineConfig({
     viteTailwindcss(),
     viteAutoImport({
       imports: [{ 'src/service/api': [['default', 'Http']] }, { 'src/config/hooks': [['default', 'Hooks']] }],
-      dts: true,
     }),
     vitePluginImageTools({
       quality: 50,
