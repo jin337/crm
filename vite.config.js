@@ -55,9 +55,6 @@ export default defineConfig({
         entryFileNames: 'assets/js/[name]-[hash].js',
         chunkFileNames: 'assets/js/chunks/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
-        manualChunks: {
-          'chunk-vendor': ['react-router', 'react-redux', '@reduxjs/toolkit', 'axios'],
-        },
       },
     },
   },
