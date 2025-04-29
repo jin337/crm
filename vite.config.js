@@ -58,9 +58,7 @@ export default defineConfig({
         manualChunks(id) {
           // 按模块拆分
           if (id.includes('node_modules')) {
-            if (id.includes('react')) return 'vendor-react'
-            if (id.includes('lodash')) return 'vendor-lodash'
-            return 'vendor'
+            return id.toString().split('node_modules/')[1].split('/')[0].toString()
           }
 
           // 按业务模块拆分
