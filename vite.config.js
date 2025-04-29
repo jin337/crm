@@ -58,11 +58,9 @@ export default defineConfig({
         manualChunks(id) {
           // 按模块拆分
           if (id.includes('node_modules')) {
-            if (id.includes('react')) return 'vendor-react'
-            if (id.includes('react-dom')) return 'vendor-react-dom'
             if (id.includes('react-router')) return 'vendor-react-router'
-            if (id.includes('react-redux')) return 'vendor-react-redux'
             if (id.includes('axios')) return 'vendor-axios'
+            if (id.includes('arco-design')) return 'vendor-arco-design'
             return 'vendor'
           }
         },
