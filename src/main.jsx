@@ -7,6 +7,7 @@ import { store } from './config/store'
 import { RouterProvider } from 'react-router'
 import { router } from './router'
 // 样式
+import '@arco-design/web-react/dist/css/arco.css'
 import 'src/index.scss'
 // 过渡效果
 import { Loading } from 'src/components'
