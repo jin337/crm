@@ -10,7 +10,7 @@ import styles from './index.module.scss'
 
 const filterHiddenItems = (arr) => {
   return arr
-    .filter((item) => item?.is_hide !== 1) // 保留 is_hide 不为 1 的节点
+    ?.filter((item) => item?.is_hide !== 1) // 保留 is_hide 不为 1 的节点
     .map((item) => {
       // 创建新对象，避免修改原数据
       const newItem = { ...item }
@@ -31,7 +31,7 @@ const Header = (props) => {
     logo,
     title,
     userInfo,
-    roles,
+    depts,
     theme,
     onSelectMenu,
     onSelectSystem,
@@ -60,6 +60,7 @@ const Header = (props) => {
       onSelectSystem('theme', formTheme.getFieldsValue())
     }
   }
+
   // 恢复系统默认
   const resetTheme = () => {
     formTheme.setFieldsValue({
@@ -102,8 +103,8 @@ const Header = (props) => {
                 trigger='click'
                 droplist={
                   <Menu onClickMenuItem={(e) => onSelectSystem('role', e)}>
-                    {roles?.map((r) => (
-                      <Menu.Item key={r.dept_id}>{r.dept_name}</Menu.Item>
+                    {depts?.map((r) => (
+                      <Menu.Item key={r.id}>{r.dept_name}</Menu.Item>
                     ))}
                   </Menu>
                 }>
@@ -122,7 +123,7 @@ const Header = (props) => {
             <div className={`${styles['right-item']} ${styles['divider']}`}></div>
             {rightMenus?.map((item) => (
               <div key={item.permission} className={styles['right-item']} onClick={() => selectMenu(item)}>
-                <IconCustom name={item?.is_icon} />
+                <IconCustom name={item?.menu_icon} />
               </div>
             ))}
           </div>

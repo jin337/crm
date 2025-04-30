@@ -11,9 +11,9 @@ const Http = axios.create({
 // 请求拦截器
 Http.interceptors.request.use(
   (config) => {
-    const Authorization = localGetItem('AUTHTOKEN')
+    const Authorization = localGetItem('CRMUSERDATA')
     if (Authorization) {
-      config.headers.token = Authorization.token
+      config.headers.Authorization = Authorization.user_info.token
     }
     return config
   },
@@ -24,7 +24,7 @@ Http.interceptors.request.use(
 Http.interceptors.response.use(
   (response) => {
     const { data } = response
-    if ([200, '000000'].includes(data.code)) {
+    if ([200, '000000', 0].includes(data.code)) {
       // 成功
       return Promise.resolve(data)
     } else {

@@ -165,7 +165,7 @@ export const findRootNode = (arr, targetId) => {
   // 创建 ID 到节点的全局映射表
   const idMap = new Map()
   const buildMap = (nodes) => {
-    nodes.forEach((node) => {
+    nodes?.forEach((node) => {
       idMap.set(node.id, node) // 使用 Map 提升查找性能
       if (node.children?.length) buildMap(node.children)
     })

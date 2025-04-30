@@ -8,12 +8,12 @@ const Permissions = ({ data = [] }) => {
   // 表头
   const columns = [
     {
-      title: '机构/部门/岗位',
+      title: '机构/部门',
       dataIndex: 'dept_name',
     },
     {
       title: '角色',
-      dataIndex: 'name',
+      dataIndex: 'role_name',
     },
     {
       title: '操作',
@@ -30,7 +30,7 @@ const Permissions = ({ data = [] }) => {
   return (
     <>
       <div className={styles['wrap-title']}>权限信息</div>
-      <Table borderCell rowKey={'dept_id'} columns={columns} data={data} pagination={false} />
+      <Table borderCell rowKey='id' columns={columns} data={data} pagination={false} />
     </>
   )
 }

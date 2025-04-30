@@ -6,7 +6,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router'
 // 组件
 import { Loading, MenuCustom } from 'src/components'
 
-import { setMenu, setMenuSelect, setRoles, setSystemMenu, setTheme, setUserInfo } from 'src/store/common'
+import { setDepts, setMenu, setMenuSelect, setSystemMenu, setTheme, setUserInfo } from 'src/store/common'
 // 公共方法
 import { findRootNode, flattenArray, localGetItem } from 'src/utils/common'
 
@@ -16,7 +16,7 @@ const Home = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const updateTheme = Hooks.useColorTheme()
-  const { initMenuData, systemMenuData, menuSelect, logo, title, userInfo, roles, theme } = useSelector((state) => state.common)
+  const { initMenuData, systemMenuData, menuSelect, logo, title, userInfo, depts, theme } = useSelector((state) => state.common)
 
   const [menuData, setMenuData] = useState(initMenuData)
   const [rightMenuData, setRightMenu] = useState(systemMenuData)
@@ -26,16 +26,16 @@ const Home = () => {
 
   // 判断登录权限
   useEffect(() => {
-    const user = localGetItem('AUTHTOKEN')
-    if (user) {
-      dispatch(setUserInfo(user.user_info)) //用户信息
-      dispatch(setRoles(user.roles)) //角色信息
-      dispatch(setTheme(user.theme)) //主题信息
+    const data = localGetItem('CRMUSERDATA')
+    if (data) {
+      dispatch(setUserInfo(data.user_info)) //用户信息
+      dispatch(setDepts(data.dept_list)) //角色信息
+      dispatch(setTheme(data.theme)) //主题信息
 
-      updateTheme(user?.theme) //设置主题
+      updateTheme(data?.theme) //设置主题
       // 获取导航数据
       if (initMenuData.length === 0) {
-        createMenu()
+        createMenu(data.user_info.main_dept_id)
       } else {
         let item = flattenArray(initMenuData)?.find((item) => item.path === location.pathname)
         item && createSelect(initMenuData, systemMenuData, item.permission)
@@ -54,9 +54,9 @@ const Home = () => {
   }, [location, menuData])
 
   // 获取导航数据
-  const createMenu = async () => {
-    const { code, data } = await Http.get('/mock/menu.json')
-    if (code === 200) {
+  const createMenu = async (dept_id) => {
+    const { code, data } = await Http.post('/system/menu/user-list', { dept_id })
+    if (code === 200 || code === 0) {
       const left = data.left || []
       setMenuData(left)
       dispatch(setMenu(left))
@@ -126,7 +126,7 @@ const Home = () => {
   const onSelectSystem = (type, obj) => {
     // 切换机构
     if (type === 'role') {
-      console.log('切换机构', obj)
+      createMenu(obj)
     }
     // 切换主题
     if (type === 'theme') {
@@ -147,7 +147,7 @@ const Home = () => {
     // 退出
     if (type === 'exit') {
       sessionStorage.clear()
-      localStorage.removeItem('TOKEN')
+      localStorage.clear()
       navigate('/login') // 跳转登录页
     }
   }
@@ -162,7 +162,7 @@ const Home = () => {
         logo={logo}
         title={title}
         userInfo={userInfo}
-        roles={roles}
+        depts={depts}
         theme={theme}
         onSelectMenu={onSelectMenu}
         onSelectSystem={onSelectSystem}

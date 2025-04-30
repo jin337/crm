@@ -43,10 +43,9 @@ const Login = () => {
 
   // 登录
   const handleLogin = async (e) => {
-    const { code, data } = await Http.get('/mock/user-info.json')
-    if (code === 200) {
-      // 登录，保存登录状态
-      localSetItem('AUTHTOKEN', data)
+    const { code, data } = await Http.post('/system/login', e)
+    if (code === 200 || code === 0) {
+      localSetItem('CRMUSERDATA', data)
       navigate('/')
     }
   }
@@ -65,21 +64,21 @@ const Login = () => {
               工程管理
             </div>
             <div className={styles['stitle']}>
-              借助360°客户全景画像，深入洞察客户需求，有效提升客户跟进效率，从而提高客户满意度和业务成交率。
+              实现项目全流程管控，涵盖任务分配、进度监控、资源协调等功能，支持多团队协作与工程数据可视化分析。
             </div>
             <div className={styles['title']}>
               <IconSafe className={styles['icon']} />
               财务管理
             </div>
             <div className={styles['stitle']}>
-              搭载深度数据分析工具，为企业提供精准的市场趋势预测和销售业绩评估，助力企业制定数据驱动的战略决策。
+              提供费用预算、收支记录、成本分析等核心功能，集成报销审批与财务报表生成，实现企业资金全链路监管。
             </div>
             <div className={styles['title']}>
               <IconStamp className={styles['icon']} />
               审批
             </div>
             <div className={styles['stitle']}>
-              支持高度自定义配置，适应企业特定业务流程，无缝对接现有工作模式，显著提高运营效率，降低成本。
+              搭建电子化审批工作流，支持请假、采购、合同等业务在线审批，具备流程自定义、进度追踪与审批留痕功能。
             </div>
           </div>
         </div>
@@ -93,10 +92,10 @@ const Login = () => {
             autoComplete='off'
             form={formLogin}
             validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
-            <Form.Item label='用户名' field={'username'} rules={[{ required: true }]}>
+            <Form.Item label='用户名' field={'login_name'} rules={[{ required: true }]}>
               <Input placeholder='请输入账号' />
             </Form.Item>
-            <Form.Item label='密码' field={'password'} rules={[{ required: true }]}>
+            <Form.Item label='密码' field={'login_pass'} rules={[{ required: true }]}>
               <Input.Password placeholder='请输入密码' />
             </Form.Item>
             <Form.Item>

@@ -10,11 +10,10 @@
         "describe": "仪表盘",
         "path": "/workplace",
         "type": 2,
-        "is_icon": "IconStamp",
-        "start_time": "2025-01-24 11:57:56",
+        "menu_icon": "IconStamp",
         "is_hide": 0,
         "out_link": 0,
-        "is_open": 1,
+        "status": 1,
         "sort": 1
       },
       {
@@ -25,11 +24,10 @@
         "describe": "工程项目的管理",
         "path": "/project",
         "type": 2,
-        "is_icon": "IconStamp",
-        "start_time": "2025-01-24 11:57:56",
+        "menu_icon": "IconStamp",
         "is_hide": 0,
         "out_link": 0,
-        "is_open": 1,
+        "status": 1,
         "sort": 2
       },
       {
@@ -40,11 +38,10 @@
         "describe": "管理你的财务",
         "path": "/finance",
         "type": 2,
-        "is_icon": "IconStamp",
-        "start_time": "2025-01-24 11:57:56",
+        "menu_icon": "IconStamp",
         "is_hide": 0,
         "out_link": 0,
-        "is_open": 1,
+        "status": 1,
         "sort": 2
       },
       {
@@ -55,11 +52,10 @@
         "describe": "OA审批",
         "path": null,
         "type": 1,
-        "is_icon": "IconStamp",
-        "start_time": "2025-01-24 11:57:56",
+        "menu_icon": "IconStamp",
         "is_hide": 0,
         "out_link": 0,
-        "is_open": 1,
+        "status": 1,
         "sort": 2,
         "children": [
           {
@@ -68,12 +64,11 @@
             "permission": "oa-apply",
             "title": "申请",
             "path": "/oa/apply",
-            "is_icon": "IconStamp",
+            "menu_icon": "IconStamp",
             "type": 2,
-            "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
             "out_link": 0,
-            "is_open": 1,
+            "status": 1,
             "sort": 1
           },
           {
@@ -82,12 +77,11 @@
             "permission": "oa-todo",
             "title": "待办",
             "path": "/oa/todo",
-            "is_icon": "IconStamp",
+            "menu_icon": "IconStamp",
             "type": 2,
-            "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
             "out_link": 0,
-            "is_open": 1,
+            "status": 1,
             "sort": 2
           },
           {
@@ -96,12 +90,11 @@
             "permission": "oa-trace",
             "title": "跟踪",
             "path": "/oa/trace",
-            "is_icon": "IconStamp",
+            "menu_icon": "IconStamp",
             "type": 2,
-            "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
             "out_link": 0,
-            "is_open": 1,
+            "status": 1,
             "sort": 3
           },
           {
@@ -110,12 +103,11 @@
             "permission": "oa-archive",
             "title": "归档",
             "path": "/oa/archive",
-            "is_icon": "IconStamp",
+            "menu_icon": "IconStamp",
             "type": 2,
-            "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
             "out_link": 0,
-            "is_open": 1,
+            "status": 1,
             "sort": 4
           },
           {
@@ -124,12 +116,11 @@
             "permission": "oa-draft",
             "title": "草稿",
             "path": "/oa/draft",
-            "is_icon": "IconStamp",
+            "menu_icon": "IconStamp",
             "type": 2,
-            "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
             "out_link": 0,
-            "is_open": 1,
+            "status": 1,
             "sort": 5
           },
           {
@@ -138,12 +129,11 @@
             "permission": "oa-all",
             "title": "全部审批",
             "path": "/oa/all",
-            "is_icon": "IconStamp",
+            "menu_icon": "IconStamp",
             "type": 2,
-            "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
             "out_link": 0,
-            "is_open": 1,
+            "status": 1,
             "sort": 6
           }
         ]
@@ -158,11 +148,10 @@
         "describe": "应用和系统管理",
         "path": null,
         "type": 1,
-        "is_icon": "IconSettings",
-        "start_time": "2025-01-24 11:57:56",
+        "menu_icon": "IconSettings",
         "is_hide": 0,
         "out_link": 0,
-        "is_open": 1,
+        "status": 1,
         "sort": 2,
         "children": [
           {
@@ -171,12 +160,11 @@
             "permission": "system-application",
             "title": "应用管理",
             "path": "/system/application",
-            "is_icon": "IconApps",
+            "menu_icon": "IconApps",
             "type": 2,
-            "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
             "out_link": 0,
-            "is_open": 1,
+            "status": 1,
             "sort": 1,
             "children": [
               {
@@ -185,12 +173,11 @@
                 "permission": "system-app-manage",
                 "title": "应用配置",
                 "path": "/system/app/manage",
-                "is_icon": null,
+                "menu_icon": null,
                 "type": 2,
-                "start_time": "2025-01-24 11:57:56",
                 "is_hide": 1,
                 "out_link": 0,
-                "is_open": 1,
+                "status": 1,
                 "sort": 1
               },
               {
@@ -199,12 +186,11 @@
                 "permission": "system-app-create",
                 "title": "新建应用",
                 "path": null,
-                "is_icon": null,
+                "menu_icon": null,
                 "type": 3,
-                "start_time": "2025-01-24 11:57:56",
                 "is_hide": 1,
                 "out_link": 0,
-                "is_open": 1,
+                "status": 1,
                 "sort": 2
               }
             ]
@@ -215,12 +201,11 @@
             "permission": "system-auth",
             "title": "角色权限",
             "path": null,
-            "is_icon": "IconRobot",
+            "menu_icon": "IconRobot",
             "type": 1,
-            "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
             "out_link": 0,
-            "is_open": 1,
+            "status": 1,
             "sort": 2,
             "children": [
               {
@@ -229,12 +214,11 @@
                 "permission": "system-auth-setting",
                 "title": "系统管理角色",
                 "path": "/system/auth/setting",
-                "is_icon": "IconStamp",
+                "menu_icon": "IconStamp",
                 "type": 2,
-                "start_time": "2025-01-24 11:57:56",
                 "is_hide": 0,
                 "out_link": 0,
-                "is_open": 1,
+                "status": 1,
                 "sort": 1
               },
               {
@@ -243,12 +227,11 @@
                 "permission": "system-auth-project",
                 "title": "工程管理角色",
                 "path": "/system/auth/project",
-                "is_icon": "IconStamp",
+                "menu_icon": "IconStamp",
                 "type": 2,
-                "start_time": "2025-01-24 11:57:56",
                 "is_hide": 0,
                 "out_link": 0,
-                "is_open": 1,
+                "status": 1,
                 "sort": 2
               },
               {
@@ -257,12 +240,11 @@
                 "permission": "system-auth-finance",
                 "title": "财务管理角色",
                 "path": "/system/auth/finance",
-                "is_icon": "IconStamp",
+                "menu_icon": "IconStamp",
                 "type": 2,
-                "start_time": "2025-01-24 11:57:56",
                 "is_hide": 0,
                 "out_link": 0,
-                "is_open": 1,
+                "status": 1,
                 "sort": 3
               },
               {
@@ -271,12 +253,11 @@
                 "permission": "system-auth-oa",
                 "title": "审批管理角色",
                 "path": "/system/auth/oa",
-                "is_icon": "IconStamp",
+                "menu_icon": "IconStamp",
                 "type": 2,
-                "start_time": "2025-01-24 11:57:56",
                 "is_hide": 0,
                 "out_link": 0,
-                "is_open": 1,
+                "status": 1,
                 "sort": 4
               }
             ]
@@ -287,12 +268,11 @@
             "permission": "system-account",
             "title": "账号管理",
             "path": "/system/account",
-            "is_icon": "IconIdcard",
+            "menu_icon": "IconIdcard",
             "type": 2,
-            "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
             "out_link": 0,
-            "is_open": 1,
+            "status": 1,
             "sort": 3
           },
           {
@@ -300,13 +280,12 @@
             "pid": "7",
             "permission": "system-hrm",
             "title": "人力资源管理",
-            "path":null,
-            "is_icon": "IconStamp",
+            "path": null,
+            "menu_icon": "IconStamp",
             "type": 1,
-            "start_time": "2025-01-24 11:57:56",
             "is_hide": 0,
             "out_link": 0,
-            "is_open": 1,
+            "status": 1,
             "sort": 4,
             "children": [
               {
@@ -315,12 +294,11 @@
                 "permission": "system-hrm-org",
                 "title": "机构管理",
                 "path": "/system/hrm/org",
-                "is_icon": "IconStamp",
+                "menu_icon": "IconStamp",
                 "type": 2,
-                "start_time": "2025-01-24 11:57:56",
                 "is_hide": 0,
                 "out_link": 0,
-                "is_open": 1,
+                "status": 1,
                 "sort": 1
               },
               {
@@ -329,12 +307,11 @@
                 "permission": "system-hrm-member",
                 "title": "员工管理",
                 "path": "/system/hrm/member",
-                "is_icon": "IconStamp",
+                "menu_icon": "IconStamp",
                 "type": 2,
-                "start_time": "2025-01-24 11:57:56",
                 "is_hide": 0,
                 "out_link": 0,
-                "is_open": 1,
+                "status": 1,
                 "sort": 2
               }
             ]

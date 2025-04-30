@@ -30,31 +30,15 @@ const Manage = () => {
   const common = useSelector((state) => state.common)
   const location = useLocation()
   const [params, setParams] = useState()
-  const [appsTable, setAppsable] = useState([])
-  const [systemTable, setSystemTable] = useState([])
+  const [setting, setSetting] = useState([])
 
   const [appsForm] = Form.useForm()
-  const [visibleEdit, setVisibleEdit] = useState(false)
 
   useEffect(() => {
     setParams(location.state?.state)
-    const permission = location.state?.state.permission
-    if (permission) {
-      Http.get('/mock/menu.json').then(({ code, data }) => {
-        if (code === 200) {
-          let arr = [...data.left, ...data.right].filter((e) => e.permission === permission) || []
-          const addKeysToMenuItems = (items) => {
-            return items.map((item) => ({
-              ...item,
-              key: item.id,
-              children: item.children ? addKeysToMenuItems(item.children) : undefined,
-            }))
-          }
-          const list = addKeysToMenuItems(arr)
-          setAppsable(list)
-          setSystemTable(list)
-        }
-      })
+    const state = location.state?.state
+    if (state) {
+      onChange(1, state)
     }
   }, [location])
 
@@ -113,7 +97,7 @@ const Manage = () => {
     },
     {
       title: '启用',
-      dataIndex: 'is_open',
+      dataIndex: 'status',
       align: 'center',
       width: 70,
       render: (text) => <Checkbox checked={text} />,
@@ -183,51 +167,35 @@ const Manage = () => {
           layout='vertical'
           autoComplete='off'
           validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
-          <Form.Item shouldUpdate noStyle>
-            {(values) =>
-              values.type !== 1 && (
-                <Form.Item label='上层菜单' field='pid' rules={[{ required: true }]} disabled>
-                  <TreeSelect treeData={[{ key: '0', title: '主类目', children: appsTable }]} />
-                </Form.Item>
-              )
-            }
+          <Form.Item label='上层菜单' field='pid' rules={[{ required: true }]} disabled>
+            <TreeSelect treeData={[{ id: params.id, title: params.title, children: setting }]} />
           </Form.Item>
           <div className='flex gap-6'>
-            <Form.Item shouldUpdate noStyle>
-              {(values) => (
-                <Form.Item label='类型' field='type' rules={[{ required: true }]}>
-                  <Radio.Group
-                    type='button'
-                    options={[
-                      {
-                        label: '应用',
-                        value: 1,
-                        disabled: [2, 3].includes(values.type),
-                      },
-                      {
-                        label: '菜单',
-                        value: 2,
-                        disabled: values.type === 1,
-                      },
-                      {
-                        label: '功能',
-                        value: 3,
-                        disabled: values.type === 1,
-                      },
-                    ]}
-                  />
-                </Form.Item>
-              )}
+            <Form.Item label='类型' field='type' rules={[{ required: true }]}>
+              <Radio.Group
+                type='button'
+                options={[
+                  {
+                    label: '菜单',
+                    value: 2,
+                  },
+                  {
+                    label: '功能',
+                    value: 3,
+                  },
+                ]}
+              />
             </Form.Item>
             <Form.Item shouldUpdate noStyle>
               {(values) =>
-                values.type !== 3 && (
-                  <Form.Item label='菜单图标' field='is_icon'>
+                values.type === 2 && (
+                  <Form.Item label='菜单图标' field='menu_icon'>
                     <Dropdown
                       droplist={
                         <div className='max-h-[400px] w-auto overflow-y-auto border border-[var(--border-color)] bg-white p-2'>
                           <ul className='flex flex-wrap'>
                             {[
+                              'IconSettings',
                               'IconHome',
                               'IconStamp',
                               'IconPalette',
@@ -277,7 +245,7 @@ const Manage = () => {
           </div>
           <Form.Item shouldUpdate noStyle>
             {(values) =>
-              values.type !== 3 && (
+              values.type === 2 && (
                 <Grid.Row gutter={24}>
                   <Grid.Col span={6}>
                     <Form.Item label='是否外链' field='out_link' rules={[{ required: true }]}>
@@ -310,29 +278,23 @@ const Manage = () => {
             }
           </Form.Item>
           <Grid.Row gutter={24}>
-            <Form.Item shouldUpdate noStyle>
-              {(values) =>
-                values.type !== 1 && (
-                  <Grid.Col span={6}>
-                    <Form.Item label='菜单隐藏' field='is_hide' rules={[{ required: true }]}>
-                      <Radio.Group
-                        type='button'
-                        options={[
-                          {
-                            label: '是',
-                            value: 1,
-                          },
-                          {
-                            label: '否',
-                            value: 0,
-                          },
-                        ]}
-                      />
-                    </Form.Item>
-                  </Grid.Col>
-                )
-              }
-            </Form.Item>
+            <Grid.Col span={6}>
+              <Form.Item label='菜单隐藏' field='is_hide' rules={[{ required: true }]}>
+                <Radio.Group
+                  type='button'
+                  options={[
+                    {
+                      label: '是',
+                      value: 1,
+                    },
+                    {
+                      label: '否',
+                      value: 0,
+                    },
+                  ]}
+                />
+              </Form.Item>
+            </Grid.Col>
             <Grid.Col span={6}>
               <Form.Item label='是否启用' field='is_open' rules={[{ required: true }]}>
                 <Radio.Group
@@ -379,19 +341,40 @@ const Manage = () => {
     })
   }
 
+  const onChange = (e, state = params) => {
+    setSetting([])
+    const obj = {
+      class: e,
+      app_id: state?.app_id,
+    }
+    Http.post('/system/menu/list', obj).then(({ code, data }) => {
+      if (code === 200 || code === 0) {
+        const addKeysToMenuItems = (items) => {
+          return items.map((item) => ({
+            ...item,
+            key: item.id,
+            children: item.children ? addKeysToMenuItems(item.children) : undefined,
+          }))
+        }
+        const list = addKeysToMenuItems(data.list || [])
+
+        setSetting(list)
+      }
+    })
+  }
   return (
     <>
       <Card bordered={false}>
-        <Tabs defaultActiveTab='1'>
+        <Tabs defaultActiveTab='1' onChange={onChange}>
           <Tabs.TabPane key='1' title='功能菜单'>
-            {appsTable?.length > 0 && (
+            {setting?.length > 0 && (
               <Table
                 borderCell
                 stripe
                 defaultExpandAllRows
                 rowKey='id'
                 columns={columns}
-                data={appsTable}
+                data={setting}
                 pagination={false}
                 expandProps={{
                   icon: ({ expanded, record, ...restProps }) =>
@@ -409,14 +392,14 @@ const Manage = () => {
             )}
           </Tabs.TabPane>
           <Tabs.TabPane key='2' title='配置菜单'>
-            {systemTable?.length > 0 && (
+            {setting?.length > 0 && (
               <Table
                 borderCell
                 stripe
                 defaultExpandAllRows
                 rowKey='id'
                 columns={columns}
-                data={systemTable}
+                data={setting}
                 pagination={false}
                 expandProps={{
                   icon: ({ expanded, record, ...restProps }) =>

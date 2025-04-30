@@ -13,8 +13,8 @@ const HrmOrg = () => {
   const [orgSelected, setOrgSelected] = useState([])
 
   useEffect(() => {
-    Http.get('/mock/org-list.json').then(({ code, data }) => {
-      if (code === 200) {
+    Http.post('/system/dept/list', { pid: -1 }).then(({ code, data }) => {
+      if (code === 200 || code === 0) {
         setOrgData(data.list || [])
         setOrgSelected(['0'])
       }
@@ -143,7 +143,7 @@ const HrmOrg = () => {
                   <IconSettings />
                 </div>
               )}
-              fieldNames={{ key: 'key', title: 'dept_name' }}
+              fieldNames={{ key: 'id', title: 'dept_name' }}
               treeData={orgData}
               selectedKeys={orgSelected}
               onSelect={setOrgSelected}

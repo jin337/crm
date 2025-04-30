@@ -192,7 +192,7 @@ const Application = () => {
                     className='cursor-pointer text-xl opacity-0 group-hover:opacity-100'
                     onClick={() => openSetting(item)}
                   />
-                  <Switch checked onChange={(e) => onChange(e, item)} />
+                  <Switch checked={item.status} onChange={(e) => onChange(e, item)} />
                 </Space>
               </div>
             </Card>

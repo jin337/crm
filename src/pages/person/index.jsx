@@ -31,7 +31,7 @@ const list = [
   },
 ]
 const Person = () => {
-  const { userInfo, roles } = useSelector((state) => state.common)
+  const { userInfo, depts } = useSelector((state) => state.common)
   const [navList, setNavList] = useState(list)
   const [select, setSelect] = useState(0)
 
@@ -59,7 +59,7 @@ const Person = () => {
       <div className={styles['right-wrap']}>
         {select === 0 && <Information data={userInfo} />}
         {select === 1 && <Password />}
-        {select === 2 && <Permissions data={roles} />}
+        {select === 2 && <Permissions data={depts} />}
       </div>
     </div>
   )
