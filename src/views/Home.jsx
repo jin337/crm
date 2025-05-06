@@ -8,7 +8,7 @@ import { Loading, MenuCustom } from 'src/components'
 
 import { setDepts, setMenu, setMenuSelect, setSystemMenu, setTheme, setUserInfo } from 'src/store/common'
 // 公共方法
-import { findRootNode, flattenArray, localGetItem } from 'src/utils/common'
+import { findRootNode, flattenArray, localGetItem, localSetItem } from 'src/utils/common'
 
 const Home = () => {
   const refContent = useRef()
@@ -28,17 +28,12 @@ const Home = () => {
   useEffect(() => {
     const data = localGetItem('CRMUSERDATA')
     if (data) {
-      dispatch(setUserInfo(data.user_info)) //用户信息
-      dispatch(setDepts(data.dept_list)) //角色信息
-      dispatch(setTheme(data.theme)) //主题信息
-
-      updateTheme(data?.theme) //设置主题
       // 获取导航数据
       if (initMenuData.length === 0) {
         createMenu(data.user_info.main_dept_id)
       } else {
         let item = flattenArray(initMenuData)?.find((item) => item.path === location.pathname)
-        item && createSelect(initMenuData, systemMenuData, item.permission)
+        item && createSelect([...initMenuData, ...systemMenuData], item.permission)
       }
     } else {
       onSelectSystem('exit')
@@ -57,40 +52,41 @@ const Home = () => {
   const createMenu = async (dept_id) => {
     const { code, data } = await Http.post('/system/menu/user-list', { dept_id })
     if (code === 200 || code === 0) {
+      localSetItem('CRMUSERDATA', data)
+
       const left = data.left || []
       setMenuData(left)
       dispatch(setMenu(left))
+      dispatch(setUserInfo(data.user_info)) //用户信息
+      dispatch(setDepts(data.dept_list)) //角色信息
+      dispatch(setTheme(data.theme)) //主题信息
+
+      updateTheme(data?.theme) //设置主题
 
       const right = data.right || []
       setRightMenu(right)
       dispatch(setSystemMenu(right))
       // 重新选中导航
       if (!menuSelect) {
+        const arr = [...left, ...right]
         const key = location?.state?.permission
         if (key) {
-          createSelect(left, right, key)
+          createSelect(arr, key)
         } else {
-          let item = flattenArray(left)?.find((item) => item.path === location.pathname)
-          item && createSelect(left, right, item.permission)
+          let item = flattenArray(arr)?.find((item) => item.path === location.pathname)
+          item && createSelect(arr, item.permission)
         }
       }
+    } else {
+      onSelectSystem('exit')
     }
   }
   // 重新选中导航
-  const createSelect = (left, right, key) => {
-    const leftItem = flattenArray(left)?.find((e) => e.permission === key)
-    if (leftItem) {
-      dispatch(setMenuSelect(leftItem))
-      const parent = findRootNode(left, leftItem.id)
-      if (parent?.length > 0) {
-        setHeaderSelect(parent[0])
-      }
-    }
-
-    const rightItem = flattenArray(right)?.find((e) => e.permission === key)
-    if (rightItem) {
-      dispatch(setMenuSelect(rightItem))
-      const parent = findRootNode(right, rightItem.id)
+  const createSelect = (arr, key) => {
+    const item = flattenArray(arr)?.find((e) => e.permission === key)
+    if (item) {
+      dispatch(setMenuSelect(item))
+      const parent = findRootNode(arr, item.id)
       if (parent?.length > 0) {
         setHeaderSelect(parent[0])
       }
@@ -130,8 +126,7 @@ const Home = () => {
     }
     // 切换主题
     if (type === 'theme') {
-      console.log('切换主题', obj)
-      updateTheme(obj)
+      changeTheme(obj)
     }
     // 消息通知
     if (type === 'notification') {
@@ -149,6 +144,17 @@ const Home = () => {
       sessionStorage.clear()
       localStorage.clear()
       navigate('/login') // 跳转登录页
+    }
+  }
+
+  // 切换主题
+  const changeTheme = async (obj) => {
+    const { code, data } = await Http.post('/system/theme/change', obj)
+    if (code === 200 || code === 0) {
+      localSetItem('CRMUSERDATA', data)
+
+      dispatch(setTheme(data.theme)) //主题信息
+      updateTheme(data?.theme) //设置主题
     }
   }
 

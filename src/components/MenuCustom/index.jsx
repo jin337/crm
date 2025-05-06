@@ -247,12 +247,12 @@ const Sider = (props) => {
               <div
                 className={`${styles['item']} ${selectSecond?.permission === item.permission ? styles['active'] : ''}`}
                 onClick={() => onSelectSecond(item)}>
-                {item.is_icon && (
+                {item.menu_icon && (
                   <Avatar
                     shape='square'
                     size={32}
                     style={selectSecond?.permission === item.permission ? { backgroundColor: 'rgb(var(--primary-6))' } : {}}>
-                    <IconCustom name={item.is_icon} />
+                    <IconCustom name={item.menu_icon} />
                   </Avatar>
                 )}
                 <div className={styles['text']}>{item.title}</div>
@@ -277,12 +277,12 @@ const Sider = (props) => {
                 <div
                   className={`${styles['item']} ${collapsed ? styles['hide'] : styles['show']} ${selectThird?.permission === item.permission ? styles['active'] : ''}`}
                   onClick={() => onSelectThird(item)}>
-                  {item.is_icon && (
+                  {item.menu_icon && (
                     <Avatar
                       shape='square'
                       size={32}
                       style={selectThird?.permission === item.permission ? { backgroundColor: 'rgb(var(--primary-6))' } : {}}>
-                      <IconCustom name={item.is_icon} />
+                      <IconCustom name={item.menu_icon} />
                     </Avatar>
                   )}
                   <div className={styles['text']}>{item.title}</div>

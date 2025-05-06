@@ -7,6 +7,7 @@ import {
   Grid,
   Input,
   InputNumber,
+  Message,
   Modal,
   Popconfirm,
   Radio,
@@ -14,11 +15,9 @@ import {
   Table,
   Tabs,
   Tag,
-  TreeSelect,
 } from '@arco-design/web-react'
 import { IconDown, IconRight } from '@arco-design/web-react/icon'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
 
 // 组件
@@ -27,18 +26,18 @@ import { IconCustom } from 'src/components'
 import Http from 'src/service/api'
 
 const Manage = () => {
-  const common = useSelector((state) => state.common)
   const location = useLocation()
   const [params, setParams] = useState()
   const [setting, setSetting] = useState([])
 
   const [appsForm] = Form.useForm()
+  const [activeTab, setActiveTab] = useState('1')
 
   useEffect(() => {
     setParams(location.state?.state)
     const state = location.state?.state
     if (state) {
-      onChange(1, state)
+      onChange(activeTab, state)
     }
   }, [location])
 
@@ -49,7 +48,7 @@ const Manage = () => {
       dataIndex: 'title',
       render: (_, record) => (
         <Space>
-          <IconCustom name={record.is_icon} />
+          <IconCustom name={record.menu_icon} />
           {record.title}
           {record.describe && '：' + record.describe}
         </Space>
@@ -86,33 +85,20 @@ const Manage = () => {
       dataIndex: 'is_hide',
       align: 'center',
       width: 74,
-      render: (text) => <Checkbox checked={text} />,
-    },
-    {
-      title: '外链',
-      dataIndex: 'out_link',
-      align: 'center',
-      width: 70,
-      render: (text) => <Checkbox checked={text} />,
+      render: (text, record) => <Checkbox style={{ padding: 0 }} checked={text} onChange={(checked) => onChangeCheckbox('is_hide', checked, record)} />,
     },
     {
       title: '启用',
       dataIndex: 'status',
       align: 'center',
       width: 70,
-      render: (text) => <Checkbox checked={text} />,
+      render: (text, record) => <Checkbox style={{ padding: 0 }} checked={text} onChange={(checked) => onChangeCheckbox('status', checked, record)} />,
     },
     {
       title: '排序',
       dataIndex: 'sort',
       align: 'center',
       width: 70,
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'start_time',
-      align: 'center',
-      width: 160,
     },
     {
       title: '操作',
@@ -122,12 +108,12 @@ const Manage = () => {
       render: (_, record) => (
         <Space>
           <Button type='text' size='mini' status='success' onClick={() => onCreate('add', record)}>
-            添加
+            新增
           </Button>
           <Button type='text' size='mini' onClick={() => onCreate('edit', record)}>
             编辑
           </Button>
-          <Popconfirm focusLock title='提醒' content='是否确定删除当前项？'>
+          <Popconfirm focusLock title='提醒' content='是否确定删除当前项？' onOk={() => onDelete(record)}>
             <Button type='text' size='mini' status='danger'>
               删除
             </Button>
@@ -138,26 +124,28 @@ const Manage = () => {
   ]
 
   // 新增&编辑
-  const onCreate = (type, record) => {
+  const onCreate = (type, item) => {
     appsForm.resetFields()
+    let msg = type === 'add' ? '新增' : '编辑'
     let obj = {}
+    let url = null
     if (type === 'add') {
+      url = '/system/menu/add'
       obj = {
-        pid: record.id,
+        pName: item.title,
         type: 2,
         out_link: 0,
         is_hide: 0,
-        is_open: 1,
+        status: 1,
       }
     }
     if (type === 'edit') {
-      obj = {
-        ...record,
-      }
+      url = '/system/menu/edit'
+      obj = { ...item }
     }
     appsForm.setFieldsValue(obj)
     Modal.confirm({
-      title: '新增应用',
+      title: msg + '应用',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',
@@ -167,8 +155,8 @@ const Manage = () => {
           layout='vertical'
           autoComplete='off'
           validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
-          <Form.Item label='上层菜单' field='pid' rules={[{ required: true }]} disabled>
-            <TreeSelect treeData={[{ id: params.id, title: params.title, children: setting }]} />
+          <Form.Item label='上层菜单' field='pName' rules={[{ required: true }]} disabled>
+            <Input />
           </Form.Item>
           <div className='flex gap-6'>
             <Form.Item label='类型' field='type' rules={[{ required: true }]}>
@@ -195,7 +183,6 @@ const Manage = () => {
                         <div className='max-h-[400px] w-auto overflow-y-auto border border-[var(--border-color)] bg-white p-2'>
                           <ul className='flex flex-wrap'>
                             {[
-                              'IconSettings',
                               'IconHome',
                               'IconStamp',
                               'IconPalette',
@@ -210,11 +197,14 @@ const Manage = () => {
                               'IconHistory',
                               'IconUpload',
                               'IconApps',
+                              'IconRobot',
+                              'IconIdcard',
+                              'IconStamp',
                             ]?.map((item) => (
                               <li
                                 key={item}
                                 className='cursor-pointer'
-                                onClick={() => appsForm.setFieldsValue({ is_icon: item })}>
+                                onClick={() => appsForm.setFieldsValue({ menu_icon: item })}>
                                 <IconCustom className='m-2 text-base' name={item} />
                               </li>
                             ))}
@@ -223,8 +213,8 @@ const Manage = () => {
                       }
                       trigger='click'>
                       <Button long>
-                        {values.is_icon ? (
-                          <IconCustom className='text-base' name={values.is_icon} />
+                        {values.menu_icon ? (
+                          <IconCustom className='text-base' name={values.menu_icon} />
                         ) : (
                           <span className='text-[var(--color-text-3)]'>请选择</span>
                         )}
@@ -267,7 +257,7 @@ const Manage = () => {
                   <Grid.Col span={18}>
                     <Form.Item shouldUpdate noStyle>
                       {(values) => (
-                        <Form.Item label='路由' field='path'>
+                        <Form.Item label='路由' field='path' rules={[{ required: true }]}>
                           <Input addBefore={values.out_link === 1 ? 'http://' : undefined} placeholder='请输入内容' />
                         </Form.Item>
                       )}
@@ -296,7 +286,7 @@ const Manage = () => {
               </Form.Item>
             </Grid.Col>
             <Grid.Col span={6}>
-              <Form.Item label='是否启用' field='is_open' rules={[{ required: true }]}>
+              <Form.Item label='是否启用' field='status' rules={[{ required: true }]}>
                 <Radio.Group
                   type='button'
                   options={[
@@ -330,42 +320,91 @@ const Manage = () => {
         </Form>
       ),
       onOk: () => {
-        appsForm.validate().then((values) => {
-          const obj = {
-            role_group_id: common.userInfo.main_dept_id,
+        appsForm.validate().then(async (values) => {
+          let valueObj = {
+            app_id: item.app_id,
+            pid: item.id,
+            class: Number(activeTab),
             ...values,
           }
-          console.log('新增应用', obj)
+
+          if (type === 'edit') {
+            valueObj.id = item.id
+            valueObj.pid = item.pid
+          }
+          const { code } = await Http.post(url, valueObj)
+          if (code === 200 || code === 0) {
+            onChange(activeTab)
+            Message.success(msg + '成功')
+          }
         })
       },
     })
   }
 
-  const onChange = (e, state = params) => {
+  // 删除
+  const onDelete = async (item) => {
+    const { code } = await Http.post('/system/menu/del', { id: item.id })
+    if (code === 200 || code === 0) {
+      onChange(activeTab)
+      Message.success('删除成功')
+    }
+  }
+  // tab切换
+  const onChange = async (e, state = params) => {
+    setActiveTab(e)
     setSetting([])
     const obj = {
       class: e,
-      app_id: state?.app_id,
+      app_id: state?.id,
     }
-    Http.post('/system/menu/list', obj).then(({ code, data }) => {
-      if (code === 200 || code === 0) {
-        const addKeysToMenuItems = (items) => {
-          return items.map((item) => ({
-            ...item,
-            key: item.id,
-            children: item.children ? addKeysToMenuItems(item.children) : undefined,
-          }))
-        }
-        const list = addKeysToMenuItems(data.list || [])
-
-        setSetting(list)
+    const { code, data } = await Http.post('/system/menu/list', obj)
+    if (code === 200 || code === 0) {
+      const addKeysToMenuItems = (items) => {
+        return items.map((item) => ({
+          ...item,
+          key: item.id,
+          children: item.children ? addKeysToMenuItems(item.children) : undefined,
+        }))
       }
-    })
+      const list = addKeysToMenuItems(data.list || [])
+
+      setSetting(list)
+    }
   }
+
+  // 启停菜单&隐藏菜单
+  const onChangeCheckbox = async (idCode, type, item) => {
+    let url = null
+    let obj = {
+      id: item.id,
+    }
+    if (idCode === 'status') {
+      url = '/system/menu/change-status'
+      obj.status = type === true ? 1 : 0
+    }
+    if (idCode === 'is_hide') {
+      url = '/system/menu/hide-status'
+      obj.is_hide = type === true ? 1 : 0
+    }
+    const { code } = await Http.post(url, obj)
+    if (code === 200 || code === 0) {
+      onChange(activeTab)
+      Message.success('修改成功')
+    }
+  }
+
   return (
     <>
       <Card bordered={false}>
-        <Tabs defaultActiveTab='1' onChange={onChange}>
+        <Tabs
+          activeTab={activeTab}
+          onChange={onChange}
+          extra={
+            <Button size='small' type='primary' onClick={() => onCreate('add', params)}>
+              新增
+            </Button>
+          }>
           <Tabs.TabPane key='1' title='功能菜单'>
             {setting?.length > 0 && (
               <Table

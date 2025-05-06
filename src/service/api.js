@@ -15,6 +15,9 @@ Http.interceptors.request.use(
     if (Authorization) {
       config.headers.Authorization = Authorization.user_info.token
     }
+    if (config.data) {
+      config.data = Object.fromEntries(Object.entries(config.data).filter(([_, v]) => v !== undefined && v !== ''))
+    }
     return config
   },
   (error) => Promise.reject(error)

@@ -8,7 +8,7 @@ const HrmOrg = () => {
   const [orgForm] = Form.useForm()
   const [memberForm] = Form.useForm()
 
-  const [dataTable, setDataTable] = useState([])
+  const [tableData, setTableData] = useState({})
   const [orgData, setOrgData] = useState([])
   const [orgSelected, setOrgSelected] = useState([])
 
@@ -152,7 +152,7 @@ const HrmOrg = () => {
         </Card>
         <Card bordered={false} className='w-3/4'>
           <div className='mb-2 flex items-start justify-between'>
-            <Form layout='inline' autoComplete='off' form={searchForm} onChange={onChangeSearch}>
+            <Form layout='inline' autoComplete='off' form={searchForm} onChange={() => onChangeSearch(1)}>
               <Form.Item field='keyword'>
                 <Input.Search placeholder='请输入内容' />
               </Form.Item>
@@ -164,7 +164,19 @@ const HrmOrg = () => {
             </Space>
           </div>
 
-          <Table borderCell stripe rowKey='id' columns={columns} data={dataTable} />
+          <Table
+            borderCell
+            stripe
+            rowKey='id'
+            columns={columns}
+            data={tableData?.list || []}
+            pagination={{
+              showTotal: true,
+              total: tableData.total,
+              current: tableData.current,
+              onChange: (e) => onChangeSearch(e),
+            }}
+          />
         </Card>
       </div>
     </>
