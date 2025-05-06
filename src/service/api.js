@@ -27,7 +27,7 @@ Http.interceptors.request.use(
 Http.interceptors.response.use(
   (response) => {
     const { data } = response
-    if ([200, '000000', 0].includes(data.code)) {
+    if ([200, 0].includes(data.code)) {
       // 成功
       return Promise.resolve(data)
     } else {
