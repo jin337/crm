@@ -85,14 +85,18 @@ const Manage = () => {
       dataIndex: 'is_hide',
       align: 'center',
       width: 74,
-      render: (text, record) => <Checkbox style={{ padding: 0 }} checked={text} onChange={(checked) => onChangeCheckbox('is_hide', checked, record)} />,
+      render: (text, record) => (
+        <Checkbox style={{ padding: 0 }} checked={text} onChange={(checked) => onChangeCheckbox('is_hide', checked, record)} />
+      ),
     },
     {
       title: '启用',
       dataIndex: 'status',
       align: 'center',
       width: 70,
-      render: (text, record) => <Checkbox style={{ padding: 0 }} checked={text} onChange={(checked) => onChangeCheckbox('status', checked, record)} />,
+      render: (text, record) => (
+        <Checkbox style={{ padding: 0 }} checked={text} onChange={(checked) => onChangeCheckbox('status', checked, record)} />
+      ),
     },
     {
       title: '排序',
@@ -126,7 +130,6 @@ const Manage = () => {
   // 新增&编辑
   const onCreate = (type, item) => {
     appsForm.resetFields()
-    let msg = type === 'add' ? '新增' : '编辑'
     let obj = {}
     let url = null
     if (type === 'add') {
@@ -145,7 +148,7 @@ const Manage = () => {
     }
     appsForm.setFieldsValue(obj)
     Modal.confirm({
-      title: msg + '应用',
+      title: (type === 'add' ? '新增' : '编辑') + '应用',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',
@@ -332,10 +335,10 @@ const Manage = () => {
             valueObj.id = item.id
             valueObj.pid = item.pid
           }
-          const { code } = await Http.post(url, valueObj)
-          if (code === 200 || code === 0) {
+          const { code, message } = await Http.post(url, valueObj)
+          if (code === 200) {
             onChange(activeTab)
-            Message.success(msg + '成功')
+            Message.success(message)
           }
         })
       },
@@ -344,10 +347,10 @@ const Manage = () => {
 
   // 删除
   const onDelete = async (item) => {
-    const { code } = await Http.post('/system/menu/del', { id: item.id })
-    if (code === 200 || code === 0) {
+    const { code, message } = await Http.post('/system/menu/del', { id: item.id })
+    if (code === 200) {
       onChange(activeTab)
-      Message.success('删除成功')
+      Message.success(message)
     }
   }
   // tab切换
@@ -359,7 +362,7 @@ const Manage = () => {
       app_id: state?.id,
     }
     const { code, data } = await Http.post('/system/menu/list', obj)
-    if (code === 200 || code === 0) {
+    if (code === 200) {
       const addKeysToMenuItems = (items) => {
         return items.map((item) => ({
           ...item,
@@ -387,10 +390,10 @@ const Manage = () => {
       url = '/system/menu/hide-status'
       obj.is_hide = type === true ? 1 : 0
     }
-    const { code } = await Http.post(url, obj)
-    if (code === 200 || code === 0) {
+    const { code, message } = await Http.post(url, obj)
+    if (code === 200) {
       onChange(activeTab)
-      Message.success('修改成功')
+      Message.success(message)
     }
   }
 

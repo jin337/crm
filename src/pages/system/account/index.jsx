@@ -1,17 +1,4 @@
-import {
-  Button,
-  Card,
-  Checkbox,
-  Form,
-  Input,
-  Message,
-  Modal,
-  Popconfirm,
-  Select,
-  Space,
-  Table,
-  Tag,
-} from '@arco-design/web-react'
+import { Button, Card, Checkbox, Form, Input, Message, Modal, Popconfirm, Select, Table, Tag } from '@arco-design/web-react'
 import { IconPlus } from '@arco-design/web-react/icon'
 import { useEffect, useState } from 'react'
 
@@ -19,6 +6,7 @@ const Account = () => {
   const [searchForm] = Form.useForm()
   const [createForm] = Form.useForm()
   const [tableData, setTableData] = useState({})
+  const [selectedIds, setSelectedIds] = useState([])
 
   useEffect(() => {
     onChangeSearch(1)
@@ -31,8 +19,13 @@ const Account = () => {
       dataIndex: 'login_name',
     },
     {
-      title: '账户名',
+      title: '账号名',
       dataIndex: 'account_name',
+      render: (text, record) => (
+        <div className='cursor-pointer text-[rgb(var(--primary-6))]' onClick={() => onCreate('edit', record)}>
+          {text}
+        </div>
+      ),
     },
     {
       title: '手机号',
@@ -49,7 +42,6 @@ const Account = () => {
       title: '账号认证',
       dataIndex: 'account_auth',
       align: 'center',
-      width: 90,
       render: (text) => {
         switch (text) {
           case 1:
@@ -61,23 +53,6 @@ const Account = () => {
         }
       },
     },
-    {
-      title: '操作',
-      code: 'op',
-      align: 'center',
-      render: (_, record) => (
-        <Space>
-          <Button type='text' size='mini' onClick={() => onCreate('edit', record)}>
-            编辑
-          </Button>
-          <Popconfirm focusLock title='提醒' content='是否确定删除当前项？' onOk={() => onDelete([record.id])}>
-            <Button type='text' size='mini' status='danger'>
-              删除
-            </Button>
-          </Popconfirm>
-        </Space>
-      ),
-    },
   ]
 
   // 获取数据
@@ -85,7 +60,7 @@ const Account = () => {
     const search = searchForm.getFieldsValue()
 
     const { code, data } = await Http.post('/system/account/list', { current, pageSize: 10, ...search })
-    if (code === 200 || code === 0) {
+    if (code === 200) {
       setTableData(data || [])
     }
   }
@@ -93,7 +68,6 @@ const Account = () => {
   // 创建&编辑
   const onCreate = (type, item) => {
     createForm.resetFields()
-    let msg = type === 'add' ? '新增' : '编辑'
     let obj = {}
     let url = null
     if (type === 'add') {
@@ -106,7 +80,7 @@ const Account = () => {
     }
     createForm.setFieldsValue(obj)
     Modal.confirm({
-      title: msg + '账号',
+      title: (type === 'add' ? '新增' : '编辑') + '账号',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',
@@ -116,13 +90,44 @@ const Account = () => {
           layout='vertical'
           autoComplete='off'
           validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
-          <Form.Item label='登录名' field='login_name' rules={[{ required: true }]}>
+          <Form.Item
+            label='登录名'
+            field='login_name'
+            rules={[
+              { required: true },
+              {
+                minLength: 3,
+                message: '登录名不能少于3位',
+              },
+              {
+                validator: (value, callback) => {
+                  if (!value) return callback()
+                  if (/[\u4e00-\u9fa5]/.test(value)) {
+                    return callback('登录名不能包含中文')
+                  }
+                  callback()
+                },
+              },
+            ]}>
             <Input placeholder='请输入内容' />
           </Form.Item>
           <Form.Item label='账号名' field='account_name' rules={[{ required: true }]}>
             <Input placeholder='请输入内容' />
           </Form.Item>
-          <Form.Item label='手机号' field='account_mobile' rules={[{ required: true }]}>
+          <Form.Item
+            label='手机号'
+            field='account_mobile'
+            rules={[
+              { required: true },
+              {
+                validator: (value, callback) => {
+                  if (!/^1[3-9]\d{9}$/.test(value)) {
+                    callback('请输入正确的11位手机号码')
+                  }
+                  callback()
+                },
+              },
+            ]}>
             <Input placeholder='请输入内容' />
           </Form.Item>
         </Form>
@@ -135,10 +140,10 @@ const Account = () => {
           if (type === 'edit') {
             values.id = item.id
           }
-          const { code } = await Http.post(url, values)
-          if (code === 200 || code === 0) {
+          const { code, message } = await Http.post(url, values)
+          if (code === 200) {
             onChangeSearch(tableData?.current || 1)
-            Message.success(msg + '成功')
+            Message.success(message)
           }
         })
       },
@@ -147,19 +152,20 @@ const Account = () => {
 
   // 修改状态
   const onChangeCheckbox = async (item) => {
-    const { code } = await Http.post('/system/account/change-status', { id: item.id, status: item.status ? 0 : 1 })
-    if (code === 200 || code === 0) {
+    const { code, message } = await Http.post('/system/account/change-status', { id: item.id, status: item.status ? 0 : 1 })
+    if (code === 200) {
       onChangeSearch(tableData?.current || 1)
-      Message.success('修改成功')
+      Message.success(message)
     }
   }
 
   // 删除
   const onDelete = async (ids) => {
-    const { code } = await Http.post('/system/account/del', { ids })
-    if (code === 200 || code === 0) {
+    const { code, message } = await Http.post('/system/account/del', { ids })
+    if (code === 200) {
+      setSelectedIds([])
       onChangeSearch(tableData?.current || 1)
-      Message.success('删除成功')
+      Message.success(message)
     }
   }
 
@@ -187,12 +193,30 @@ const Account = () => {
           </Button>
         </div>
 
+        {selectedIds.length > 0 && (
+          <div className='absolute top-[61px] left-[72px] z-10 flex h-[40px] w-[calc(100%-104px)] items-center gap-4 bg-[var(--color-neutral-2)]'>
+            <div>已选中 {selectedIds.length} 项</div>
+            <Popconfirm focusLock title='提醒' content='是否确定删除当前项？' onOk={() => onDelete(selectedIds)}>
+              <Button size='small' type='primary'>
+                删除
+              </Button>
+            </Popconfirm>
+            <Button size='small' type='primary'>
+              重置密码
+            </Button>
+          </div>
+        )}
+
         <Table
           borderCell
           stripe
           rowKey='id'
           columns={columns}
           data={tableData.list || []}
+          rowSelection={{
+            type: 'checkbox',
+            onChange: (ids) => setSelectedIds(ids),
+          }}
           pagination={{
             showTotal: true,
             total: tableData.total,

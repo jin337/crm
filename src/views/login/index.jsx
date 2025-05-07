@@ -44,7 +44,7 @@ const Login = () => {
   // 登录
   const handleLogin = async (e) => {
     const { code, data } = await Http.post('/system/login', e)
-    if (code === 200 || code === 0) {
+    if (code === 200) {
       localSetItem('CRMUSERDATA', data)
       navigate('/')
     }

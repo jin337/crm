@@ -1,4 +1,4 @@
-import { Button, Card, Dropdown, Form, Input, Menu, Modal, Space, Table, Tag } from '@arco-design/web-react'
+import { Button, Card, Dropdown, Form, Input, Menu, Message, Modal, Space, Table, Tag } from '@arco-design/web-react'
 import { IconMore, IconPlus } from '@arco-design/web-react/icon'
 import { useState } from 'react'
 
@@ -13,14 +13,19 @@ const HrmMember = () => {
   // 流程管理-表头
   const columns = [
     {
-      title: '用户名',
+      title: '姓名',
       dataIndex: 'user_name',
       width: 120,
     },
     {
-      title: '用户账号',
+      title: '账号',
       dataIndex: 'user_account',
       width: 120,
+      render: (text, record) => (
+        <div className='cursor-pointer text-[rgb(var(--primary-6))]' onClick={() => onCreate('edit', record)}>
+          {text}
+        </div>
+      ),
     },
     {
       title: '手机号',
@@ -75,11 +80,22 @@ const HrmMember = () => {
         <Dropdown
           position='br'
           droplist={
-            <Menu>
-              <Menu.Item key='1'>办理转正</Menu.Item>
-              <Menu.Item key='2'>调整部门/岗位</Menu.Item>
-              <Menu.Item key='3'>晋升/降级</Menu.Item>
-              <Menu.Item key='4'>办理离职</Menu.Item>
+            <Menu onClickMenuItem={(key) => handleClick(key, record)}>
+              <Menu.Item key='on_job' disabled={[0, 1].includes(record.status)}>
+                办理转正
+              </Menu.Item>
+              <Menu.Item key='2' disabled>
+                调整部门/岗位
+              </Menu.Item>
+              <Menu.Item key='3' disabled>
+                晋升/降级
+              </Menu.Item>
+              <Menu.Item
+                key='resign'
+                style={record.status !== 0 ? { color: 'rgb(var(--danger-6))' } : {}}
+                disabled={record.status === 0}>
+                办理离职
+              </Menu.Item>
             </Menu>
           }>
           <Button type='text'>
@@ -98,28 +114,67 @@ const HrmMember = () => {
     const search = searchForm.getFieldsValue()
 
     const { code, data } = await Http.post('/system/user/list', { current, pageSize: 10, ...search })
-    if (code === 200 || code === 0) {
+    if (code === 200) {
       setTableData(data || [])
     }
   }
   // 新增
-  const onCreate = (e) => {
+  const onCreate = (type, item) => {
     createForm.resetFields()
     let obj = {}
+    let url = null
+    if (type === 'add') {
+      url = '/system/user/add'
+      obj = {}
+    }
+    if (type === 'edit') {
+      url = '/system/user/edit'
+      obj = { ...item }
+    }
     createForm.setFieldsValue(obj)
 
     Modal.confirm({
-      title: (e?.key ? '编辑' : '新增') + '员工',
+      title: (type === 'add' ? '新增' : '编辑') + '员工',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',
       content: <CreateForm form={createForm} />,
       onOk: () => {
-        createForm.validate().then((values) => {
-          console.log('数据', values)
+        createForm.validate().then(async (values) => {
+          if (type === 'add') {
+            values.status = 2
+          }
+          if (type === 'edit') {
+            values.id = item.id
+            values.status = item.status
+          }
+          console.log('values', values)
+          const { code, message } = await Http.post(url, values)
+          if (code === 200) {
+            onChangeSearch(tableData?.current || 1)
+            Message.success(message)
+          }
         })
       },
     })
+  }
+  // 操作
+  const handleClick = async (key, record) => {
+    let obj = {
+      id: record.id,
+    }
+    if (key === 'on_job') {
+      obj.status = 1
+    }
+    if (key === 'resign') {
+      obj.status = 0
+    }
+
+    const { code, message } = await Http.post('/system/user/change-status', obj)
+    if (code === 200) {
+      onChangeSearch(tableData?.current || 1)
+      Message.success(message)
+    }
   }
 
   // 提交
@@ -128,12 +183,12 @@ const HrmMember = () => {
       <Card bordered={false}>
         <div className='mb-2 flex items-start justify-between'>
           <Form layout='inline' autoComplete='off' form={searchForm} onChange={() => onChangeSearch(1)}>
-            <Form.Item field='keyword'>
-              <Input.Search placeholder='请输入内容' />
+            <Form.Item field='content'>
+              <Input allowClear placeholder='请输入内容' />
             </Form.Item>
           </Form>
           <Space>
-            <Button type='primary' size='small' status='primary' icon={<IconPlus />} onClick={() => onCreate()}>
+            <Button type='primary' size='small' status='primary' icon={<IconPlus />} onClick={() => onCreate('add')}>
               新增员工
             </Button>
           </Space>

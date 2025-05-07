@@ -10,65 +10,9 @@ import { SelectUser, TreeCheck } from 'src/components'
 // 接口
 import Http from 'src/service/api'
 
-const roleList = {
-  setting: [
-    {
-      id: '1',
-      role_name: '超级管理员',
-    },
-    {
-      id: '2',
-      role_name: '工程应用管理员',
-    },
-    {
-      id: '3',
-      role_name: '财务应用管理员',
-    },
-    {
-      id: '4',
-      role_name: '审批应用管理员',
-    },
-  ],
-  finance: [
-    {
-      id: 1,
-      role_name: '主管',
-    },
-    {
-      id: 2,
-      role_name: '查看者',
-    },
-    {
-      id: 3,
-      role_name: '会计',
-    },
-  ],
-  oa: [
-    {
-      id: 1,
-      role_name: '管理员',
-    },
-    {
-      id: 2,
-      role_name: '员工',
-    },
-  ],
-  project: [
-    {
-      id: 1,
-      role_name: '主管',
-    },
-    {
-      id: 2,
-      role_name: '管理员',
-    },
-  ],
-}
-
 const Setting = () => {
-  const common = useSelector((state) => state.common)
+  const { menuSelect } = useSelector((state) => state.common)
   const location = useLocation()
-  const [params, setParams] = useState()
 
   const [searchForm] = Form.useForm()
   const [roleForm] = Form.useForm()
@@ -76,16 +20,18 @@ const Setting = () => {
   // 角色列表
   const [items, setItems] = useState([])
   // 当前角色
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState({})
 
-  // 角色账号列表
-  const [dataTable, setDataTable] = useState([])
   // 关联账号弹窗
   const [visibleSelect, setVisibleSelect] = useState(false)
   const [userTabs, setUserTabs] = useState([])
   const [userData, setUserData] = useState([])
+
+  const [tabActive, setTabActive] = useState('1')
   // 角色权限列表
-  const [treeData, setTreeData] = useState([])
+  const [roleMenu, setRoleMenu] = useState([])
+  // 角色账号列表
+  const [roleUser, setRoleUser] = useState([])
   // 已选角色
   const [checkTree, setCheckTree] = useState([])
 
@@ -93,19 +39,19 @@ const Setting = () => {
   const columns = [
     {
       title: '姓名',
-      dataIndex: 'name1',
+      dataIndex: 'user_name',
     },
     {
-      title: '机构',
-      dataIndex: 'name0',
+      title: '主部门',
+      dataIndex: 'user_dept_main_name',
     },
     {
-      title: '部门',
-      dataIndex: 'name2',
+      title: '附属部门',
+      dataIndex: 'user_depts_name',
     },
     {
       title: '职位',
-      dataIndex: 'name3',
+      dataIndex: 'user_post',
     },
     {
       title: '操作',
@@ -114,7 +60,7 @@ const Setting = () => {
       render: (_, record) => (
         <Space>
           <Button type='text' size='mini'>
-            编辑
+            设置
           </Button>
           <Button type='text' size='mini'>
             复制
@@ -130,39 +76,51 @@ const Setting = () => {
   ]
 
   useEffect(() => {
-    const permission = location.state?.permission
-    permission && setParams(permission.slice(12))
-  }, [location])
+    menuSelect?.app_id && getRoleList({ app_id: menuSelect?.app_id })
+  }, [menuSelect])
 
-  useEffect(() => {
-    setItems(roleList[params] || [])
-
-    if (params === 'setting') {
-      setTreeData(common.systemMenuData)
-    } else {
-      const arr = common.initMenuData.filter((e) => e.permission === params)
-      if (arr.length) {
-        setTreeData(arr)
-      }
+  // 角色列表
+  const getRoleList = async (obj) => {
+    const { code, data } = await Http.post('/system/role/list', obj)
+    if (code === 200) {
+      setItems(data.list || [])
+      setActive(data.list[0] || {})
+      onChangeTab('1', data.list[0])
     }
-  }, [params, common?.systemMenuData, common?.initMenuData])
+  }
+  // 角色菜单列表
+  const getRoleMenu = async (id) => {
+    const { code, data } = await Http.post('/system/role/menu', { role_id: id })
+    if (code === 200) {
+      setRoleMenu(data.list || [])
+    }
+  }
 
-  // 查询事件
-  const onChangeSearch = (e) => {
-    let obj = { ...searchForm.getFields() }
-    console.log(obj)
+  // 角色用户列表
+  const onChangeSearch = async (current) => {
+    const search = searchForm.getFieldsValue()
+
+    const { code, data } = await Http.post('/system/role/user', { current, pageSize: 10, role_id: active.id, ...search })
+    if (code === 200) {
+      setRoleUser(data || [])
+    }
   }
 
   // 新增/编辑角色
-  const onCreate = (e) => {
+  const onCreate = (type, item) => {
     roleForm.resetFields()
     let obj = {}
-    if (e) {
-      obj = e
+    let url = null
+    if (type === 'add') {
+      url = '/system/role/add'
+    }
+    if (type === 'edit') {
+      url = '/system/role/edit'
+      obj = { ...item }
     }
     roleForm.setFieldsValue(obj)
     Modal.confirm({
-      title: (e?.id ? '编辑' : '新增') + '角色',
+      title: (type === 'add' ? '新增' : '编辑') + '角色',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',
@@ -174,16 +132,44 @@ const Setting = () => {
         </Form>
       ),
       onOk: () => {
-        const obj = {
-          role_type: 1, //1系统角色2应用角色
-          role_group_id: common.userInfo.main_dept_id,
-        }
-        roleForm.validate().then((values) => {
-          obj.role_name = values.role_name
-          console.log('新增角色数据', obj)
+        roleForm.validate().then(async (values) => {
+          if (type === 'add') {
+            values.role_type = menuSelect.permission === 'system-auth-setting' ? 1 : 2 //1系统角色2应用角色
+          }
+          if (type === 'edit') {
+            values = {
+              ...item,
+              ...values,
+            }
+          }
+          const { code, message } = await Http.post(url, values)
+          if (code === 200) {
+            getRoleList({ app_id: menuSelect?.app_id })
+            Message.success(message)
+          }
         })
       },
     })
+  }
+
+  // 删除
+  const onDelete = async (item) => {
+    const { code, message } = await Http.post('/system/role/del', { id: item.id })
+    if (code === 200) {
+      getRoleList({ app_id: menuSelect?.app_id })
+      Message.success(message)
+    }
+  }
+
+  // 角色账号/角色权限切换
+  const onChangeTab = (e, item) => {
+    setTabActive(e)
+    if (e === '1') {
+      onChangeSearch(1, item.id)
+    }
+    if (e === '2') {
+      getRoleMenu(item.id)
+    }
   }
 
   // 打开弹窗-关联账号
@@ -240,15 +226,15 @@ const Setting = () => {
     <div className='flex h-full gap-2'>
       <Card className='w-1/4' bordered={false}>
         <div className='mb-2 flex justify-end'>
-          <Button type='text' size='small' icon={<IconPlus />} onClick={() => onCreate()}>
+          <Button type='text' size='small' icon={<IconPlus />} onClick={() => onCreate('add')}>
             新增角色
           </Button>
         </div>
         {items.map((item, index) => (
           <Fragment key={item.id}>
             <div
-              className={`group mb-2 flex cursor-pointer items-center justify-between rounded-md border px-3 py-2 hover:border-[rgb(var(--primary-6))] hover:bg-[var(--hover-color)] ${active === index ? 'border-[rgb(var(--primary-6))] bg-[var(--hover-color)]' : 'border-white'}`}
-              onClick={() => setActive(index)}>
+              className={`group mb-2 flex cursor-pointer items-center justify-between rounded-md border px-3 py-2 hover:border-[rgb(var(--primary-6))] hover:bg-[var(--hover-color)] ${active.id === item.id ? 'border-[rgb(var(--primary-6))] bg-[var(--hover-color)]' : 'border-white'}`}
+              onClick={() => onChangeTab('1', item)}>
               {item.role_name}
               <Dropdown
                 trigger='click'
@@ -256,10 +242,12 @@ const Setting = () => {
                 droplist={
                   <Menu>
                     <Menu.Item key='1'>复制</Menu.Item>
-                    <Menu.Item key='2' onClick={() => onCreate(item)}>
+                    <Menu.Item key='2' onClick={() => onCreate('edit', item)}>
                       编辑
                     </Menu.Item>
-                    <Menu.Item key='3'>删除</Menu.Item>
+                    <Menu.Item key='3' onClick={() => onDelete(item)}>
+                      删除
+                    </Menu.Item>
                   </Menu>
                 }>
                 <IconSettings className={`${active === index ? 'opacity-100' : 'opacity-0'} group-hover:opacity-100`} />
@@ -270,11 +258,11 @@ const Setting = () => {
       </Card>
 
       <Card className='h-full w-3/4' bordered={false} bodyStyle={{ height: '100%' }}>
-        <Tabs defaultActiveTab='1' justify>
+        <Tabs justify activeTab={tabActive} onChange={(e) => onChangeTab(e, active)}>
           <Tabs.TabPane key='1' title='角色账号'>
             <div className='mb-2 flex items-start justify-between'>
               <Form layout='inline' autoComplete='off' size='small' form={searchForm} onChange={onChangeSearch}>
-                <Form.Item field='keyword'>
+                <Form.Item field='content'>
                   <Input.Search allowClear placeholder='请输入内容' />
                 </Form.Item>
               </Form>
@@ -285,18 +273,30 @@ const Setting = () => {
               </Space>
             </div>
 
-            <Table borderCell stripe rowKey='id' columns={columns} data={dataTable} />
+            <Table
+              borderCell
+              stripe
+              rowKey='id'
+              columns={columns}
+              data={roleUser?.list || []}
+              pagination={{
+                showTotal: true,
+                total: roleUser.total,
+                current: roleUser.current,
+                onChange: (e) => onChangeSearch(e),
+              }}
+            />
           </Tabs.TabPane>
 
           <Tabs.TabPane key='2' title='角色权限'>
-            {treeData[0]?.children?.length > 0 && (
+            {roleMenu[0]?.children?.length > 0 && (
               <>
                 <div className='mb-2 text-right'>
                   <Button type='primary' size='small' onClick={submitRole}>
                     保存
                   </Button>
                 </div>
-                <TreeCheck treeData={treeData || []} onChange={setCheckTree} />
+                <TreeCheck treeData={roleMenu || []} onChange={setCheckTree} />
               </>
             )}
           </Tabs.TabPane>

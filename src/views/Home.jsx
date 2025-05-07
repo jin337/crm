@@ -51,7 +51,7 @@ const Home = () => {
   // 获取导航数据
   const createMenu = async (dept_id) => {
     const { code, data } = await Http.post('/system/menu/user-list', { dept_id })
-    if (code === 200 || code === 0) {
+    if (code === 200) {
       localSetItem('CRMUSERDATA', data)
 
       const left = data.left || []
@@ -150,7 +150,7 @@ const Home = () => {
   // 切换主题
   const changeTheme = async (obj) => {
     const { code, data } = await Http.post('/system/theme/change', obj)
-    if (code === 200 || code === 0) {
+    if (code === 200) {
       localSetItem('CRMUSERDATA', data)
 
       dispatch(setTheme(data.theme)) //主题信息

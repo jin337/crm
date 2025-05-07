@@ -32,7 +32,7 @@ const Application = () => {
   // 获取应用数据
   const getApps = async () => {
     const { code, data } = await Http.post('/system/app/list')
-    if (code === 200 || code === 0) {
+    if (code === 200) {
       setApps(data.list || [])
     }
   }
@@ -47,17 +47,17 @@ const Application = () => {
         closable: true,
         wrapClassName: 'modal-wrap',
         onOk: async () => {
-          const { code } = await Http.post('/system/app/change-status', { id: item.id, status: 0 })
-          if (code === 200 || code === 0) {
-            Message.success('修改成功')
+          const { code, message } = await Http.post('/system/app/change-status', { id: item.id, status: 0 })
+          if (code === 200) {
+            Message.success(message)
             getApps()
           }
         },
       })
     } else {
-      const { code } = await Http.post('/system/app/change-status', { id: item.id, status: 1 })
-      if (code === 200 || code === 0) {
-        Message.success('修改成功')
+      const { code, message } = await Http.post('/system/app/change-status', { id: item.id, status: 1 })
+      if (code === 200) {
+        Message.success(message)
         getApps()
       }
     }
@@ -180,7 +180,7 @@ const Application = () => {
             <Grid.Col span={18}>
               <Form.Item shouldUpdate noStyle>
                 {(values) => (
-                  <Form.Item label='路由' field='path' rules={[{ required: true }]}>
+                  <Form.Item label='路由' field='path'>
                     <Input addBefore={values.out_link === 1 ? 'http://' : undefined} placeholder='请输入内容' />
                   </Form.Item>
                 )}
@@ -208,7 +208,7 @@ const Application = () => {
             values.status = item.status
           }
           const { code } = await Http.post(url, values)
-          if (code === 200 || code === 0) {
+          if (code === 200) {
             Message.success(msg + '成功')
             getApps()
           }
