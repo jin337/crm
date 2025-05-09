@@ -2,7 +2,7 @@ import { Button, Card, Dropdown, Form, Input, Menu, Message, Modal, Space, Table
 import { IconMore, IconPlus } from '@arco-design/web-react/icon'
 import { useState } from 'react'
 
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import CreateForm from './create'
 const HrmMember = () => {
   const [searchForm] = Form.useForm()
@@ -111,13 +111,12 @@ const HrmMember = () => {
     onChangeSearch(1)
   }, [])
 
-  const getOrgData = () => {
-    Http.post('/system/dept/list', { pid: -1 }).then(({ code, data }) => {
-      if (code === 200) {
-        const arr = data.list || []
-        setOrgData(arr)
-      }
-    })
+  // 获取机构
+  const getOrgData = async () => {
+    const { code, data } = await Http.post('/system/dept/list', { pid: -1 })
+    if (code === 200) {
+      setOrgData(data.list || [])
+    }
   }
   // 获取数据
   const onChangeSearch = async (current) => {
@@ -128,49 +127,55 @@ const HrmMember = () => {
       setTableData(data || [])
     }
   }
-  // 新增
-  const onCreate = (type, item) => {
-    getOrgData()
-    createForm.resetFields()
-    let obj = {}
-    let url = null
-    if (type === 'add') {
-      url = '/system/user/add'
-    }
-    if (type === 'edit') {
-      url = '/system/user/edit'
-      obj = { ...item }
-      obj.user_depts = item.user_depts.split(',')
-    }
-    createForm.setFieldsValue(obj)
+  // 新增/编辑
+  const onCreate = useCallback(
+    async (type, item) => {
+      if (orgData.length > 0) {
+        createForm.resetFields()
+        let obj = {}
+        let url = null
+        if (type === 'add') {
+          url = '/system/user/add'
+        }
+        if (type === 'edit') {
+          url = '/system/user/edit'
+          obj = { ...item }
+          obj.user_depts = item.user_depts.split(',')
+        }
+        createForm.setFieldsValue(obj)
 
-    Modal.confirm({
-      title: (type === 'add' ? '新增' : '编辑') + '员工',
-      icon: null,
-      closable: true,
-      wrapClassName: 'modal-wrap',
-      content: <CreateForm form={createForm} data={orgData} />,
-      onOk: () => {
-        createForm.validate().then(async (values) => {
-          if (type === 'add') {
-            values.status = 2
-          }
-          if (type === 'edit') {
-            values = {
-              ...item,
-              ...values,
-            }
-          }
-          values.user_depts = values.user_depts.join(',')
-          const { code, message } = await Http.post(url, values)
-          if (code === 200) {
-            onChangeSearch(tableData?.current || 1)
-            Message.success(message)
-          }
+        Modal.confirm({
+          title: (type === 'add' ? '新增' : '编辑') + '员工',
+          icon: null,
+          closable: true,
+          wrapClassName: 'modal-wrap',
+          content: <CreateForm form={createForm} data={orgData} />,
+          onOk: () => {
+            createForm.validate().then(async (values) => {
+              if (type === 'add') {
+                values.status = 2
+              }
+              if (type === 'edit') {
+                values = {
+                  ...item,
+                  ...values,
+                }
+              }
+              values.user_depts = values.user_depts.join(',')
+              const { code, message } = await Http.post(url, values)
+              if (code === 200) {
+                onChangeSearch(tableData?.current || 1)
+                Message.success(message)
+              }
+            })
+          },
         })
-      },
-    })
-  }
+      } else {
+        getOrgData()
+      }
+    },
+    [orgData]
+  )
   // 操作
   const handleClick = async (key, record) => {
     let obj = {

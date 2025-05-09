@@ -1,18 +1,18 @@
-import { Button, Card, Dropdown, Form, Input, Menu, Modal, Popconfirm, Space, Table, Tabs } from '@arco-design/web-react'
+import { Button, Card, Dropdown, Form, Input, Menu, Message, Modal, Space, Table, Tabs } from '@arco-design/web-react'
 import { IconPlus, IconSettings } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router'
 
 // 组件
 import { SelectUser, TreeCheck } from 'src/components'
+// 公共方法
+import { flattenArray } from 'src/utils/common'
 
 // 接口
 import Http from 'src/service/api'
 
 const Setting = () => {
   const { menuSelect } = useSelector((state) => state.common)
-  const location = useLocation()
 
   const [searchForm] = Form.useForm()
   const [roleForm] = Form.useForm()
@@ -25,15 +25,16 @@ const Setting = () => {
   // 关联账号弹窗
   const [visibleSelect, setVisibleSelect] = useState(false)
   const [userTabs, setUserTabs] = useState([])
+  const [orgData, setOrgData] = useState([])
   const [userData, setUserData] = useState([])
 
   const [tabActive, setTabActive] = useState('1')
   // 角色权限列表
-  const [roleMenu, setRoleMenu] = useState([])
+  const [menuList, setMenuList] = useState([])
   // 角色账号列表
-  const [roleUser, setRoleUser] = useState([])
+  const [roleUser, setRoleUser] = useState({})
   // 已选角色
-  const [checkTree, setCheckTree] = useState([])
+  const [menuRole, setMenuRole] = useState([])
 
   // 表头
   const columns = [
@@ -59,17 +60,14 @@ const Setting = () => {
       align: 'center',
       render: (_, record) => (
         <Space>
-          <Button type='text' size='mini'>
-            设置
+          <Button
+            type='text'
+            size='mini'
+            status='danger'
+            onClick={() => onDeleteUser(record)}
+            disabled={active.id === 1 && record.id === 1}>
+            删除
           </Button>
-          <Button type='text' size='mini'>
-            复制
-          </Button>
-          <Popconfirm focusLock title='提醒' content='是否确定删除当前项？'>
-            <Button type='text' size='mini' status='danger'>
-              删除
-            </Button>
-          </Popconfirm>
         </Space>
       ),
     },
@@ -83,47 +81,35 @@ const Setting = () => {
   const getRoleList = async (obj) => {
     const { code, data } = await Http.post('/system/role/list', obj)
     if (code === 200) {
-      setItems(data.list || [])
-      setActive(data.list[0] || {})
-      onChangeTab('1', data.list[0])
+      let arr = data?.list || []
+      setItems(arr)
+
+      onRoleTab('1', arr[0])
     }
   }
+
   // 角色菜单列表
+  const getMenuList = async (item) => {
+    const { code, data } = await Http.post('/system/menu/list', { class: item.class, app_id: item.app_id })
+    if (code === 200) {
+      setMenuList(data?.list || [])
+    }
+  }
+
+  // 已授权-角色菜单列表
   const getRoleMenu = async (id) => {
     const { code, data } = await Http.post('/system/role/menu', { role_id: id })
     if (code === 200) {
-      setRoleMenu(data.list || [])
-    }
-  }
-  // 菜单授权
-  // role_id,menu_list
-  const addMenu = async (obj = {}) => {
-    const { code, message } = await Http.post('/system/role/add-menu', obj)
-    if (code === 200) {
-      Message.success(message)
-    }
-  }
-  // 用户授权
-  // user_id,dept_id,role_id
-  const addUser = async (obj = {}) => {
-    const { code, message } = await Http.post('/system/role/add-user', obj)
-    if (code === 200) {
-      Message.success(message)
+      let arr = flattenArray(data?.list || []).map((e) => e.id)
+      setMenuRole(arr)
     }
   }
 
-  // 角色组列表
-  const getRoleGroup = async () => {
-    const { code, data } = await Http.post('/system/role/group')
-    if (code === 200) {
-      console.log('data', data)
-    }
-  }
   // 角色用户列表
-  const onChangeSearch = async (current) => {
+  const onChangeSearch = async (current, role = active) => {
     const search = searchForm.getFieldsValue()
 
-    const { code, data } = await Http.post('/system/role/user', { current, pageSize: 10, role_id: active.id, ...search })
+    const { code, data } = await Http.post('/system/role/user', { current, pageSize: 10, role_id: role.id, ...search })
     if (code === 200) {
       setRoleUser(data || [])
     }
@@ -148,9 +134,13 @@ const Setting = () => {
       closable: true,
       wrapClassName: 'modal-wrap',
       content: (
-        <Form form={roleForm} layout='vertical' autoComplete='off'>
-          <Form.Item field='role_name' rules={[{ required: true }]}>
-            <Input placeholder='请输入内容' />
+        <Form
+          form={roleForm}
+          layout='vertical'
+          autoComplete='off'
+          validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
+          <Form.Item field='role_name'>
+            <Input allowClear placeholder='请输入内容' />
           </Form.Item>
         </Form>
       ),
@@ -165,6 +155,7 @@ const Setting = () => {
               ...values,
             }
           }
+          values.app_id = menuSelect.app_id
           const { code, message } = await Http.post(url, values)
           if (code === 200) {
             getRoleList({ app_id: menuSelect?.app_id })
@@ -177,26 +168,49 @@ const Setting = () => {
 
   // 删除
   const onDelete = async (item) => {
-    const { code, message } = await Http.post('/system/role/del', { id: item.id })
-    if (code === 200) {
-      getRoleList({ app_id: menuSelect?.app_id })
-      Message.success(message)
-    }
+    Modal.confirm({
+      title: '提醒',
+      content: '是否确定删除当前项？',
+      closable: true,
+      wrapClassName: 'modal-wrap',
+      onOk: async () => {
+        const { code, message } = await Http.post('/system/role/del', { id: item.id })
+        if (code === 200) {
+          getRoleList({ app_id: menuSelect?.app_id })
+          Message.success(message)
+        }
+      },
+    })
   }
 
   // 角色账号/角色权限切换
-  const onChangeTab = (e, item) => {
-    setTabActive(e)
-    if (e === '1') {
-      onChangeSearch(1, item.id)
+  const onRoleTab = (e, item) => {
+    setActive(item) // 当前已选角色
+    setRoleUser({}) //已选角色账号列表
+    setMenuList([]) // 角色权限列表
+    setMenuRole([]) //已选角色权限
+
+    setTabActive(e) // 当前tab
+    if (item) {
+      // 角色账号
+      if (e === '1') {
+        onChangeSearch(1, item)
+      }
+      if (e === '2') {
+        // 已授权角色权限
+        getRoleMenu(item.id)
+      }
     }
+    // 角色权限
     if (e === '2') {
-      getRoleMenu(item.id)
+      getMenuList(menuSelect)
     }
   }
 
   // 打开弹窗-关联账号
   const openSelect = () => {
+    getOrgData()
+
     const list = [
       {
         id: 1,
@@ -212,37 +226,67 @@ const Setting = () => {
       },
     ]
     setUserTabs(list)
-    onTabChange(list[0].id)
-
+    onUserTab(list[0].id)
+    // 已授权账号
     setUserData([])
-
     setVisibleSelect(true)
   }
-  // 切换关联账号类型
-  const onTabChange = async (key) => {
-    const { code, data } = await Http.get('/mock/org-list.json')
+
+  // 获取机构
+  const getOrgData = async () => {
+    const { code, data } = await Http.post('/system/dept/list', { pid: -1 })
     if (code === 200) {
-      const children = Number(key) === 1 ? data.list1 : data.list || []
-      setUserTabs((prev) => {
-        return prev.map((e) => {
-          if (Number(e.id) === Number(key)) {
-            e.children = children
-          }
-          return e
-        })
-      })
+      setOrgData(data.list || [])
     }
   }
-  // 关联账号
-  const onChangeUser = (arr) => {
-    console.log('关联账号', arr)
-    setUserData(arr)
-    setVisibleSelect(false)
+  // 切换关联账号类型
+  const onUserTab = (key) => {
+    const children = Number(key) === 1 ? [] : orgData
+    setUserTabs((prev) => {
+      return prev.map((e) => {
+        if (Number(e.id) === Number(key)) {
+          e.children = children
+        }
+        return e
+      })
+    })
   }
 
-  // 保存角色
-  const submitRole = () => {
-    console.log('保存', checkTree)
+  // 删除角色用户
+  const onDeleteUser = async (item) => {
+    Modal.confirm({
+      title: '提醒',
+      content: '是否确定删除当前项？',
+      closable: true,
+      wrapClassName: 'modal-wrap',
+      onOk: async () => {
+        const { code, message } = await Http.post('/system/role/del-user', { id: item.role_user_id })
+        if (code === 200) {
+          onChangeSearch(1)
+          Message.success(message)
+        }
+      },
+    })
+  }
+
+  // 保存-关联账号
+  const onChangeUser = async (arr) => {
+    setVisibleSelect(false)
+    const obj = { role_id: active.id, user_list: arr.map((e) => ({ user_id: e.id, dept_id: e.dept_id })) }
+    const { code, message } = await Http.post('/system/role/add-user', obj)
+    if (code === 200) {
+      onChangeSearch(1)
+      Message.success(message)
+    }
+  }
+
+  // 保存-角色权限
+  const submitRole = async () => {
+    const { code, message } = await Http.post('/system/role/add-menu', { role_id: active.id, menu_list: menuRole })
+    if (code === 200) {
+      getRoleMenu(active.id)
+      Message.success(message)
+    }
   }
 
   return (
@@ -257,7 +301,7 @@ const Setting = () => {
           <Fragment key={item.id}>
             <div
               className={`group mb-2 flex cursor-pointer items-center justify-between rounded-md border px-3 py-2 hover:border-[rgb(var(--primary-6))] hover:bg-[var(--hover-color)] ${active.id === item.id ? 'border-[rgb(var(--primary-6))] bg-[var(--hover-color)]' : 'border-white'}`}
-              onClick={() => onChangeTab('1', item)}>
+              onClick={() => onRoleTab('1', item)}>
               {item.role_name}
               <Dropdown
                 trigger='click'
@@ -268,9 +312,11 @@ const Setting = () => {
                     <Menu.Item key='2' onClick={() => onCreate('edit', item)}>
                       编辑
                     </Menu.Item>
-                    <Menu.Item key='3' onClick={() => onDelete(item)}>
-                      删除
-                    </Menu.Item>
+                    {item.id !== 1 && (
+                      <Menu.Item key='3' onClick={() => onDelete(item)}>
+                        删除
+                      </Menu.Item>
+                    )}
                   </Menu>
                 }>
                 <IconSettings className={`${active === index ? 'opacity-100' : 'opacity-0'} group-hover:opacity-100`} />
@@ -281,7 +327,7 @@ const Setting = () => {
       </Card>
 
       <Card className='h-full w-3/4' bordered={false} bodyStyle={{ height: '100%' }}>
-        <Tabs justify activeTab={tabActive} onChange={(e) => onChangeTab(e, active)}>
+        <Tabs justify activeTab={tabActive} onChange={(e) => onRoleTab(e, active)}>
           <Tabs.TabPane key='1' title='角色账号'>
             <div className='mb-2 flex items-start justify-between'>
               <Form layout='inline' autoComplete='off' size='small' form={searchForm} onChange={onChangeSearch}>
@@ -312,14 +358,16 @@ const Setting = () => {
           </Tabs.TabPane>
 
           <Tabs.TabPane key='2' title='角色权限'>
-            {roleMenu[0]?.children?.length > 0 && (
+            {menuList?.length > 0 && (
               <>
-                <div className='mb-2 text-right'>
-                  <Button type='primary' size='small' onClick={submitRole}>
-                    保存
-                  </Button>
-                </div>
-                <TreeCheck treeData={roleMenu || []} onChange={setCheckTree} />
+                {items.length > 0 && (
+                  <div className='mb-2 text-right'>
+                    <Button type='primary' size='small' onClick={submitRole}>
+                      保存
+                    </Button>
+                  </div>
+                )}
+                <TreeCheck treeData={menuList || []} selectKeys={menuRole} onChange={setMenuRole} />
               </>
             )}
           </Tabs.TabPane>
@@ -332,7 +380,7 @@ const Setting = () => {
         visible={visibleSelect}
         setVisible={setVisibleSelect}
         tabs={userTabs}
-        onTabChange={onTabChange}
+        onTabChange={onUserTab}
         select={userData}
         onChange={onChangeUser}
       />

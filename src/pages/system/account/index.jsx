@@ -1,4 +1,4 @@
-import { Button, Card, Checkbox, Form, Input, Message, Modal, Popconfirm, Select, Table, Tag } from '@arco-design/web-react'
+import { Button, Card, Checkbox, Form, Input, Message, Modal, Select, Table, Tag } from '@arco-design/web-react'
 import { IconPlus } from '@arco-design/web-react/icon'
 import { useEffect, useState } from 'react'
 
@@ -6,6 +6,7 @@ const Account = () => {
   const [searchForm] = Form.useForm()
   const [createForm] = Form.useForm()
   const [tableData, setTableData] = useState({})
+
   const [selectedIds, setSelectedIds] = useState([])
 
   useEffect(() => {
@@ -109,10 +110,10 @@ const Account = () => {
                 },
               },
             ]}>
-            <Input placeholder='请输入内容' />
+            <Input allowClear placeholder='请输入内容' />
           </Form.Item>
           <Form.Item label='账号名' field='account_name' rules={[{ required: true }]}>
-            <Input placeholder='请输入内容' />
+            <Input allowClear placeholder='请输入内容' />
           </Form.Item>
           <Form.Item
             label='手机号'
@@ -128,7 +129,7 @@ const Account = () => {
                 },
               },
             ]}>
-            <Input placeholder='请输入内容' />
+            <Input allowClear placeholder='请输入内容' />
           </Form.Item>
         </Form>
       ),
@@ -160,13 +161,39 @@ const Account = () => {
   }
 
   // 删除
-  const onDelete = async (ids) => {
-    const { code, message } = await Http.post('/system/account/del', { ids })
-    if (code === 200) {
-      setSelectedIds([])
-      onChangeSearch(tableData?.current || 1)
-      Message.success(message)
-    }
+  const onDelete = (ids) => {
+    Modal.confirm({
+      title: '提醒',
+      content: '是否确定删除当前项？',
+      closable: true,
+      wrapClassName: 'modal-wrap',
+      onOk: async () => {
+        const { code, message } = await Http.post('/system/account/del', { ids })
+        if (code === 200) {
+          setSelectedIds([])
+          onChangeSearch(tableData?.current || 1)
+          Message.success(message)
+        }
+      },
+    })
+  }
+
+  // 重置密码
+  const onResetPassword = (ids) => {
+    Modal.confirm({
+      title: '提醒',
+      content: '是否确定重置当前项的密码？',
+      closable: true,
+      wrapClassName: 'modal-wrap',
+      onOk: async () => {
+        const { code, message } = await Http.post('/system/account/reset-pass', { ids })
+        if (code === 200) {
+          setSelectedIds([])
+          onChangeSearch(tableData?.current || 1)
+          Message.success(message)
+        }
+      },
+    })
   }
 
   return (
@@ -193,15 +220,13 @@ const Account = () => {
           </Button>
         </div>
 
-        {selectedIds.length > 0 && (
+        {selectedIds?.length > 0 && (
           <div className='absolute top-[61px] left-[72px] z-10 flex h-[40px] w-[calc(100%-104px)] items-center gap-4 bg-[var(--color-neutral-2)]'>
             <div>已选中 {selectedIds.length} 项</div>
-            <Popconfirm focusLock title='提醒' content='是否确定删除当前项？' onOk={() => onDelete(selectedIds)}>
-              <Button size='small' type='primary'>
-                删除
-              </Button>
-            </Popconfirm>
-            <Button size='small' type='primary'>
+            <Button size='small' type='primary' onClick={() => onDelete(selectedIds)}>
+              删除
+            </Button>
+            <Button size='small' type='primary' onClick={() => onResetPassword(selectedIds)}>
               重置密码
             </Button>
           </div>
@@ -215,6 +240,7 @@ const Account = () => {
           data={tableData.list || []}
           rowSelection={{
             type: 'checkbox',
+            selectedRowKeys: selectedIds,
             onChange: (ids) => setSelectedIds(ids),
           }}
           pagination={{

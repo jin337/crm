@@ -9,7 +9,6 @@ import {
   InputNumber,
   Message,
   Modal,
-  Popconfirm,
   Radio,
   Space,
   Table,
@@ -117,11 +116,9 @@ const Manage = () => {
           <Button type='text' size='mini' onClick={() => onCreate('edit', record)}>
             编辑
           </Button>
-          <Popconfirm focusLock title='提醒' content='是否确定删除当前项？' onOk={() => onDelete(record)}>
-            <Button type='text' size='mini' status='danger'>
-              删除
-            </Button>
-          </Popconfirm>
+          <Button type='text' size='mini' status='danger' onClick={() => onDelete(record)}>
+            删除
+          </Button>
         </Space>
       ),
     },
@@ -346,12 +343,20 @@ const Manage = () => {
   }
 
   // 删除
-  const onDelete = async (item) => {
-    const { code, message } = await Http.post('/system/menu/del', { id: item.id })
-    if (code === 200) {
-      onChange(activeTab)
-      Message.success(message)
-    }
+  const onDelete = (item) => {
+    Modal.confirm({
+      title: '提醒',
+      content: '是否确定删除当前项？',
+      closable: true,
+      wrapClassName: 'modal-wrap',
+      onOk: async () => {
+        const { code, message } = await Http.post('/system/menu/del', { id: item.id })
+        if (code === 200) {
+          onChange(activeTab)
+          Message.success(message)
+        }
+      },
+    })
   }
   // tab切换
   const onChange = async (e, state = params) => {

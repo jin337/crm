@@ -6,7 +6,7 @@ const Create = ({ form, data = [] }) => {
     <Form form={form} layout='vertical' autoComplete='off' validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
       <div className='flex gap-4'>
         <Form.Item label='姓名' field='user_name' rules={[{ required: true }]}>
-          <Input placeholder='请输入内容' />
+          <Input allowClear placeholder='请输入内容' />
         </Form.Item>
         <Form.Item
           label='手机号'
@@ -22,12 +22,13 @@ const Create = ({ form, data = [] }) => {
               },
             },
           ]}>
-          <Input placeholder='请输入内容' />
+          <Input allowClear placeholder='请输入内容' />
         </Form.Item>
       </div>
       <div className='flex gap-4'>
         <Form.Item label='性别' field='user_sex' rules={[{ required: true }]}>
           <Select
+            allowClear
             placeholder='请选择'
             options={[
               {
@@ -42,12 +43,13 @@ const Create = ({ form, data = [] }) => {
           />
         </Form.Item>
         <Form.Item label='账号' field='user_account' rules={[{ required: true }]}>
-          <Input placeholder='请输入内容' />
+          <Input allowClear placeholder='请输入内容' />
         </Form.Item>
       </div>
       <div className='flex gap-4'>
         <Form.Item label='主部门' field='user_dept_main' rules={[{ required: true }]}>
           <TreeSelect
+            allowClear
             treeData={data}
             fieldNames={{
               key: 'id',
@@ -56,8 +58,9 @@ const Create = ({ form, data = [] }) => {
             placeholder='请选择'
           />
         </Form.Item>
-        <Form.Item label='附属部门' field='user_depts' rules={[{ required: true }]}>
+        <Form.Item label='附属部门' field='user_depts'>
           <TreeSelect
+            allowClear
             multiple
             treeData={data}
             fieldNames={{
@@ -69,7 +72,7 @@ const Create = ({ form, data = [] }) => {
         </Form.Item>
       </div>
       <Form.Item label='岗位' field='user_post' rules={[{ required: true }]}>
-        <Input placeholder='请输入内容' />
+        <Input allowClear placeholder='请输入内容' />
       </Form.Item>
     </Form>
   )

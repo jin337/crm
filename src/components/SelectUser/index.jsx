@@ -5,9 +5,15 @@ import { useEffect, useState } from 'react'
 // 样式
 import styles from './index.module.scss'
 
+// 公共方法
+import { flattenArray } from 'src/utils/common'
+
 const SelectUser = (props) => {
   const { title, tabs = [], select = [], visible, setVisible, onTabChange, onChange } = props
+
+  const [items, setItems] = useState([])
   const [user, setUser] = useState([])
+  const [leaf, setLeaf] = useState([])
 
   // 员工信息
   const User = (props) => {
@@ -28,7 +34,7 @@ const SelectUser = (props) => {
           <IconUser />
         </Avatar>
         <div className={styles['info']}>
-          <div>{item?.name}</div>
+          <div>{item?.user_name}</div>
           <div className={styles['dept']}>{item?.dept_name}</div>
         </div>
         {close && <IconCloseCircleFill className={styles['close']} onClick={(e) => onRemove(e)} />}
@@ -37,11 +43,57 @@ const SelectUser = (props) => {
   }
 
   useEffect(() => {
+    setItems(tabs)
+  }, [tabs])
+
+  useEffect(() => {
     setUser(select)
   }, [select])
 
+  // 获取用户
+  const getUserData = async (obj) => {
+    setLeaf([])
+    const { code, data } = await Http.post('/system/user/list', { ...obj, current: 1, pageSize: 9999 })
+    if (code === 200) {
+      let arr =
+        data?.list.map((e) => ({
+          ...e,
+          key: obj.dept_id + '_' + e.id,
+          dept_id: obj.dept_id,
+          dept_name: e.user_name,
+          isLeaf: true,
+        })) || []
+      setLeaf(arr)
+    }
+  }
+
+  const loadMore = (treeNode) => {
+    getUserData({ dept_id: treeNode.props.dataRef.id })
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        treeNode.props.dataRef.children = [...leaf]
+        setItems([...items])
+        resolve()
+      }, 1000)
+    })
+  }
+
+  // 当前选中
+  const onSelectTree = (e) => {
+    const selectKey = flattenArray(items)?.find((item) => item?.isLeaf && item.key === e[0])
+    setUser((prev) =>
+      [...prev, selectKey].reduce((acc, item) => {
+        if (!acc.includes(item)) {
+          acc.push(item)
+        }
+        return acc
+      }, [])
+    )
+  }
+
   return (
     <Modal
+      unmountOnExit={true}
       title={title}
       visible={visible}
       onOk={() => onChange(user)}
@@ -54,7 +106,7 @@ const SelectUser = (props) => {
         <div className={styles['use-box']}>
           <Input.Search className={styles['search']} allowClear placeholder='请输入内容' />
           <Tabs className={styles['tabs']} size='small' type='rounded' defaultActiveTab={'1'} onChange={onTabChange}>
-            {tabs.map((item) => (
+            {items.map((item) => (
               <Tabs.TabPane key={item.id} title={item.title}>
                 {item.tree === 0 && (
                   <div className={styles['content']} style={{ height: 338 }}>
@@ -68,7 +120,9 @@ const SelectUser = (props) => {
                     blockNode
                     treeData={item?.children}
                     virtualListProps={{ height: 338 }}
+                    loadMore={loadMore}
                     fieldNames={{ key: 'key', title: 'dept_name' }}
+                    onSelect={onSelectTree}
                   />
                 )}
               </Tabs.TabPane>

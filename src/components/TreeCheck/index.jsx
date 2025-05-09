@@ -5,12 +5,8 @@ import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 
 const TreeCheck = (props) => {
-  const { treeData, onChange } = props
+  const { treeData = [], selectKeys = [], onChange } = props
   const [items, setItems] = useState([])
-
-  useEffect(() => {
-    setItems(treeData[0]?.children || [])
-  }, [treeData])
 
   const flattenItems = (data) => {
     return data.reduce((acc, item) => {
@@ -23,7 +19,15 @@ const TreeCheck = (props) => {
   }
 
   const allOptions = flattenItems(items).map((x) => x.id)
-  const { setValueSelected, selected } = Checkbox.useCheckbox(allOptions, [])
+  const { setValueSelected, selected, setSelected } = Checkbox.useCheckbox(allOptions, [])
+
+  useEffect(() => {
+    setSelected(selectKeys)
+  }, [])
+
+  useEffect(() => {
+    setItems(treeData || [])
+  }, [treeData])
 
   // 当前选中
   useEffect(() => {
@@ -75,7 +79,7 @@ const TreeCheck = (props) => {
           checked={getParentStatus(option)}
           onChange={(checked) => changeChecked(checked, option)}
           indeterminate={getParentStatus(option) === 'indeterminate'}>
-          {option.title}（{option.id}）
+          {option.title}
         </Checkbox>
         {option?.children?.length > 0 && <div className={styles['box']}>{renderTree(option.children)}</div>}
       </div>
