@@ -1,7 +1,7 @@
-import { Form, Input, Select } from '@arco-design/web-react'
+import { Form, Input, Select, TreeSelect } from '@arco-design/web-react'
 import {} from 'react'
 
-const Create = ({ form }) => {
+const Create = ({ form, data = [] }) => {
   return (
     <Form form={form} layout='vertical' autoComplete='off' validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
       <div className='flex gap-4'>
@@ -47,10 +47,25 @@ const Create = ({ form }) => {
       </div>
       <div className='flex gap-4'>
         <Form.Item label='主部门' field='user_dept_main' rules={[{ required: true }]}>
-          <Select options={[]} placeholder='请选择' />
+          <TreeSelect
+            treeData={data}
+            fieldNames={{
+              key: 'id',
+              title: 'dept_name',
+            }}
+            placeholder='请选择'
+          />
         </Form.Item>
         <Form.Item label='附属部门' field='user_depts' rules={[{ required: true }]}>
-          <Select options={[]} placeholder='请选择' />
+          <TreeSelect
+            multiple
+            treeData={data}
+            fieldNames={{
+              key: 'id',
+              title: 'dept_name',
+            }}
+            placeholder='请选择'
+          />
         </Form.Item>
       </div>
       <Form.Item label='岗位' field='user_post' rules={[{ required: true }]}>

@@ -12,6 +12,7 @@ import {
   Radio,
   Space,
   Switch,
+  Tooltip,
 } from '@arco-design/web-react'
 import { IconEdit, IconPlus, IconSettings } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
@@ -239,14 +240,18 @@ const Application = () => {
                   </div>
                 </div>
                 <Space>
-                  <IconEdit
-                    className='cursor-pointer text-xl opacity-0 group-hover:opacity-100'
-                    onClick={() => onCreate('edit', item)}
-                  />
-                  <IconSettings
-                    className='cursor-pointer text-xl opacity-0 group-hover:opacity-100'
-                    onClick={() => openSetting(item)}
-                  />
+                  <Tooltip mini content='编辑'>
+                    <IconEdit
+                      className='cursor-pointer text-xl opacity-0 group-hover:opacity-100'
+                      onClick={() => onCreate('edit', item)}
+                    />
+                  </Tooltip>
+                  <Tooltip mini content='设置'>
+                    <IconSettings
+                      className='cursor-pointer text-xl opacity-0 group-hover:opacity-100'
+                      onClick={() => openSetting(item)}
+                    />
+                  </Tooltip>
                   <Switch checked={item.status} onChange={(e) => onChange(e, item)} />
                 </Space>
               </div>

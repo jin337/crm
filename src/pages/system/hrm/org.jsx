@@ -193,29 +193,31 @@ const HrmOrg = () => {
     let url = null
     if (type === 'add') {
       url = '/system/user/add'
-      obj = {}
     }
     if (type === 'edit') {
       url = '/system/user/edit'
       obj = { ...item }
     }
     memberForm.setFieldsValue(obj)
-
+    obj.user_depts = item.user_depts.split(',')
     Modal.confirm({
       title: (type === 'add' ? '新增' : '编辑') + '员工',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',
-      content: <CreateForm form={memberForm} />,
+      content: <CreateForm form={memberForm} data={orgData} />,
       onOk: () => {
         memberForm.validate().then(async (values) => {
           if (type === 'add') {
             values.status = 2
           }
           if (type === 'edit') {
-            values.id = item.id
-            values.status = item.status
+            values = {
+              ...item,
+              ...values,
+            }
           }
+          values.user_depts = values.user_depts.join(',')
           const { code, message } = await Http.post(url, values)
           if (code === 200) {
             onChangeSearch(tableData?.current || 1)

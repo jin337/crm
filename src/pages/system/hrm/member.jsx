@@ -9,6 +9,7 @@ const HrmMember = () => {
   const [createForm] = Form.useForm()
 
   const [tableData, setTableData] = useState({})
+  const [orgData, setOrgData] = useState([])
 
   // 流程管理-表头
   const columns = [
@@ -109,6 +110,15 @@ const HrmMember = () => {
   useEffect(() => {
     onChangeSearch(1)
   }, [])
+
+  const getOrgData = () => {
+    Http.post('/system/dept/list', { pid: -1 }).then(({ code, data }) => {
+      if (code === 200) {
+        const arr = data.list || []
+        setOrgData(arr)
+      }
+    })
+  }
   // 获取数据
   const onChangeSearch = async (current) => {
     const search = searchForm.getFieldsValue()
@@ -120,16 +130,17 @@ const HrmMember = () => {
   }
   // 新增
   const onCreate = (type, item) => {
+    getOrgData()
     createForm.resetFields()
     let obj = {}
     let url = null
     if (type === 'add') {
       url = '/system/user/add'
-      obj = {}
     }
     if (type === 'edit') {
       url = '/system/user/edit'
       obj = { ...item }
+      obj.user_depts = item.user_depts.split(',')
     }
     createForm.setFieldsValue(obj)
 
@@ -138,17 +149,19 @@ const HrmMember = () => {
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',
-      content: <CreateForm form={createForm} />,
+      content: <CreateForm form={createForm} data={orgData} />,
       onOk: () => {
         createForm.validate().then(async (values) => {
           if (type === 'add') {
             values.status = 2
           }
           if (type === 'edit') {
-            values.id = item.id
-            values.status = item.status
+            values = {
+              ...item,
+              ...values,
+            }
           }
-          console.log('values', values)
+          values.user_depts = values.user_depts.join(',')
           const { code, message } = await Http.post(url, values)
           if (code === 200) {
             onChangeSearch(tableData?.current || 1)

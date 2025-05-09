@@ -95,7 +95,30 @@ const Setting = () => {
       setRoleMenu(data.list || [])
     }
   }
+  // 菜单授权
+  // role_id,menu_list
+  const addMenu = async (obj = {}) => {
+    const { code, message } = await Http.post('/system/role/add-menu', obj)
+    if (code === 200) {
+      Message.success(message)
+    }
+  }
+  // 用户授权
+  // user_id,dept_id,role_id
+  const addUser = async (obj = {}) => {
+    const { code, message } = await Http.post('/system/role/add-user', obj)
+    if (code === 200) {
+      Message.success(message)
+    }
+  }
 
+  // 角色组列表
+  const getRoleGroup = async () => {
+    const { code, data } = await Http.post('/system/role/group')
+    if (code === 200) {
+      console.log('data', data)
+    }
+  }
   // 角色用户列表
   const onChangeSearch = async (current) => {
     const search = searchForm.getFieldsValue()
