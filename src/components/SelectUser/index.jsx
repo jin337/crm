@@ -9,7 +9,7 @@ import styles from './index.module.scss'
 import { flattenArray } from 'src/utils/common'
 
 const SelectUser = (props) => {
-  const { title, tabs = [], select = [], visible, setVisible, onTabChange, onChange } = props
+  const { title, tabs = [], select = [], visible, setVisible, onChange } = props
 
   const [items, setItems] = useState([])
   const [user, setUser] = useState([])
@@ -105,25 +105,29 @@ const SelectUser = (props) => {
       <div className={styles['container']}>
         <div className={styles['use-box']}>
           <Input.Search className={styles['search']} allowClear placeholder='请输入内容' />
-          <Tabs className={styles['tabs']} size='small' type='rounded' defaultActiveTab={'1'} onChange={onTabChange}>
+          <Tabs className={styles['tabs']} size='small' type='rounded' defaultActiveTab={'2'}>
             {items.map((item) => (
               <Tabs.TabPane key={item.id} title={item.title}>
-                {item.tree === 0 && (
+                {item.id === 1 && (
                   <div className={styles['content']} style={{ height: 338 }}>
                     {item?.children?.map((item) => (
                       <User key={item.id} item={item} onClick={() => setUser([...user, item])} />
                     ))}
+                    {item?.children?.length === 0 && <Empty />}
                   </div>
                 )}
-                {item.tree === 1 && item?.children?.length > 0 && (
-                  <Tree
-                    blockNode
-                    treeData={item?.children}
-                    virtualListProps={{ height: 338 }}
-                    loadMore={loadMore}
-                    fieldNames={{ key: 'key', title: 'dept_name' }}
-                    onSelect={onSelectTree}
-                  />
+                {item.id === 2 && item?.children?.length > 0 && (
+                  <>
+                    <Tree
+                      blockNode
+                      treeData={item?.children}
+                      virtualListProps={{ height: 338 }}
+                      loadMore={loadMore}
+                      fieldNames={{ key: 'key', title: 'dept_name' }}
+                      onSelect={onSelectTree}
+                    />
+                    {item?.children?.length === 0 && <Empty />}
+                  </>
                 )}
               </Tabs.TabPane>
             ))}

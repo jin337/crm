@@ -127,7 +127,7 @@ const Account = () => {
                 },
               },
             ]}>
-            <Input allowClear placeholder='请输入内容' />
+            <Input allowClear disabled={type === 'edit'} placeholder='请输入内容' />
           </Form.Item>
           <Form.Item
             label='手机号'

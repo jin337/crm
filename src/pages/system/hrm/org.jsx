@@ -33,6 +33,7 @@ const HrmOrg = () => {
   const [expandedKeys, setExpandedKeys] = useState([])
 
   useEffect(() => {
+    getUserData()
     getOrgData()
   }, [])
 
@@ -144,15 +145,7 @@ const HrmOrg = () => {
 
     orgForm.setFieldsValue(obj)
 
-    if (userData.length > 0) {
-      openCreateOrg(type, e)
-    } else {
-      const { code, data } = await Http.post('/system/user/list', { current: 1, pageSize: 10 })
-      if (code === 200) {
-        setUserData(data.list || [])
-        openCreateOrg(type, e, data.list || [])
-      }
-    }
+    openCreateOrg(type, e)
   }
   const openCreateOrg = (type, e, arr = userData) => {
     Modal.confirm({

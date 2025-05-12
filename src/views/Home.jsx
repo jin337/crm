@@ -1,4 +1,4 @@
-import { Drawer, Layout } from '@arco-design/web-react'
+import { Drawer, Layout, Message } from '@arco-design/web-react'
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useLocation, useNavigate } from 'react-router'
@@ -36,7 +36,9 @@ const Home = () => {
         item && createSelect([...initMenuData, ...systemMenuData], item.permission)
       }
     } else {
-      onSelectSystem('exit')
+      sessionStorage.clear()
+      localStorage.clear()
+      navigate('/login') // 跳转登录页
     }
   }, [location])
 
@@ -49,10 +51,14 @@ const Home = () => {
   }, [location, menuData])
 
   // 获取导航数据
-  const createMenu = async (dept_id) => {
+  const createMenu = async (dept_id, refresh = false) => {
     const { code, data } = await Http.post('/system/menu/user-list', { dept_id })
     if (code === 200) {
       localSetItem('CRMUSERDATA', data)
+      if (refresh) {
+        navigate(0)
+        return
+      }
 
       const left = data.left || []
       setMenuData(left)
@@ -122,7 +128,7 @@ const Home = () => {
   const onSelectSystem = (type, obj) => {
     // 切换机构
     if (type === 'role') {
-      createMenu(obj)
+      createMenu(obj, true) //切换机构后刷新页面
     }
     // 切换主题
     if (type === 'theme') {
@@ -141,9 +147,7 @@ const Home = () => {
     }
     // 退出
     if (type === 'exit') {
-      sessionStorage.clear()
-      localStorage.clear()
-      navigate('/login') // 跳转登录页
+      exit()
     }
   }
 
@@ -155,6 +159,16 @@ const Home = () => {
 
       dispatch(setTheme(data.theme)) //主题信息
       updateTheme(data?.theme) //设置主题
+    }
+  }
+  // 退出
+  const exit = async () => {
+    const { code, message } = await Http.post('/logout')
+    if (code === 200) {
+      Message.success(message)
+      sessionStorage.clear()
+      localStorage.clear()
+      navigate('/login') // 跳转登录页
     }
   }
 

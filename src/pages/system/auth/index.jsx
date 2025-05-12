@@ -25,7 +25,8 @@ const Setting = () => {
   // 关联账号弹窗
   const [visibleSelect, setVisibleSelect] = useState(false)
   const [userTabs, setUserTabs] = useState([])
-  const [orgData, setOrgData] = useState([])
+  const [deptList, setDeptList] = useState([])
+  const [userList, setUserList] = useState([])
   const [userData, setUserData] = useState([])
 
   const [tabActive, setTabActive] = useState('1')
@@ -218,48 +219,33 @@ const Setting = () => {
   }
 
   // 打开弹窗-关联账号
-  const openSelect = () => {
-    getOrgData()
-
+  const openSelect = async () => {
     const list = [
       {
         id: 1,
         title: '常用',
-        tree: 0,
         children: [],
       },
       {
         id: 2,
         title: '机构',
-        tree: 1,
-        children: [],
+        children: deptList,
       },
     ]
+
+    if (deptList.length === 0) {
+      const { code, data } = await Http.post('/system/dept/list', { pid: -1 })
+      if (code === 200) {
+        setDeptList(data.list || [])
+        list[1].children = data.list || []
+      }
+    }
+
     setUserTabs(list)
     onUserTab(list[0].id)
     // 已授权账号
     setUserData([])
     setVisibleSelect(true)
-  }
-
-  // 获取机构
-  const getOrgData = async () => {
-    const { code, data } = await Http.post('/system/dept/list', { pid: -1 })
-    if (code === 200) {
-      setOrgData(data.list || [])
-    }
-  }
-  // 切换关联账号类型
-  const onUserTab = (key) => {
-    const children = Number(key) === 1 ? [] : orgData
-    setUserTabs((prev) => {
-      return prev.map((e) => {
-        if (Number(e.id) === Number(key)) {
-          e.children = children
-        }
-        return e
-      })
-    })
   }
 
   // 删除角色用户
@@ -367,20 +353,22 @@ const Setting = () => {
             />
           </Tabs.TabPane>
 
-          <Tabs.TabPane key='2' title='角色权限'>
-            {menuList?.length > 0 && (
-              <>
-                {items.length > 0 && (
-                  <div className='mb-2 text-right'>
-                    <Button type='primary' size='small' onClick={submitRole}>
-                      保存
-                    </Button>
-                  </div>
-                )}
-                <TreeCheck treeData={menuList || []} selectKeys={menuRole} onChange={setMenuRole} />
-              </>
-            )}
-          </Tabs.TabPane>
+          {active.id !== 1 && (
+            <Tabs.TabPane key='2' title='角色权限'>
+              {menuList?.length > 0 && (
+                <>
+                  {items.length > 0 && (
+                    <div className='mb-2 text-right'>
+                      <Button type='primary' size='small' onClick={submitRole}>
+                        保存
+                      </Button>
+                    </div>
+                  )}
+                  <TreeCheck treeData={menuList || []} selectKeys={menuRole} onChange={setMenuRole} />
+                </>
+              )}
+            </Tabs.TabPane>
+          )}
         </Tabs>
       </Card>
 
@@ -390,7 +378,6 @@ const Setting = () => {
         visible={visibleSelect}
         setVisible={setVisibleSelect}
         tabs={userTabs}
-        onTabChange={onUserTab}
         select={userData}
         onChange={onChangeUser}
       />

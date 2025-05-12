@@ -111,13 +111,6 @@ const HrmMember = () => {
     onChangeSearch(1)
   }, [])
 
-  // 获取机构
-  const getOrgData = async () => {
-    const { code, data } = await Http.post('/system/dept/list', { pid: -1 })
-    if (code === 200) {
-      setOrgData(data.list || [])
-    }
-  }
   // 获取数据
   const onChangeSearch = async (current) => {
     const search = searchForm.getFieldsValue()
@@ -163,7 +156,7 @@ const HrmMember = () => {
             url = '/system/user/add'
           }
           if (type === 'edit') {
-             url = '/system/user/edit'
+            url = '/system/user/edit'
             values = {
               ...item,
               ...values,

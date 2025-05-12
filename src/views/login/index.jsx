@@ -1,6 +1,6 @@
 import { Button, Checkbox, Form, Input, Modal } from '@arco-design/web-react'
 import { IconCommand, IconSafe, IconStamp } from '@arco-design/web-react/icon'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 // 公共方法
@@ -43,7 +43,7 @@ const Login = () => {
 
   // 登录
   const handleLogin = async (e) => {
-    const { code, data } = await Http.post('/system/login', e)
+    const { code, data } = await Http.post('/login', e)
     if (code === 200) {
       localSetItem('CRMUSERDATA', data)
       navigate('/')
