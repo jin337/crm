@@ -112,7 +112,21 @@ const Account = () => {
             ]}>
             <Input allowClear placeholder='请输入内容' />
           </Form.Item>
-          <Form.Item label='账号名' field='account_name' rules={[{ required: true }]}>
+          <Form.Item
+            label='账号名'
+            field='account_name'
+            rules={[
+              { required: true },
+              {
+                validator: (value, callback) => {
+                  if (value === 'admin') {
+                    callback('账号名不能是 admin')
+                  } else {
+                    callback()
+                  }
+                },
+              },
+            ]}>
             <Input allowClear placeholder='请输入内容' />
           </Form.Item>
           <Form.Item

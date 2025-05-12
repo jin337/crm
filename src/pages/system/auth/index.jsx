@@ -1,4 +1,4 @@
-import { Button, Card, Dropdown, Form, Input, Menu, Message, Modal, Space, Table, Tabs } from '@arco-design/web-react'
+import { Button, Card, Dropdown, Form, Input, Menu, Message, Modal, Space, Table, Tabs, Tag } from '@arco-design/web-react'
 import { IconPlus, IconSettings } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -40,19 +40,29 @@ const Setting = () => {
   const columns = [
     {
       title: '姓名',
-      dataIndex: 'user_name',
+      dataIndex: 'user_account',
+      render: (_, record) => (
+        <>
+          {record.user_account}
+          {record.user_account === 'admin' && (
+            <Tag color='orange' size='small'>
+              主账号
+            </Tag>
+          )}
+        </>
+      ),
     },
     {
       title: '主部门',
       dataIndex: 'user_dept_main_name',
     },
     {
-      title: '附属部门',
-      dataIndex: 'user_depts_name',
-    },
-    {
       title: '职位',
       dataIndex: 'user_post',
+    },
+    {
+      title: '角色',
+      dataIndex: 'name1',
     },
     {
       title: '操作',
@@ -65,7 +75,7 @@ const Setting = () => {
             size='mini'
             status='danger'
             onClick={() => onDeleteUser(record)}
-            disabled={active.id === 1 && record.id === 1}>
+            disabled={record.user_account === 'admin'}>
             删除
           </Button>
         </Space>
@@ -303,24 +313,24 @@ const Setting = () => {
               className={`group mb-2 flex cursor-pointer items-center justify-between rounded-md border px-3 py-2 hover:border-[rgb(var(--primary-6))] hover:bg-[var(--hover-color)] ${active.id === item.id ? 'border-[rgb(var(--primary-6))] bg-[var(--hover-color)]' : 'border-white'}`}
               onClick={() => onRoleTab('1', item)}>
               {item.role_name}
-              <Dropdown
-                trigger='click'
-                position='bottom'
-                droplist={
-                  <Menu>
-                    <Menu.Item key='1'>复制</Menu.Item>
-                    <Menu.Item key='2' onClick={() => onCreate('edit', item)}>
-                      编辑
-                    </Menu.Item>
-                    {item.id !== 1 && (
+              {item.id !== 1 && (
+                <Dropdown
+                  trigger='click'
+                  position='bottom'
+                  droplist={
+                    <Menu>
+                      <Menu.Item key='1'>复制</Menu.Item>
+                      <Menu.Item key='2' onClick={() => onCreate('edit', item)}>
+                        编辑
+                      </Menu.Item>
                       <Menu.Item key='3' onClick={() => onDelete(item)}>
                         删除
                       </Menu.Item>
-                    )}
-                  </Menu>
-                }>
-                <IconSettings className={`${active === index ? 'opacity-100' : 'opacity-0'} group-hover:opacity-100`} />
-              </Dropdown>
+                    </Menu>
+                  }>
+                  <IconSettings className={`${active === index ? 'opacity-100' : 'opacity-0'} group-hover:opacity-100`} />
+                </Dropdown>
+              )}
             </div>
           </Fragment>
         ))}
@@ -345,7 +355,7 @@ const Setting = () => {
             <Table
               borderCell
               stripe
-              rowKey='id'
+              rowKey='role_user_id'
               columns={columns}
               data={roleUser?.list || []}
               pagination={{

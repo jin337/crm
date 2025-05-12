@@ -14,14 +14,14 @@ import {
   Switch,
   Tooltip,
 } from '@arco-design/web-react'
-import { IconEdit, IconPlus, IconSettings } from '@arco-design/web-react/icon'
+import { IconClose, IconEdit, IconPlus, IconSettings } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
 // 组件
 import { IconCustom } from 'src/components'
 const Application = () => {
+  const navigate = useNavigate()
   const linkTo = Hooks.useLink()
-  const common = useSelector((state) => state.common)
   const [appsForm] = Form.useForm()
 
   const [apps, setApps] = useState([])
@@ -50,16 +50,22 @@ const Application = () => {
         onOk: async () => {
           const { code, message } = await Http.post('/system/app/change-status', { id: item.id, status: 0 })
           if (code === 200) {
-            Message.success(message)
-            getApps()
+            Message.success({
+              content: message + '，1秒后刷新数据',
+              duration: 1000,
+              onClose: () => navigate(0),
+            })
           }
         },
       })
     } else {
       const { code, message } = await Http.post('/system/app/change-status', { id: item.id, status: 1 })
       if (code === 200) {
-        Message.success(message)
-        getApps()
+        Message.success({
+          content: message + '，1秒后刷新数据',
+          duration: 1000,
+          onClose: () => navigate(0),
+        })
       }
     }
   }
@@ -111,7 +117,6 @@ const Application = () => {
                           <ul className='flex flex-wrap'>
                             {[
                               'IconHome',
-                              'IconStamp',
                               'IconPalette',
                               'IconSettings',
                               'IconFile',
@@ -218,6 +223,23 @@ const Application = () => {
     })
   }
 
+  // 删除
+  const onDelete = (item) => {
+    Modal.confirm({
+      title: '提醒',
+      content: '是否确定删除当前项？',
+      closable: true,
+      wrapClassName: 'modal-wrap',
+      onOk: async () => {
+        const { code, message } = await Http.post('/system/app/del', { id: item.id })
+        if (code === 200) {
+          getApps()
+          Message.success(message)
+        }
+      },
+    })
+  }
+
   return (
     <>
       <div className='mb-2 text-right'>
@@ -240,6 +262,14 @@ const Application = () => {
                   </div>
                 </div>
                 <Space>
+                  {item.status === 0 && (
+                    <Tooltip mini content='删除'>
+                      <IconClose
+                        className='cursor-pointer text-xl opacity-0 group-hover:opacity-100'
+                        onClick={() => onDelete(item)}
+                      />
+                    </Tooltip>
+                  )}
                   <Tooltip mini content='编辑'>
                     <IconEdit
                       className='cursor-pointer text-xl opacity-0 group-hover:opacity-100'

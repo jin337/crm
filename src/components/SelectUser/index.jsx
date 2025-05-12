@@ -58,7 +58,7 @@ const SelectUser = (props) => {
       let arr =
         data?.list.map((e) => ({
           ...e,
-          key: obj.dept_id + '_' + e.id,
+          key: Date.now() + '_' + obj.dept_id + '_' + e.id,
           dept_id: obj.dept_id,
           dept_name: e.user_name,
           isLeaf: true,
@@ -139,7 +139,7 @@ const SelectUser = (props) => {
           <div className={styles['content']}>
             {user?.length > 0 ? (
               user.map((item) => (
-                <User key={item.id} item={item} close={true} onClear={() => setUser(user.filter((i) => i.id !== item.id))} />
+                <User key={item.key} item={item} close={true} onClear={() => setUser(user.filter((i) => i.id !== item.id))} />
               ))
             ) : (
               <div className={styles['empty']}>

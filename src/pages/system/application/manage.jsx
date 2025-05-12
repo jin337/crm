@@ -61,7 +61,7 @@ const Manage = () => {
       render: (text) => {
         switch (text) {
           case 1:
-            return <Tag color='arcoblue'>应用</Tag>
+            return <Tag color='arcoblue'>目录</Tag>
           case 2:
             return <Tag color='green'>菜单</Tag>
           case 3:
@@ -110,7 +110,7 @@ const Manage = () => {
       width: 60,
       render: (_, record) => (
         <Space>
-          <Button type='text' size='mini' status='success' onClick={() => onCreate('add', record)}>
+          <Button type='text' size='mini' status='success' onClick={() => onCreate('add-children', record)}>
             新增
           </Button>
           <Button type='text' size='mini' onClick={() => onCreate('edit', record)}>
@@ -129,11 +129,11 @@ const Manage = () => {
     appsForm.resetFields()
     let obj = {}
     let url = null
-    if (type === 'add') {
+    if (type === 'add' || type === 'add-children') {
       url = '/system/menu/add'
       obj = {
         pName: item.title,
-        type: 2,
+        type: type === 'add' ? 1 : 2, //不能新建目录下的目录
         out_link: 0,
         is_hide: 0,
         status: 1,
@@ -164,6 +164,11 @@ const Manage = () => {
                 type='button'
                 options={[
                   {
+                    label: '目录',
+                    value: 1,
+                    disabled: type === 'add-children', //不能新建目录下的目录
+                  },
+                  {
                     label: '菜单',
                     value: 2,
                   },
@@ -184,7 +189,6 @@ const Manage = () => {
                           <ul className='flex flex-wrap'>
                             {[
                               'IconHome',
-                              'IconStamp',
                               'IconPalette',
                               'IconSettings',
                               'IconFile',
@@ -308,21 +312,12 @@ const Manage = () => {
               </Form.Item>
             </Grid.Col>
           </Grid.Row>
-          <Form.Item shouldUpdate noStyle>
-            {(values) =>
-              values.type === 1 && (
-                <Form.Item label='简介' field='describe'>
-                  <Input.TextArea showWordLimit maxLength={10} placeholder='请输入内容' />
-                </Form.Item>
-              )
-            }
-          </Form.Item>
         </Form>
       ),
       onOk: () => {
         appsForm.validate().then(async (values) => {
           let valueObj = {
-            app_id: item.app_id,
+            app_id: item.app_id || params.id,
             pid: item.id,
             class: Number(activeTab),
             ...values,

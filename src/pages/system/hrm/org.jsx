@@ -20,7 +20,6 @@ import { useEffect, useState } from 'react'
 // 公共方法
 import { flattenArray } from 'src/utils/common'
 
-import { useCallback } from 'react'
 import CreateForm from './create'
 const HrmOrg = () => {
   const [searchForm] = Form.useForm()
@@ -122,148 +121,154 @@ const HrmOrg = () => {
   // 获取用户
   const getUserData = async (content = '') => {
     setUserData([])
-    const { code, data } = await Http.post('/system/user/list', { content, current: 1, pageSize: 9999 })
+    const { code, data } = await Http.post('/system/user/list', { content, current: 1, pageSize: 10 })
     if (code === 200) {
       setUserData(data?.list || [])
     }
   }
 
   // 新增/编辑部门
-  const onCreateOrg = useCallback(
-    (type, e) => {
-      if (userData?.length > 0) {
-        orgForm.resetFields()
-        let url = null
-        let obj = {}
-        if (type === 'add') {
-          url = '/system/dept/add'
-          obj = { dept_type: 1 }
-        }
-        if (type === 'edit') {
-          url = '/system/dept/edit'
-          let data = e?.dataRef
-          obj = {
-            ...data,
-            dept_pid: data.pid,
-          }
-        }
-        orgForm.setFieldsValue(obj)
-
-        Modal.confirm({
-          title: (type === 'add' ? '新增' : '编辑') + '部门',
-          icon: null,
-          closable: true,
-          wrapClassName: 'modal-wrap',
-          content: (
-            <Form
-              form={orgForm}
-              layout='vertical'
-              autoComplete='off'
-              validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
-              <Form.Item label='组织类型' field='dept_type' rules={[{ required: true }]}>
-                <Radio.Group
-                  type='button'
-                  options={[
-                    {
-                      label: '机构',
-                      value: 1,
-                    },
-                    {
-                      label: '部门',
-                      value: 2,
-                    },
-                  ]}
-                />
-              </Form.Item>
-              <Form.Item label='组织部门名称' field='dept_name' rules={[{ required: true }]}>
-                <Input allowClear placeholder='请输入内容' />
-              </Form.Item>
-              <Form.Item label='上级组织' field='dept_pid'>
-                <TreeSelect allowClear treeData={orgData} fieldNames={{ key: 'id', title: 'dept_name' }} placeholder='请选择' />
-              </Form.Item>
-              <Form.Item label='组织负责人' field='dept_admin'>
-                <Select
-                  showSearch
-                  filterOption={false}
-                  options={userData.map((e) => ({ label: e.user_name, value: e.id }))}
-                  onSearch={getUserData}
-                  placeholder='请选择'
-                />
-              </Form.Item>
-            </Form>
-          ),
-          onOk: () => {
-            orgForm.validate().then(async (values) => {
-              if (type === 'edit') {
-                values.id = e?.dataRef.id
-              }
-              const { code, message } = await Http.post(url, values)
-              if (code === 200) {
-                getOrgData()
-                Message.success(message)
-              }
-            })
-          },
-        })
-      } else {
-        getUserData()
+  const onCreateOrg = async (type, e) => {
+    orgForm.resetFields()
+    let obj = {}
+    if (type === 'add') {
+      obj = { dept_type: 1 }
+    }
+    if (type === 'edit') {
+      let data = e?.dataRef
+      obj = {
+        ...data,
+        dept_pid: data.pid,
       }
-    },
-    [userData]
-  )
+    }
+
+    orgForm.setFieldsValue(obj)
+
+    if (userData.length > 0) {
+      openCreateOrg(type, e)
+    } else {
+      const { code, data } = await Http.post('/system/user/list', { current: 1, pageSize: 10 })
+      if (code === 200) {
+        setUserData(data.list || [])
+        openCreateOrg(type, e, data.list || [])
+      }
+    }
+  }
+  const openCreateOrg = (type, e, arr = userData) => {
+    Modal.confirm({
+      title: (type === 'add' ? '新增' : '编辑') + '部门',
+      icon: null,
+      closable: true,
+      wrapClassName: 'modal-wrap',
+      content: (
+        <Form
+          form={orgForm}
+          layout='vertical'
+          autoComplete='off'
+          validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
+          <Form.Item label='组织类型' field='dept_type' rules={[{ required: true }]}>
+            <Radio.Group
+              type='button'
+              options={[
+                {
+                  label: '机构',
+                  value: 1,
+                },
+                {
+                  label: '部门',
+                  value: 2,
+                },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item label='组织部门名称' field='dept_name' rules={[{ required: true }]}>
+            <Input allowClear placeholder='请输入内容' />
+          </Form.Item>
+          <Form.Item label='上级组织' field='dept_pid'>
+            <TreeSelect allowClear treeData={orgData} fieldNames={{ key: 'id', title: 'dept_name' }} placeholder='请选择' />
+          </Form.Item>
+          <Form.Item label='组织负责人' field='dept_admin'>
+            <Select
+              showSearch
+              filterOption={false}
+              options={arr.map((e) => ({
+                label: e.user_dept_main_name + ' / ' + e.user_name + ' / ' + e.user_mobile,
+                value: e.id,
+              }))}
+              onSearch={getUserData}
+              placeholder='请选择'
+            />
+          </Form.Item>
+        </Form>
+      ),
+      onOk: () => {
+        orgForm.validate().then(async (values) => {
+          let url = null
+          if (type === 'add') {
+            url = '/system/dept/add'
+          }
+          if (type === 'edit') {
+            url = '/system/dept/edit'
+            values.id = e?.dataRef.id
+          }
+          const { code, message } = await Http.post(url, values)
+          if (code === 200) {
+            getOrgData()
+            Message.success(message)
+          }
+        })
+      },
+    })
+  }
 
   // 新增/编辑员工
-  const onCreateMember = useCallback(
-    (type, item, org) => {
-      if (orgData?.length > 0) {
-        memberForm.resetFields()
-        let obj = {}
-        let url = null
-        if (type === 'add') {
-          url = '/system/user/add'
-          obj = {
-            user_dept_main: org[0],
-          }
-        }
-        if (type === 'edit') {
-          url = '/system/user/edit'
-          obj = {
-            ...item,
-            user_depts: item?.user_depts?.split(',') || [],
-          }
-        }
-        memberForm.setFieldsValue(obj)
-        Modal.confirm({
-          title: (type === 'add' ? '新增' : '编辑') + '员工',
-          icon: null,
-          closable: true,
-          wrapClassName: 'modal-wrap',
-          content: <CreateForm form={memberForm} data={orgData} />,
-          onOk: () => {
-            memberForm.validate().then(async (values) => {
-              if (type === 'add') {
-                values.status = 2
-              }
-              if (type === 'edit') {
-                values = {
-                  ...item,
-                  ...values,
-                }
-              }
-              values.user_depts = values?.user_depts?.join(',')
-              const { code, message } = await Http.post(url, values)
-              if (code === 200) {
-                setOrgSelected(org)
-                onChangeSearch(tableData?.current || 1, org)
-                Message.success(message)
-              }
-            })
-          },
-        })
+  const onCreateMember = (type, item, org) => {
+    memberForm.resetFields()
+    let obj = {}
+    let url = null
+    if (type === 'add') {
+      url = '/system/user/add'
+      obj = {
+        user_dept_main: org[0],
       }
-    },
-    [orgData]
-  )
+    }
+    if (type === 'edit') {
+      url = '/system/user/edit'
+      obj = {
+        ...item,
+        user_depts: item?.user_depts?.split(',') || [],
+      }
+    }
+    memberForm.setFieldsValue(obj)
+
+    Modal.confirm({
+      title: (type === 'add' ? '新增' : '编辑') + '员工',
+      icon: null,
+      closable: true,
+      wrapClassName: 'modal-wrap',
+      content: <CreateForm form={memberForm} data={orgData} />,
+      onOk: () => {
+        memberForm.validate().then(async (values) => {
+          if (type === 'add') {
+            values.status = 2
+          }
+          if (type === 'edit') {
+            values = {
+              ...item,
+              ...values,
+            }
+          }
+          values.user_depts = values?.user_depts?.join(',')
+          const { code, message } = await Http.post(url, values)
+          if (code === 200) {
+            setOrgSelected(org)
+            onChangeSearch(tableData?.current || 1, org)
+            Message.success(message)
+          }
+        })
+      },
+    })
+  }
 
   // 删除部门
   const onDelete = async (e) => {
