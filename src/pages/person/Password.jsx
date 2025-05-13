@@ -1,15 +1,24 @@
-import { Button, Form, Input } from '@arco-design/web-react'
-
+import { Button, Form, Input, Message } from '@arco-design/web-react'
+import { useSelector } from 'react-redux'
 // 样式
 import styles from './index.module.scss'
 
 // 账号密码
 const Password = () => {
+  const { userInfo } = useSelector((state) => state.common)
   const [passwordForm] = Form.useForm()
   const submitPsw = async () => {
     const result = await passwordForm.validate()
     const { new_pass1, ...rest } = result
-    console.log('修改密码', rest)
+    const obj = {
+      ...rest,
+      account_id: userInfo.account_id,
+    }
+    const { code, message } = await Http.post('/system/account/edit-pass', obj)
+    if (code === 200) {
+      Message.success(message)
+      passwordForm.resetFields()
+    }
   }
 
   return (

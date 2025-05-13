@@ -186,7 +186,7 @@ const Manage = () => {
             </Form.Item>
             <Form.Item shouldUpdate noStyle>
               {(values) =>
-                values.type === 2 && (
+                values.type !== 3 && (
                   <Form.Item label='菜单图标' field='menu_icon'>
                     <Dropdown
                       droplist={
