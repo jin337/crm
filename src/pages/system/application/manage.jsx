@@ -116,7 +116,12 @@ const Manage = () => {
           <Button type='text' size='mini' onClick={() => onCreate('edit', record)}>
             编辑
           </Button>
-          <Button type='text' size='mini' status='danger' onClick={() => onDelete(record)}>
+          <Button
+            type='text'
+            size='mini'
+            status='danger'
+            disabled={record?.children?.length > 0}
+            onClick={() => onDelete(record)}>
             删除
           </Button>
         </Space>

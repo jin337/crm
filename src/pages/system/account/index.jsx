@@ -92,27 +92,6 @@ const Account = () => {
           autoComplete='off'
           validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
           <Form.Item
-            label='登录名'
-            field='login_name'
-            rules={[
-              { required: true },
-              {
-                minLength: 3,
-                message: '登录名不能少于3位',
-              },
-              {
-                validator: (value, callback) => {
-                  if (!value) return callback()
-                  if (/[\u4e00-\u9fa5]/.test(value)) {
-                    return callback('登录名不能包含中文')
-                  }
-                  callback()
-                },
-              },
-            ]}>
-            <Input allowClear placeholder='请输入内容' />
-          </Form.Item>
-          <Form.Item
             label='账号名'
             field='account_name'
             rules={[

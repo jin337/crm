@@ -172,6 +172,7 @@ const Header = (props) => {
         footer={null}
         placement='top'
         height={'100%'}
+        zIndex='98'
         closable={false}
         headerStyle={{ height: '57px' }}
         getPopupContainer={() => content && content?.current}

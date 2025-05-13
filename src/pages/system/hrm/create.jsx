@@ -8,6 +8,11 @@ const Create = ({ form, data = [] }) => {
         <Form.Item label='姓名' field='user_name' rules={[{ required: true }]}>
           <Input allowClear placeholder='请输入内容' />
         </Form.Item>
+        <Form.Item label='账号' field='user_account' rules={[{ required: true }]}>
+          <Input allowClear placeholder='请输入内容' />
+        </Form.Item>
+      </div>
+      <div className='flex gap-4'>
         <Form.Item
           label='手机号'
           field='user_mobile'
@@ -24,8 +29,6 @@ const Create = ({ form, data = [] }) => {
           ]}>
           <Input allowClear placeholder='请输入内容' />
         </Form.Item>
-      </div>
-      <div className='flex gap-4'>
         <Form.Item label='性别' field='user_sex' rules={[{ required: true }]}>
           <Select
             allowClear
@@ -42,6 +45,8 @@ const Create = ({ form, data = [] }) => {
             ]}
           />
         </Form.Item>
+      </div>
+      <div className='flex gap-4'>
         <Form.Item label='主部门' field='user_dept_main' rules={[{ required: true }]}>
           <TreeSelect
             allowClear
@@ -53,8 +58,6 @@ const Create = ({ form, data = [] }) => {
             placeholder='请选择'
           />
         </Form.Item>
-      </div>
-      <div className='flex gap-4'>
         <Form.Item label='附属部门' field='user_depts'>
           <TreeSelect
             allowClear
@@ -67,10 +70,10 @@ const Create = ({ form, data = [] }) => {
             placeholder='请选择'
           />
         </Form.Item>
-        <Form.Item label='岗位' field='user_post' rules={[{ required: true }]}>
-          <Input allowClear placeholder='请输入内容' />
-        </Form.Item>
       </div>
+      <Form.Item label='岗位' field='user_post' rules={[{ required: true }]}>
+        <Input allowClear placeholder='请输入内容' />
+      </Form.Item>
     </Form>
   )
 }

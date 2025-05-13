@@ -3,10 +3,6 @@ import { createBrowserRouter } from 'react-router'
 
 export const router = createBrowserRouter([
   {
-    path: '/*',
-    Component: lazy(() => import('src/views/NotAuth')),
-  },
-  {
     path: '/login',
     Component: lazy(() => import('src/views/login')),
   },
@@ -14,6 +10,10 @@ export const router = createBrowserRouter([
     path: '/',
     Component: lazy(() => import('src/views/Home')),
     children: [
+      {
+        path: '/*',
+        Component: lazy(() => import('src/views/NotAuth')),
+      },
       {
         path: '/workplace',
         Component: lazy(() => import('src/pages/demo')),

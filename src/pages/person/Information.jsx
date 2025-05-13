@@ -27,16 +27,17 @@ const Information = ({ data }) => {
           form={informationForm}
           validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
           <div className={styles['online']}>
-            <Form.Item label='登录名' field={'user_name'} rules={[{ required: true }]}>
-              <Input placeholder='请输入内容' />
+            <Form.Item label='姓名' field={'user_name'} rules={[{ required: true }]}>
+              <Input disabled placeholder='请输入内容' />
             </Form.Item>
             <Form.Item label='账号名' field={'user_account'} rules={[{ required: true }]}>
-              <Input placeholder='请输入内容' />
+              <Input disabled placeholder='请输入内容' />
             </Form.Item>
           </div>
           <div className={styles['online']}>
             <Form.Item label='性别' field={'user_sex'}>
               <Select
+                disabled
                 options={[
                   {
                     label: '男',
@@ -54,7 +55,7 @@ const Information = ({ data }) => {
             </Form.Item>
           </div>
           <div className={styles['online']}>
-            <Form.Item label='主部门' field={'user_dept_main'}>
+            <Form.Item label='主部门' field={'main_dept_name'}>
               <Input disabled />
             </Form.Item>
             <Form.Item label='附属部门' field={'user_depts'}>
@@ -65,7 +66,7 @@ const Information = ({ data }) => {
             <Input disabled />
           </Form.Item>
           <Form.Item>
-            <Button type='primary' onClick={submit}>
+            <Button type='primary' disabled onClick={submit}>
               保存
             </Button>
           </Form.Item>

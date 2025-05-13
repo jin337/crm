@@ -20,6 +20,8 @@ import { useEffect, useState } from 'react'
 // 公共方法
 import { flattenArray } from 'src/utils/common'
 
+// 组件
+import { SelectUser } from 'src/components'
 import CreateForm from './create'
 const HrmOrg = () => {
   const [searchForm] = Form.useForm()
@@ -28,12 +30,16 @@ const HrmOrg = () => {
 
   const [tableData, setTableData] = useState({})
   const [orgData, setOrgData] = useState([])
-  const [userData, setUserData] = useState([])
   const [orgSelected, setOrgSelected] = useState([])
   const [expandedKeys, setExpandedKeys] = useState([])
 
+  // 关联账号弹窗
+  const [visibleSelect, setVisibleSelect] = useState(false)
+  const [userTabs, setUserTabs] = useState([])
+  const [deptList, setDeptList] = useState([])
+  const [userData, setUserData] = useState([])
+
   useEffect(() => {
-    getUserData()
     getOrgData()
   }, [])
 
@@ -119,14 +125,6 @@ const HrmOrg = () => {
       setTableData(data || [])
     }
   }
-  // 获取用户
-  const getUserData = async (content = '') => {
-    setUserData([])
-    const { code, data } = await Http.post('/system/user/list', { content, current: 1, pageSize: 10 })
-    if (code === 200) {
-      setUserData(data?.list || [])
-    }
-  }
 
   // 新增/编辑部门
   const onCreateOrg = async (type, e) => {
@@ -145,9 +143,6 @@ const HrmOrg = () => {
 
     orgForm.setFieldsValue(obj)
 
-    openCreateOrg(type, e)
-  }
-  const openCreateOrg = (type, e, arr = userData) => {
     Modal.confirm({
       title: (type === 'add' ? '新增' : '编辑') + '部门',
       icon: null,
@@ -181,16 +176,7 @@ const HrmOrg = () => {
             <TreeSelect allowClear treeData={orgData} fieldNames={{ key: 'id', title: 'dept_name' }} placeholder='请选择' />
           </Form.Item>
           <Form.Item label='组织负责人' field='dept_admin'>
-            <Select
-              showSearch
-              filterOption={false}
-              options={arr.map((e) => ({
-                label: e.user_dept_main_name + ' / ' + e.user_name + ' / ' + e.user_mobile,
-                value: e.id,
-              }))}
-              onSearch={getUserData}
-              placeholder='请选择'
-            />
+            <Select allowClear options={[]} placeholder='请选择' onClick={() => openSelectUser(e)} />
           </Form.Item>
         </Form>
       ),
@@ -281,6 +267,36 @@ const HrmOrg = () => {
     })
   }
 
+  const openSelectUser = (e) => {
+    const list = [
+      {
+        id: 1,
+        title: '常用',
+        children: [],
+      },
+      {
+        id: 2,
+        title: '机构',
+        children: [],
+      },
+    ]
+
+    setUserTabs(list)
+    // 已选择
+    setUserData(() => {
+      if (e?.dataRef) {
+        // 等待接口:通过id查找人员信息
+        return []
+      }
+      return []
+    })
+    setVisibleSelect(true)
+  }
+  const onChangeUser = (arr) => {
+    console.log('arr', arr)
+    setVisibleSelect(false)
+  }
+
   return (
     <>
       <div className='flex h-full gap-2'>
@@ -355,6 +371,16 @@ const HrmOrg = () => {
           />
         </Card>
       </div>
+
+      {/* 组织负责人 */}
+      <SelectUser
+        title='选择组织负责人'
+        visible={visibleSelect}
+        setVisible={setVisibleSelect}
+        tabs={userTabs}
+        select={userData}
+        onChange={onChangeUser}
+      />
     </>
   )
 }

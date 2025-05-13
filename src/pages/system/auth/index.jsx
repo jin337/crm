@@ -26,7 +26,6 @@ const Setting = () => {
   const [visibleSelect, setVisibleSelect] = useState(false)
   const [userTabs, setUserTabs] = useState([])
   const [deptList, setDeptList] = useState([])
-  const [userList, setUserList] = useState([])
   const [userData, setUserData] = useState([])
 
   const [tabActive, setTabActive] = useState('1')
@@ -242,7 +241,6 @@ const Setting = () => {
     }
 
     setUserTabs(list)
-    onUserTab(list[0].id)
     // 已授权账号
     setUserData([])
     setVisibleSelect(true)
@@ -326,9 +324,9 @@ const Setting = () => {
         <Tabs justify activeTab={tabActive} onChange={(e) => onRoleTab(e, active)}>
           <Tabs.TabPane key='1' title='角色账号'>
             <div className='mb-2 flex items-start justify-between'>
-              <Form layout='inline' autoComplete='off' size='small' form={searchForm} onChange={onChangeSearch}>
+              <Form layout='inline' autoComplete='off' size='small' form={searchForm} onChange={() => onChangeSearch(1)}>
                 <Form.Item field='content'>
-                  <Input.Search allowClear placeholder='请输入内容' />
+                  <Input allowClear placeholder='请输入内容' />
                 </Form.Item>
               </Form>
               <Space>
@@ -353,7 +351,7 @@ const Setting = () => {
             />
           </Tabs.TabPane>
 
-          {active.id !== 1 && (
+          {active?.id !== 1 && (
             <Tabs.TabPane key='2' title='角色权限'>
               {menuList?.length > 0 && (
                 <>
