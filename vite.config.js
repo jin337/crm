@@ -49,11 +49,16 @@ export default defineConfig({
       format: { comments: false },
       compress: { drop_console: true, drop_debugger: true },
     },
+    chunkSizeWarningLimit: 500,
     rollupOptions: {
       output: {
         entryFileNames: 'assets/js/[name]-[hash].js',
         chunkFileNames: 'assets/js/chunks/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+        // manualChunks: {
+        //   'chunk-vendor': ['react', 'react-dom', 'react-router', 'react-redux', '@reduxjs/toolkit', 'axios'],
+        //   'chunk-other': ['@arco-design/web-react'],
+        // },
       },
     },
   },
