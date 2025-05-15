@@ -98,15 +98,15 @@ strong {
 }
 // tree定制额外节点显示内容
 .arco-tree-node {
-  .settings {
-    position: absolute;
-    top: 5px;
-    right: 0;
-    display: none;
-  }
   &:hover {
     .settings {
       display: block;
     }
+  }
+  .settings {
+    position: absolute;
+    top: 5px;
+    right: 4px;
+    display: none;
   }
 }

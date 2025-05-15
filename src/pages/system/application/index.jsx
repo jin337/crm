@@ -6,7 +6,6 @@ import {
   Form,
   Grid,
   Input,
-  InputNumber,
   Message,
   Modal,
   Radio,
@@ -14,7 +13,7 @@ import {
   Switch,
   Tooltip,
 } from '@arco-design/web-react'
-import { IconClose, IconEdit, IconPlus, IconSettings } from '@arco-design/web-react/icon'
+import { IconClose, IconCopy, IconEdit, IconPlus, IconSettings, IconSync } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 // 组件
@@ -25,6 +24,11 @@ const Application = () => {
   const [appsForm] = Form.useForm()
 
   const [apps, setApps] = useState([])
+
+  /*
+    ！！！注意：
+    当前页面涉及影响系统菜单和元素过多，增删改查需刷新页面 navigate(0)
+  */
 
   useEffect(() => {
     getApps()
@@ -80,12 +84,11 @@ const Application = () => {
   // 新增应用
   const onCreate = (type, item) => {
     appsForm.resetFields()
-    const msg = item?.id ? '编辑' : '新增'
     let obj = {}
     let url = null
     if (type === 'add') {
       url = '/system/app/add'
-      obj = { out_link: 0 }
+      obj = { out_link: 0, app_type: 0 }
     }
     if (type === 'edit') {
       url = '/system/app/edit'
@@ -93,118 +96,130 @@ const Application = () => {
     }
     appsForm.setFieldsValue(obj)
     Modal.confirm({
-      title: msg + '应用',
+      title: (type === 'edit' ? '编辑' : '新增') + '应用',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',
       content: (
         <Form
+          size='small'
           form={appsForm}
           layout='vertical'
           autoComplete='off'
           validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
-          <div className='flex gap-6'>
-            <Form.Item label='名称' field='title' rules={[{ required: true }]}>
-              <Input placeholder='请输入内容' />
-            </Form.Item>
-            <Form.Item shouldUpdate noStyle>
-              {(values) =>
-                values.type !== 3 && (
-                  <Form.Item label='菜单图标' field='app_icon'>
-                    <Dropdown
-                      droplist={
-                        <div className='max-h-[400px] w-auto overflow-y-auto border border-[var(--border-color)] bg-white p-2'>
-                          <ul className='flex flex-wrap'>
-                            {[
-                              'IconHome',
-                              'IconPalette',
-                              'IconSettings',
-                              'IconFile',
-                              'IconCheckCircle',
-                              'IconCheckSquare',
-                              'IconStar',
-                              'IconClockCircle',
-                              'IconCalendar',
-                              'IconCalendarClock',
-                              'IconHistory',
-                              'IconUpload',
-                              'IconApps',
-                              'IconRobot',
-                              'IconIdcard',
-                              'IconStamp',
-                            ]?.map((item) => (
-                              <li
-                                key={item}
-                                className='cursor-pointer'
-                                onClick={() => appsForm.setFieldsValue({ app_icon: item })}>
-                                <IconCustom className='m-2 text-base' name={item} />
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      }
-                      trigger='click'>
-                      <Button long>
-                        {values.app_icon ? (
-                          <IconCustom className='text-base' name={values.app_icon} />
-                        ) : (
-                          <span className='text-[var(--color-text-3)]'>请选择</span>
-                        )}
-                      </Button>
-                    </Dropdown>
-                  </Form.Item>
-                )
-              }
-            </Form.Item>
-          </div>
-          <div className='flex gap-6'>
-            <Form.Item label='AppKey' field='app_key' rules={[{ required: true }]}>
-              <Input placeholder='请输入内容' />
-            </Form.Item>
-            <Form.Item label='权限标识' field='permission' rules={[{ required: true }]}>
-              <Input placeholder='请输入内容' />
-            </Form.Item>
-          </div>
+          <Form.Item label='应用名称' field='title' rules={[{ required: true }]}>
+            <Input showWordLimit maxLength={10} placeholder='请输入内容' />
+          </Form.Item>
           <Grid.Row gutter={24}>
-            <Grid.Col span={6}>
-              <Form.Item label='是否外链' field='out_link' rules={[{ required: true }]}>
-                <Radio.Group
-                  type='button'
-                  options={[
-                    {
-                      label: '是',
-                      value: 1,
-                    },
-                    {
-                      label: '否',
-                      value: 0,
-                    },
-                  ]}
-                />
+            <Grid.Col span={18}>
+              <Form.Item label='应用简称' field='app_abbr' rules={[{ required: true }]}>
+                <Input placeholder='请输入内容' showWordLimit maxLength={4} />
               </Form.Item>
             </Grid.Col>
-            <Grid.Col span={18}>
+            <Grid.Col span={6}>
               <Form.Item shouldUpdate noStyle>
-                {(values) => (
-                  <Form.Item label='路由' field='path'>
-                    <Input addBefore={values.out_link === 1 ? 'http://' : undefined} placeholder='请输入内容' />
-                  </Form.Item>
-                )}
+                {(values) =>
+                  values?.type !== 3 && (
+                    <Form.Item label='应用图标' field='app_icon'>
+                      <Dropdown
+                        droplist={
+                          <div className='max-h-[400px] w-auto overflow-y-auto border border-[var(--border-color)] bg-white p-2'>
+                            <ul className='flex flex-wrap'>
+                              {[
+                                'IconHome',
+                                'IconPalette',
+                                'IconSettings',
+                                'IconFile',
+                                'IconCheckCircle',
+                                'IconCheckSquare',
+                                'IconStar',
+                                'IconClockCircle',
+                                'IconCalendar',
+                                'IconCalendarClock',
+                                'IconHistory',
+                                'IconUpload',
+                                'IconApps',
+                                'IconRobot',
+                                'IconIdcard',
+                                'IconStamp',
+                              ]?.map((item) => (
+                                <li
+                                  key={item}
+                                  className='cursor-pointer'
+                                  onClick={() => appsForm.setFieldsValue({ app_icon: item })}>
+                                  <IconCustom className='m-2 text-base' name={item} />
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        }
+                        trigger='click'>
+                        <Button long>
+                          {values?.app_icon ? (
+                            <IconCustom className='text-base' name={values.app_icon} />
+                          ) : (
+                            <span className='text-[var(--color-text-3)]'>请选择</span>
+                          )}
+                        </Button>
+                      </Dropdown>
+                    </Form.Item>
+                  )
+                }
               </Form.Item>
             </Grid.Col>
           </Grid.Row>
-          <Grid.Row gutter={24}>
-            <Grid.Col span={6}>
-              <Form.Item label='排序' field='sort'>
-                <InputNumber min={0} max={999} />
-              </Form.Item>
-            </Grid.Col>
-            <Grid.Col span={18}>
-              <Form.Item label='简介' field='describe'>
-                <Input showWordLimit maxLength={10} placeholder='请输入内容' />
-              </Form.Item>
-            </Grid.Col>
-          </Grid.Row>
+          <div className='flex gap-6'>
+            <Form.Item label='应用编码' field='app_code' rules={[{ required: true }]}>
+              <Input placeholder='请输入内容' />
+            </Form.Item>
+            <Form.Item
+              label={
+                <div className='inline-flex w-[90%] items-center justify-between'>
+                  <span>AppKey</span>
+                  <Space>
+                    <IconSync className='cursor-pointer' />
+                    <IconCopy className='cursor-pointer' />
+                  </Space>
+                </div>
+              }
+              field='app_key'
+              rules={[{ required: true }]}>
+              <Input placeholder='请输入内容' />
+            </Form.Item>
+          </div>
+          <div className='flex gap-6'>
+            <Form.Item label='内部应用' field='app_type' rules={[{ required: true }]}>
+              <Radio.Group
+                options={[
+                  {
+                    label: '是',
+                    value: 0,
+                  },
+                  {
+                    label: '否',
+                    value: 1,
+                  },
+                ]}
+              />
+            </Form.Item>
+            <Form.Item label='是否外链' field='out_link' rules={[{ required: true }]}>
+              <Radio.Group
+                options={[
+                  {
+                    label: '是',
+                    value: 1,
+                  },
+                  {
+                    label: '否',
+                    value: 0,
+                  },
+                ]}
+              />
+            </Form.Item>
+          </div>
+          <Form.Item label='应用描述' field='remark'>
+            <Input.TextArea showWordLimit maxLength={20} placeholder='请输入内容' />
+          </Form.Item>
         </Form>
       ),
       onOk: () => {
@@ -213,10 +228,13 @@ const Application = () => {
             values.id = item.id
             values.status = item.status
           }
-          const { code } = await Http.post(url, values)
+          const { code, message } = await Http.post(url, values)
           if (code === 200) {
-            Message.success(msg + '成功')
-            getApps()
+            Message.success({
+              content: message + '，1秒后刷新数据',
+              duration: 1000,
+              onClose: () => navigate(0),
+            })
           }
         })
       },
@@ -233,8 +251,11 @@ const Application = () => {
       onOk: async () => {
         const { code, message } = await Http.post('/system/app/del', { id: item.id })
         if (code === 200) {
-          getApps()
-          Message.success(message)
+          Message.success({
+            content: message + '，1秒后刷新数据',
+            duration: 1000,
+            onClose: () => navigate(0),
+          })
         }
       },
     })
@@ -258,7 +279,7 @@ const Application = () => {
                   </Avatar>
                   <div>
                     <div className='font-bold'>{item.title}</div>
-                    <div className='text-[var(--color-text-3)]'>{item.describe}</div>
+                    <div className='text-[var(--color-text-3)]'>{item.remark}</div>
                   </div>
                 </div>
                 <Space>

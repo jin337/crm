@@ -24,8 +24,6 @@ const Setting = () => {
 
   // 关联账号弹窗
   const [visibleSelect, setVisibleSelect] = useState(false)
-  const [userTabs, setUserTabs] = useState([])
-  const [deptList, setDeptList] = useState([])
   const [userData, setUserData] = useState([])
 
   const [tabActive, setTabActive] = useState('1')
@@ -219,28 +217,6 @@ const Setting = () => {
 
   // 打开弹窗-关联账号
   const openSelect = async () => {
-    const list = [
-      {
-        id: 1,
-        title: '常用',
-        children: [],
-      },
-      {
-        id: 2,
-        title: '机构',
-        children: deptList,
-      },
-    ]
-
-    if (deptList.length === 0) {
-      const { code, data } = await Http.post('/system/dept/list', { pid: -1 })
-      if (code === 200) {
-        setDeptList(data.list || [])
-        list[1].children = data.list || []
-      }
-    }
-
-    setUserTabs(list)
     // 已授权账号
     setUserData([])
     setVisibleSelect(true)
@@ -266,7 +242,7 @@ const Setting = () => {
   // 保存-关联账号
   const onChangeUser = async (arr) => {
     setVisibleSelect(false)
-    const obj = { role_id: active.id, user_list: arr.map((e) => ({ user_id: e.id, dept_id: e.dept_id })) }
+    const obj = { role_id: active.id, user_list: arr.map((e) => ({ user_id: e.id, dept_id: e.user_dept_main })) }
     const { code, message } = await Http.post('/system/role/add-user', obj)
     if (code === 200) {
       onChangeSearch(1)
@@ -375,8 +351,9 @@ const Setting = () => {
         title='关联账号'
         visible={visibleSelect}
         setVisible={setVisibleSelect}
-        tabs={userTabs}
+        mode='multiple'
         select={userData}
+        id={active?.id}
         onChange={onChangeUser}
       />
     </div>

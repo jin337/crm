@@ -8,7 +8,6 @@ import {
   Message,
   Modal,
   Radio,
-  Select,
   Space,
   Table,
   Tag,
@@ -35,8 +34,6 @@ const HrmOrg = () => {
 
   // 关联账号弹窗
   const [visibleSelect, setVisibleSelect] = useState(false)
-  const [userTabs, setUserTabs] = useState([])
-  const [deptList, setDeptList] = useState([])
   const [userData, setUserData] = useState([])
 
   useEffect(() => {
@@ -130,11 +127,17 @@ const HrmOrg = () => {
   const onCreateOrg = async (type, e) => {
     orgForm.resetFields()
     let obj = {}
+    let data = e?.dataRef
     if (type === 'add') {
       obj = { dept_type: 1 }
     }
+    if (type === 'add-children') {
+      obj = {
+        dept_type: 1,
+        dept_pid: data.id,
+      }
+    }
     if (type === 'edit') {
-      let data = e?.dataRef
       obj = {
         ...data,
         dept_pid: data.pid,
@@ -144,7 +147,7 @@ const HrmOrg = () => {
     orgForm.setFieldsValue(obj)
 
     Modal.confirm({
-      title: (type === 'add' ? '新增' : '编辑') + '部门',
+      title: (type === 'edit' ? '编辑' : '新增') + '部门',
       icon: null,
       closable: true,
       wrapClassName: 'modal-wrap',
@@ -156,7 +159,6 @@ const HrmOrg = () => {
           validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
           <Form.Item label='组织类型' field='dept_type' rules={[{ required: true }]}>
             <Radio.Group
-              type='button'
               options={[
                 {
                   label: '机构',
@@ -175,8 +177,8 @@ const HrmOrg = () => {
           <Form.Item label='上级组织' field='dept_pid'>
             <TreeSelect allowClear treeData={orgData} fieldNames={{ key: 'id', title: 'dept_name' }} placeholder='请选择' />
           </Form.Item>
-          <Form.Item label='组织负责人' field='dept_admin'>
-            <Select allowClear options={[]} placeholder='请选择' onClick={() => openSelectUser(e)} />
+          <Form.Item label='组织负责人' field='dept_admin_name'>
+            <Input allowClear placeholder='请选择' onClick={() => openSelectUser(e?.dataRef, orgForm.getFieldsValue())} />
           </Form.Item>
         </Form>
       ),
@@ -189,13 +191,18 @@ const HrmOrg = () => {
           if (type === 'edit') {
             url = '/system/dept/edit'
             values.id = e?.dataRef.id
+            values.dept_admin = userData[0].id
           }
           const { code, message } = await Http.post(url, values)
           if (code === 200) {
             getOrgData()
+            setUserData([])
             Message.success(message)
           }
         })
+      },
+      onCancel: () => {
+        setUserData([])
       },
     })
   }
@@ -266,34 +273,31 @@ const HrmOrg = () => {
       },
     })
   }
-
-  const openSelectUser = (e) => {
-    const list = [
-      {
-        id: 1,
-        title: '常用',
-        children: [],
-      },
-      {
-        id: 2,
-        title: '机构',
-        children: [],
-      },
-    ]
-
-    setUserTabs(list)
+  // 选择机构和对应员工
+  const openSelectUser = (item, values) => {
     // 已选择
-    setUserData(() => {
-      if (e?.dataRef) {
-        // 等待接口:通过id查找人员信息
-        return []
-      }
-      return []
-    })
+    if (values?.dept_admin_name) {
+      setUserData((prev) => {
+        if (prev.length === 0) {
+          return [
+            {
+              dept_id: item.id,
+              dept_name: item.dept_name,
+              user_id: item.dept_admin,
+              user_name: item.dept_admin_name,
+              id: `${item.id}-${item.dept_admin}`,
+            },
+          ]
+        }
+        return [...prev]
+      })
+    }
     setVisibleSelect(true)
   }
+  // 提交
   const onChangeUser = (arr) => {
-    console.log('arr', arr)
+    setUserData(arr)
+    orgForm.setFieldValue('dept_admin_name', arr[0].user_name)
     setVisibleSelect(false)
   }
 
@@ -316,11 +320,14 @@ const HrmOrg = () => {
                     position='bottom'
                     droplist={
                       <Menu>
+                        <Menu.Item key='0' onClick={() => onCreateOrg('add-children', node)}>
+                          创建子项
+                        </Menu.Item>
                         <Menu.Item key='1' onClick={() => onCreateOrg('edit', node)}>
-                          编辑
+                          编辑部门
                         </Menu.Item>
                         <Menu.Item key='2' onClick={() => onDelete(node)} disabled={node.dataRef?.children?.length > 0}>
-                          删除
+                          删除部门
                         </Menu.Item>
                       </Menu>
                     }>
@@ -377,8 +384,8 @@ const HrmOrg = () => {
         title='选择组织负责人'
         visible={visibleSelect}
         setVisible={setVisibleSelect}
-        tabs={userTabs}
         select={userData}
+        id={0}
         onChange={onChangeUser}
       />
     </>

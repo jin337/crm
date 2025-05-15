@@ -153,7 +153,7 @@ const Home = () => {
 
   // 切换主题
   const changeTheme = async (obj) => {
-    const { code, data } = await Http.post('/system/theme/change', obj)
+    const { code, data } = await Http.post('/theme/change', obj)
     if (code === 200) {
       localSetItem('CRMUSERDATA', data)
 
@@ -165,9 +165,9 @@ const Home = () => {
   const exit = async () => {
     const { code, message } = await Http.post('/logout')
     if (code === 200) {
-      Message.success(message)
       sessionStorage.clear()
       localStorage.clear()
+      Message.success(message || '退出成功')
       navigate('/login') // 跳转登录页
     }
   }

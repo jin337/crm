@@ -80,10 +80,10 @@ const Manage = () => {
       dataIndex: 'path',
     },
     {
-      title: '菜单隐藏',
+      title: '隐藏',
       dataIndex: 'is_hide',
       align: 'center',
-      width: 74,
+      width: 70,
       render: (text, record) => (
         <Checkbox style={{ padding: 0 }} checked={text} onChange={(checked) => onChangeCheckbox('is_hide', checked, record)} />
       ),

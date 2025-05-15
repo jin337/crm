@@ -13,9 +13,11 @@
         visibility: visible;
       }
     }
+    .icon {
+      margin-right: 12px;
+    }
     .info {
       flex: 1;
-      margin-left: 12px;
       .dept {
         color: var(--color-text-3);
       }
@@ -25,6 +27,14 @@
       visibility: hidden;
       color: var(--color-text-3);
     }
+  }
+  .empty {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
   }
 }
 .use-box {
@@ -39,6 +49,14 @@
   }
   .content {
     overflow-y: auto;
+    height: 338px;
+    .empty {
+      margin-top: -21px;
+    }
+  }
+  .content-user {
+    overflow-y: auto;
+    height: 313px;
   }
 }
 .select-box {
@@ -57,13 +75,5 @@
     overflow-y: auto;
     height: calc(100% - 34px);
     margin-top: 12px;
-    .empty {
-      display: flex;
-      align-items: center;
-      flex-direction: row;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-    }
   }
 }

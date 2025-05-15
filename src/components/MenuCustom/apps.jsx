@@ -22,7 +22,7 @@ const Apps = (props) => {
               </Avatar>
               <div className='text-sm'>
                 <div>{item.title}</div>
-                <div className='text-[var(--color-text-3)]'>{item.describe}</div>
+                <div className='text-[var(--color-text-3)]'>{item.remark}</div>
               </div>
             </div>
             {item?.children?.length > 0 && (
