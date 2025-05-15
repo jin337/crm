@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --mode 47",
+    "build": "vite build",
+    "build:47": "vite build --mode 47",
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky"
