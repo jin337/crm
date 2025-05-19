@@ -22,11 +22,14 @@ const HrmMember = () => {
       title: '账号',
       dataIndex: 'user_account',
       width: 120,
-      render: (text, record) => (
-        <div className='cursor-pointer text-[rgb(var(--primary-6))]' onClick={() => onCreate('edit', record)}>
-          {text}
-        </div>
-      ),
+      render: (text, record) =>
+        record.status === 0 ? (
+          text
+        ) : (
+          <div className='cursor-pointer text-[rgb(var(--primary-6))]' onClick={() => onCreate('edit', record)}>
+            {text}
+          </div>
+        ),
     },
     {
       title: '手机号',

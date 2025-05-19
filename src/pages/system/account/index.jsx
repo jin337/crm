@@ -16,10 +16,6 @@ const Account = () => {
   // 表头
   const columns = [
     {
-      title: '登录名',
-      dataIndex: 'login_name',
-    },
-    {
       title: '账号名',
       dataIndex: 'account_name',
       render: (text, record) => (
@@ -27,6 +23,10 @@ const Account = () => {
           {text}
         </div>
       ),
+    },
+    {
+      title: '登录名',
+      dataIndex: 'login_name',
     },
     {
       title: '手机号',
@@ -91,6 +91,9 @@ const Account = () => {
           layout='vertical'
           autoComplete='off'
           validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
+          <Form.Item label='账号名' field='account_name' rules={[{ required: true }]}>
+            <Input allowClear placeholder='请输入内容' />
+          </Form.Item>
           <Form.Item
             label='登录名'
             field='login_name'
@@ -100,6 +103,8 @@ const Account = () => {
                 validator: (value, callback) => {
                   if (value === 'admin') {
                     callback('登录名不能是 admin')
+                  } else if (/[\u4e00-\u9fa5]/.test(value)) {
+                    callback('登录名不能包含中文')
                   } else {
                     callback()
                   }
@@ -107,23 +112,6 @@ const Account = () => {
               },
             ]}>
             <Input allowClear disabled={type === 'edit'} placeholder='请输入内容' />
-          </Form.Item>
-          <Form.Item
-            label='账号名'
-            field='account_name'
-            rules={[
-              { required: true },
-              {
-                validator: (value, callback) => {
-                  if (value === 'admin') {
-                    callback('账号名不能是 admin')
-                  } else {
-                    callback()
-                  }
-                },
-              },
-            ]}>
-            <Input allowClear placeholder='请输入内容' />
           </Form.Item>
           <Form.Item
             label='手机号'

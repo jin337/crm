@@ -231,6 +231,9 @@ const Application = () => {
       ),
       onOk: () => {
         appsForm.validate().then(async (values) => {
+          if (type === 'add') {
+            values.status = 1
+          }
           if (type === 'edit') {
             values.id = item.id
             values.status = item.status

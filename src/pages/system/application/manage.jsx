@@ -409,9 +409,11 @@ const Manage = () => {
           activeTab={activeTab}
           onChange={onChange}
           extra={
-            <Button size='small' type='primary' onClick={() => onCreate('add', params)}>
-              新增
-            </Button>
+            activeTab === '1' && (
+              <Button size='small' type='primary' onClick={() => onCreate('add', params)}>
+                新增
+              </Button>
+            )
           }>
           <Tabs.TabPane key='1' title='功能菜单'>
             {setting?.length > 0 && (
