@@ -12,8 +12,9 @@ import {
   Space,
   Switch,
   Tooltip,
+  Typography,
 } from '@arco-design/web-react'
-import { IconClose, IconCopy, IconEdit, IconPlus, IconSettings, IconSync } from '@arco-design/web-react/icon'
+import { IconClose, IconEdit, IconPlus, IconSettings, IconSync } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 // 组件
@@ -176,10 +177,16 @@ const Application = () => {
               label={
                 <div className='inline-flex w-[90%] items-center justify-between'>
                   <span>AppKey</span>
-                  <Space>
-                    <IconSync className='cursor-pointer' />
-                    <IconCopy className='cursor-pointer' />
-                  </Space>
+                  {type === 'edit' && (
+                    <Space>
+                      <IconSync className='cursor-pointer' />
+                      <Typography.Text
+                        copyable={{
+                          text: appsForm.getFieldValue('app_key'),
+                          tooltipProps: { className: 'break-keep' },
+                        }}></Typography.Text>
+                    </Space>
+                  )}
                 </div>
               }
               field='app_key'

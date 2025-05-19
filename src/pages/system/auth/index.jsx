@@ -38,6 +38,10 @@ const Setting = () => {
   const columns = [
     {
       title: '姓名',
+      dataIndex: 'user_name',
+    },
+    {
+      title: '账号',
       dataIndex: 'user_account',
       render: (_, record) => (
         <>
@@ -242,11 +246,13 @@ const Setting = () => {
   // 保存-关联账号
   const onChangeUser = async (arr) => {
     setVisibleSelect(false)
-    const obj = { role_id: active.id, user_list: arr.map((e) => ({ user_id: e.id, dept_id: e.user_dept_main })) }
-    const { code, message } = await Http.post('/system/role/add-user', obj)
-    if (code === 200) {
-      onChangeSearch(1)
-      Message.success(message)
+    if (arr.length > 0) {
+      const obj = { role_id: active.id, user_list: arr.map((e) => ({ user_id: e.id, dept_id: e.user_dept_main })) }
+      const { code, message } = await Http.post('/system/role/add-user', obj)
+      if (code === 200) {
+        onChangeSearch(1)
+        Message.success(message)
+      }
     }
   }
 

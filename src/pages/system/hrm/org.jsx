@@ -296,8 +296,10 @@ const HrmOrg = () => {
   }
   // 提交
   const onChangeUser = (arr) => {
+    if (arr?.length > 0) {
+      orgForm.setFieldValue('dept_admin_name', arr[0]?.user_name)
+    }
     setUserData(arr)
-    orgForm.setFieldValue('dept_admin_name', arr[0].user_name)
     setVisibleSelect(false)
   }
 

@@ -92,6 +92,23 @@ const Account = () => {
           autoComplete='off'
           validateMessages={{ required: (_, { label }) => `${label}是必填项` }}>
           <Form.Item
+            label='登录名'
+            field='login_name'
+            rules={[
+              { required: true },
+              {
+                validator: (value, callback) => {
+                  if (value === 'admin') {
+                    callback('登录名不能是 admin')
+                  } else {
+                    callback()
+                  }
+                },
+              },
+            ]}>
+            <Input allowClear disabled={type === 'edit'} placeholder='请输入内容' />
+          </Form.Item>
+          <Form.Item
             label='账号名'
             field='account_name'
             rules={[
@@ -106,7 +123,7 @@ const Account = () => {
                 },
               },
             ]}>
-            <Input allowClear disabled={type === 'edit'} placeholder='请输入内容' />
+            <Input allowClear placeholder='请输入内容' />
           </Form.Item>
           <Form.Item
             label='手机号'
@@ -132,7 +149,10 @@ const Account = () => {
             values.status = 1
           }
           if (type === 'edit') {
-            values.id = item.id
+            values = {
+              ...item,
+              ...values,
+            }
           }
           const { code, message } = await Http.post(url, values)
           if (code === 200) {
