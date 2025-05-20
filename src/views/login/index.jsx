@@ -1,13 +1,15 @@
 import { Button, Checkbox, Form, Input, Modal } from '@arco-design/web-react'
 import { IconCommand, IconSafe, IconStamp } from '@arco-design/web-react/icon'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { resetState } from 'src/store/common'
 // 公共方法
 import { localSetItem } from 'src/utils/common'
 // 样式
 import styles from './index.module.scss'
 const Login = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [formLogin] = Form.useForm()
   const { logo, title } = useSelector((state) => state.common)
@@ -45,6 +47,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     const { code, data } = await Http.post('/login', e)
     if (code === 200) {
+      dispatch(resetState())
       localSetItem('CRMUSERDATA', data)
       navigate('/')
     }

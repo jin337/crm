@@ -209,6 +209,7 @@ const Manage = () => {
                               'IconRobot',
                               'IconIdcard',
                               'IconStamp',
+                              'IconUserGroup',
                             ]?.map((item) => (
                               <li
                                 key={item}

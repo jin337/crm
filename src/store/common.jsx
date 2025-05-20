@@ -9,7 +9,7 @@ const initialState = {
   // 用户数据
   userInfo: null,
   // 用户权限
-  depts: null,
+  depts: [],
   // 用户主题
   theme: null,
   // 导航选中
@@ -23,6 +23,7 @@ export const common = createSlice({
   name: 'common',
   initialState,
   reducers: {
+    resetState: () => initialState,
     setUserInfo: (state, action) => {
       state.userInfo = action.payload
     },
@@ -44,5 +45,5 @@ export const common = createSlice({
   },
 })
 
-export const { setUserInfo, setDepts, setTheme, setMenu, setSystemMenu, setMenuSelect } = common.actions
+export const { resetState, setUserInfo, setDepts, setTheme, setMenu, setSystemMenu, setMenuSelect } = common.actions
 export default common.reducer

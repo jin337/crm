@@ -18,6 +18,10 @@ export const router = createBrowserRouter([
         path: '/workplace',
         Component: lazy(() => import('src/pages/demo')),
       },
+      {
+        path: '/demo',
+        Component: lazy(() => import('src/pages/demo')),
+      },
       // 工程管理
       {
         path: '/project',

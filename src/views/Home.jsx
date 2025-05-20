@@ -67,7 +67,7 @@ const Home = () => {
       dispatch(setDepts(data.dept_list)) //角色信息
       dispatch(setTheme(data.theme)) //主题信息
 
-      updateTheme(data?.theme) //设置主题
+      data?.theme && updateTheme(data?.theme) //设置主题
 
       const right = data.right || []
       setRightMenu(right)

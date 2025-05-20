@@ -143,6 +143,7 @@ const Application = () => {
                                 'IconRobot',
                                 'IconIdcard',
                                 'IconStamp',
+                                'IconUserGroup',
                               ]?.map((item) => (
                                 <li
                                   key={item}
@@ -171,7 +172,7 @@ const Application = () => {
           </Grid.Row>
           <div className='flex gap-6'>
             <Form.Item label='应用编码' field='app_code' rules={[{ required: true }]}>
-              <Input placeholder='请输入内容' />
+              <Input disabled={type === 'edit'} placeholder='请输入内容' />
             </Form.Item>
             <Form.Item
               label={
