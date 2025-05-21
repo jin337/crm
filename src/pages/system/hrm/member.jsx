@@ -152,7 +152,7 @@ const HrmMember = () => {
       wrapClassName: 'modal-wrap',
       content: <CreateForm form={createForm} data={arr} />,
       onOk: async () => {
-        const values = await createForm.validate()
+        let values = await createForm.validate()
         let url = null
         if (type === 'add') {
           values.status = 2

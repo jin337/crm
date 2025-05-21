@@ -188,7 +188,7 @@ const HrmOrg = () => {
         </Form>
       ),
       onOk: async () => {
-        const values = await orgForm.validate()
+        let values = await orgForm.validate()
         let url = null
         if (type === 'add') {
           url = '/system/dept/add'
@@ -238,7 +238,7 @@ const HrmOrg = () => {
       wrapClassName: 'modal-wrap',
       content: <CreateForm form={memberForm} data={orgData} />,
       onOk: async () => {
-        const values = await memberForm.validate()
+        let values = await memberForm.validate()
         if (type === 'add') {
           values.status = 2
         }

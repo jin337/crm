@@ -136,7 +136,7 @@ const Account = () => {
         </Form>
       ),
       onOk: async () => {
-        const values = await createForm.validate()
+        let values = await createForm.validate()
         if (type === 'add') {
           values.status = 1
         }

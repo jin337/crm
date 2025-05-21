@@ -231,7 +231,7 @@ const Application = () => {
         </Form>
       ),
       onOk: async () => {
-        const values = await appsForm.validate()
+        let values = await appsForm.validate()
         if (type === 'add') {
           values.status = 1
         }

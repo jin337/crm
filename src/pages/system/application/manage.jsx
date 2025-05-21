@@ -321,7 +321,7 @@ const Manage = () => {
         </Form>
       ),
       onOk: async () => {
-        const values = await appsForm.validate()
+        let values = await appsForm.validate()
         let valueObj = {
           app_id: item.app_id || params.id,
           pid: item.id,
