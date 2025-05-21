@@ -102,7 +102,7 @@ const Setting = () => {
 
   // 角色菜单列表
   const getMenuList = async (item) => {
-    const { code, data } = await Http.post('/system/menu/list', { class: item.class, app_id: item.app_id })
+    const { code, data } = await Http.post('/system/menu/list', { class: item.app_id === '1' ? 2 : 1, app_id: item.app_id })
     if (code === 200) {
       setMenuList(data?.list || [])
     }
@@ -258,7 +258,11 @@ const Setting = () => {
 
   // 保存-角色权限
   const submitRole = async () => {
-    const { code, message } = await Http.post('/system/role/add-menu', { role_id: active.id, menu_list: menuRole })
+    const { code, message } = await Http.post('/system/role/add-menu', {
+      role_id: active.id,
+      menu_list: menuRole,
+      app_id: menuSelect.app_id,
+    })
     if (code === 200) {
       getRoleMenu(active.id)
       Message.success(message)
@@ -344,7 +348,7 @@ const Setting = () => {
                       </Button>
                     </div>
                   )}
-                  <TreeCheck treeData={menuList || []} selectKeys={menuRole} onChange={setMenuRole} />
+                  <TreeCheck treeData={menuList || []} selectKeys={menuRole} menuSelect={menuSelect} onChange={setMenuRole} />
                 </>
               )}
             </Tabs.TabPane>

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 
 const TreeCheck = (props) => {
-  const { treeData = [], selectKeys = [], onChange } = props
+  const { treeData = [], selectKeys = [], menuSelect, onChange } = props
   const [items, setItems] = useState([])
 
   const flattenItems = (data) => {
@@ -73,8 +73,9 @@ const TreeCheck = (props) => {
     }
 
     return data.map((option) => (
-      <div className={styles['item']} key={option.id}>
+      <div className={`${styles['item']} ${option?.children?.length > 0 ? styles['item-box'] : ''}`} key={option.id}>
         <Checkbox
+          className={`${option.pid === '0' || option?.children?.length > 0 ? styles['item-label'] : ''}`}
           value={option.id}
           checked={getParentStatus(option)}
           onChange={(checked) => changeChecked(checked, option)}
@@ -94,14 +95,16 @@ const TreeCheck = (props) => {
 
   return (
     <div className={styles['treecheck-wrap']}>
-      <div className={styles['item']}>
-        <Checkbox
-          onChange={allChecked}
-          checked={selected.length === flattenItems(items).length}
-          indeterminate={selected.length > 0 && selected.length < flattenItems(items).length}>
-          全部
-        </Checkbox>
-      </div>
+      {menuSelect.app_id === '1' && (
+        <div className={styles['item']}>
+          <Checkbox
+            onChange={allChecked}
+            checked={selected.length === flattenItems(items).length}
+            indeterminate={selected.length > 0 && selected.length < flattenItems(items).length}>
+            全部
+          </Checkbox>
+        </div>
+      )}
       {renderTree(items)}
     </div>
   )

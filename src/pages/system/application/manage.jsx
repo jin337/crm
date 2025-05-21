@@ -363,11 +363,7 @@ const Manage = () => {
   const onChange = async (e, state = params) => {
     setActiveTab(e)
     setSetting([])
-    const obj = {
-      class: e,
-      app_id: state?.id,
-    }
-    const { code, data } = await Http.post('/system/menu/list', obj)
+    const { code, data } = await Http.post('/system/menu/list-by-app', { class: e, app_id: state?.id })
     if (code === 200) {
       const addKeysToMenuItems = (items) => {
         return items.map((item) => ({
