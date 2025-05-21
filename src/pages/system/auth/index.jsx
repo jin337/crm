@@ -156,8 +156,9 @@ const Setting = () => {
           </Form.Item>
         </Form>
       ),
-      onOk: () => {
-        roleForm.validate().then(async (values) => {
+      onOk: async () => {
+        const values = await roleForm.validate()
+        if (values?.role_name) {
           if (type === 'add') {
             values.role_type = menuSelect.permission === 'system-auth-setting' ? 1 : 2 //1系统角色2应用角色
           }
@@ -173,7 +174,7 @@ const Setting = () => {
             getRoleList({ app_id: menuSelect?.app_id })
             Message.success(message)
           }
-        })
+        }
       },
     })
   }

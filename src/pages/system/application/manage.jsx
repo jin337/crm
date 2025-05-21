@@ -113,14 +113,14 @@ const Manage = () => {
           <Button type='text' size='mini' status='success' onClick={() => onCreate('add-children', record)}>
             新增
           </Button>
-          <Button type='text' size='mini' onClick={() => onCreate('edit', record)}>
+          <Button type='text' size='mini' disabled={record.pid === '0'} onClick={() => onCreate('edit', record)}>
             编辑
           </Button>
           <Button
             type='text'
             size='mini'
             status='danger'
-            disabled={record?.children?.length > 0}
+            disabled={record?.children?.length || record.pid === '0' > 0}
             onClick={() => onDelete(record)}>
             删除
           </Button>
@@ -320,25 +320,24 @@ const Manage = () => {
           </Grid.Row>
         </Form>
       ),
-      onOk: () => {
-        appsForm.validate().then(async (values) => {
-          let valueObj = {
-            app_id: item.app_id || params.id,
-            pid: item.id,
-            class: Number(activeTab),
-            ...values,
-          }
+      onOk: async () => {
+        const values = await appsForm.validate()
+        let valueObj = {
+          app_id: item.app_id || params.id,
+          pid: item.id,
+          class: Number(activeTab),
+          ...values,
+        }
 
-          if (type === 'edit') {
-            valueObj.id = item.id
-            valueObj.pid = item.pid
-          }
-          const { code, message } = await Http.post(url, valueObj)
-          if (code === 200) {
-            onChange(activeTab)
-            Message.success(message)
-          }
-        })
+        if (type === 'edit') {
+          valueObj.id = item.id
+          valueObj.pid = item.pid
+        }
+        const { code, message } = await Http.post(url, valueObj)
+        if (code === 200) {
+          onChange(activeTab)
+          Message.success(message)
+        }
       },
     })
   }

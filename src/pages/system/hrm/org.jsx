@@ -187,24 +187,23 @@ const HrmOrg = () => {
           </Form.Item>
         </Form>
       ),
-      onOk: () => {
-        orgForm.validate().then(async (values) => {
-          let url = null
-          if (type === 'add') {
-            url = '/system/dept/add'
-          }
-          if (type === 'edit') {
-            url = '/system/dept/edit'
-            values.id = e?.dataRef.id
-            values.dept_admin = userData[0].id
-          }
-          const { code, message } = await Http.post(url, values)
-          if (code === 200) {
-            getOrgData()
-            setUserData([])
-            Message.success(message)
-          }
-        })
+      onOk: async () => {
+        const values = await orgForm.validate()
+        let url = null
+        if (type === 'add') {
+          url = '/system/dept/add'
+        }
+        if (type === 'edit') {
+          url = '/system/dept/edit'
+          values.id = e?.dataRef.id
+          values.dept_admin = userData[0].id
+        }
+        const { code, message } = await Http.post(url, values)
+        if (code === 200) {
+          getOrgData()
+          setUserData([])
+          Message.success(message)
+        }
       },
       onCancel: () => {
         setUserData([])
@@ -238,25 +237,24 @@ const HrmOrg = () => {
       closable: true,
       wrapClassName: 'modal-wrap',
       content: <CreateForm form={memberForm} data={orgData} />,
-      onOk: () => {
-        memberForm.validate().then(async (values) => {
-          if (type === 'add') {
-            values.status = 2
+      onOk: async () => {
+        const values = await memberForm.validate()
+        if (type === 'add') {
+          values.status = 2
+        }
+        if (type === 'edit') {
+          values = {
+            ...item,
+            ...values,
           }
-          if (type === 'edit') {
-            values = {
-              ...item,
-              ...values,
-            }
-          }
-          values.user_depts = values?.user_depts?.join(',')
-          const { code, message } = await Http.post(url, values)
-          if (code === 200) {
-            setOrgSelected(org)
-            onChangeSearch(tableData?.current || 1, org)
-            Message.success(message)
-          }
-        })
+        }
+        values.user_depts = values?.user_depts?.join(',')
+        const { code, message } = await Http.post(url, values)
+        if (code === 200) {
+          setOrgSelected(org)
+          onChangeSearch(tableData?.current || 1, org)
+          Message.success(message)
+        }
       },
     })
   }

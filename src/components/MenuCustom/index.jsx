@@ -137,7 +137,7 @@ const Header = (props) => {
               </Menu>
             }>
             <Avatar size={32} style={{ backgroundColor: '#fff', color: '#1d2129' }} className='cursor-pointer'>
-              {userInfo?.user_name?.length >= 3 ? userInfo?.user_name.substring(0, 2) : userInfo?.user_name}
+              {userInfo?.user_name?.length > 3 ? userInfo?.user_name.substring(0, 2) : userInfo?.user_name}
             </Avatar>
           </Dropdown>
         </Space>

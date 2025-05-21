@@ -12,9 +12,8 @@ import {
   Space,
   Switch,
   Tooltip,
-  Typography,
 } from '@arco-design/web-react'
-import { IconClose, IconEdit, IconPlus, IconSettings, IconSync } from '@arco-design/web-react/icon'
+import { IconClose, IconEdit, IconPlus, IconSettings } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 // 组件
@@ -176,19 +175,20 @@ const Application = () => {
             </Form.Item>
             <Form.Item
               label={
-                <div className='inline-flex w-[90%] items-center justify-between'>
-                  <span>AppKey</span>
-                  {type === 'edit' && (
-                    <Space>
-                      <IconSync className='cursor-pointer' />
-                      <Typography.Text
-                        copyable={{
-                          text: appsForm.getFieldValue('app_key'),
-                          tooltipProps: { className: 'break-keep' },
-                        }}></Typography.Text>
-                    </Space>
-                  )}
-                </div>
+                'AppKey'
+                // <div className='inline-flex w-[90%] items-center justify-between'>
+                //   <span>AppKey</span>
+                //   {type === 'edit' && (
+                //     <Space>
+                //       <IconSync className='cursor-pointer' />
+                //       <Typography.Text
+                //         copyable={{
+                //           text: appsForm.getFieldValue('app_key'),
+                //           tooltipProps: { className: 'break-keep' },
+                //         }}></Typography.Text>
+                //     </Space>
+                //   )}
+                // </div>
               }
               field='app_key'
               rules={[{ required: true }]}>
@@ -230,24 +230,23 @@ const Application = () => {
           </Form.Item>
         </Form>
       ),
-      onOk: () => {
-        appsForm.validate().then(async (values) => {
-          if (type === 'add') {
-            values.status = 1
-          }
-          if (type === 'edit') {
-            values.id = item.id
-            values.status = item.status
-          }
-          const { code, message } = await Http.post(url, values)
-          if (code === 200) {
-            Message.success({
-              content: message + '，1秒后刷新数据',
-              duration: 1000,
-              onClose: () => navigate(0),
-            })
-          }
-        })
+      onOk: async () => {
+        const values = await appsForm.validate()
+        if (type === 'add') {
+          values.status = 1
+        }
+        if (type === 'edit') {
+          values.id = item.id
+          values.status = item.status
+        }
+        const { code, message } = await Http.post(url, values)
+        if (code === 200) {
+          Message.success({
+            content: message + '，1秒后刷新数据',
+            duration: 1000,
+            onClose: () => navigate(0),
+          })
+        }
       },
     })
   }

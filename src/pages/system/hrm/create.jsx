@@ -139,7 +139,7 @@ const Create = ({ form, data = [] }) => {
           />
         </Form.Item>
       </div>
-      <Form.Item label='岗位' field='user_post' rules={[{ required: true }]}>
+      <Form.Item label='岗位' field='user_post'>
         <Input allowClear placeholder='请输入内容' />
       </Form.Item>
     </Form>

@@ -36,8 +36,12 @@ const Account = () => {
       title: '状态',
       dataIndex: 'status',
       align: 'center',
-      width: 70,
-      render: (text, record) => <Checkbox style={{ padding: 0 }} checked={text} onChange={() => onChangeCheckbox(record)} />,
+      width: 90,
+      render: (text, record) => (
+        <Checkbox style={{ padding: 0 }} checked={text} onChange={() => onChangeCheckbox(record)}>
+          {text ? '正常' : '禁用'}
+        </Checkbox>
+      ),
     },
     {
       title: '账号认证',
@@ -131,23 +135,22 @@ const Account = () => {
           </Form.Item>
         </Form>
       ),
-      onOk: () => {
-        createForm.validate().then(async (values) => {
-          if (type === 'add') {
-            values.status = 1
+      onOk: async () => {
+        const values = await createForm.validate()
+        if (type === 'add') {
+          values.status = 1
+        }
+        if (type === 'edit') {
+          values = {
+            ...item,
+            ...values,
           }
-          if (type === 'edit') {
-            values = {
-              ...item,
-              ...values,
-            }
-          }
-          const { code, message } = await Http.post(url, values)
-          if (code === 200) {
-            onChangeSearch(tableData?.current || 1)
-            Message.success(message)
-          }
-        })
+        }
+        const { code, message } = await Http.post(url, values)
+        if (code === 200) {
+          onChangeSearch(tableData?.current || 1)
+          Message.success(message)
+        }
       },
     })
   }

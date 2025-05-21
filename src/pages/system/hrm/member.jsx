@@ -151,27 +151,26 @@ const HrmMember = () => {
       closable: true,
       wrapClassName: 'modal-wrap',
       content: <CreateForm form={createForm} data={arr} />,
-      onOk: () => {
-        createForm.validate().then(async (values) => {
-          let url = null
-          if (type === 'add') {
-            values.status = 2
-            url = '/system/user/add'
+      onOk: async () => {
+        const values = await createForm.validate()
+        let url = null
+        if (type === 'add') {
+          values.status = 2
+          url = '/system/user/add'
+        }
+        if (type === 'edit') {
+          url = '/system/user/edit'
+          values = {
+            ...item,
+            ...values,
           }
-          if (type === 'edit') {
-            url = '/system/user/edit'
-            values = {
-              ...item,
-              ...values,
-            }
-          }
-          values.user_depts = values.user_depts.join(',')
-          const { code, message } = await Http.post(url, values)
-          if (code === 200) {
-            onChangeSearch(tableData?.current || 1)
-            Message.success(message)
-          }
-        })
+        }
+        values.user_depts = values.user_depts.join(',')
+        const { code, message } = await Http.post(url, values)
+        if (code === 200) {
+          onChangeSearch(tableData?.current || 1)
+          Message.success(message)
+        }
       },
     })
   }
