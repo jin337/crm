@@ -12,8 +12,9 @@ import {
   Space,
   Switch,
   Tooltip,
+  Typography,
 } from '@arco-design/web-react'
-import { IconClose, IconEdit, IconPlus, IconSettings } from '@arco-design/web-react/icon'
+import { IconClose, IconEdit, IconPlus, IconSettings, IconSync } from '@arco-design/web-react/icon'
 import { Fragment, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 // 组件
@@ -174,22 +175,19 @@ const Application = () => {
               <Input disabled={type === 'edit'} placeholder='请输入内容' />
             </Form.Item>
             <Form.Item
-              label={
-                'AppKey'
-                // <div className='inline-flex w-[90%] items-center justify-between'>
-                //   <span>AppKey</span>
-                //   {type === 'edit' && (
-                //     <Space>
-                //       <IconSync className='cursor-pointer' />
-                //       <Typography.Text
-                //         copyable={{
-                //           text: appsForm.getFieldValue('app_key'),
-                //           tooltipProps: { className: 'break-keep' },
-                //         }}></Typography.Text>
-                //     </Space>
-                //   )}
-                // </div>
+              extra={
+                type === 'edit' && (
+                  <Space className='w-full justify-end'>
+                    <IconSync className='cursor-pointer' />
+                    <Typography.Text
+                      copyable={{
+                        text: appsForm.getFieldValue('app_key'),
+                        tooltipProps: { className: 'break-keep' },
+                      }}></Typography.Text>
+                  </Space>
+                )
               }
+              label='AppKey'
               field='app_key'
               rules={[{ required: true }]}>
               <Input placeholder='请输入内容' />

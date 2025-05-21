@@ -18,11 +18,14 @@ const Account = () => {
     {
       title: '账号名',
       dataIndex: 'account_name',
-      render: (text, record) => (
-        <div className='cursor-pointer text-[rgb(var(--primary-6))]' onClick={() => onCreate('edit', record)}>
-          {text}
-        </div>
-      ),
+      render: (text, record) =>
+        record.user_id === 0 ? (
+          <div className='cursor-pointer text-[rgb(var(--primary-6))]' onClick={() => onCreate('edit', record)}>
+            {text}
+          </div>
+        ) : (
+          text
+        ),
     },
     {
       title: '登录名',
@@ -44,6 +47,19 @@ const Account = () => {
       ),
     },
     {
+      title: '是否绑定',
+      dataIndex: 'user_id',
+      align: 'center',
+      render: (text) => {
+        switch (text) {
+          case 0:
+            return <Tag color='gray'>未绑定</Tag>
+          default:
+            return <Tag color='arcoblue'>已绑定</Tag>
+        }
+      },
+    },
+    {
       title: '账号认证',
       dataIndex: 'account_auth',
       align: 'center',
@@ -57,6 +73,14 @@ const Account = () => {
             return <Tag>未知</Tag>
         }
       },
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'create_time',
+    },
+    {
+      title: '更新时间',
+      dataIndex: 'update_time',
     },
   ]
 
@@ -246,6 +270,7 @@ const Account = () => {
             type: 'checkbox',
             selectedRowKeys: selectedIds,
             onChange: (ids) => setSelectedIds(ids),
+            checkboxProps: (record) => ({ disabled: record.user_id !== 0 }), // 不可选中
           }}
           pagination={{
             showTotal: true,
