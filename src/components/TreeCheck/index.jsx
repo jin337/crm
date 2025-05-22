@@ -98,6 +98,7 @@ const TreeCheck = (props) => {
       {menuSelect.app_id === '1' && (
         <div className={styles['item']}>
           <Checkbox
+            className={styles['item-label']}
             onChange={allChecked}
             checked={selected.length === flattenItems(items).length}
             indeterminate={selected.length > 0 && selected.length < flattenItems(items).length}>

@@ -64,7 +64,7 @@ const Setting = () => {
     },
     {
       title: '角色',
-      dataIndex: 'name1',
+      dataIndex: 'role_name',
     },
     {
       title: '操作',

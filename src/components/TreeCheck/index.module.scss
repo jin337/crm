@@ -5,18 +5,19 @@
   }
   .item-box {
     width: 100%;
-    margin-top: 4px;
+    margin-top: 10px;
   }
   .item-label {
     font-weight: bold;
+    font-size: 16px;
   }
   .box {
     display: flex;
     flex-wrap: wrap;
     margin-top: 4px;
 
-    gap: 6px;
     .item {
+      margin-right: 40px;
       margin-bottom: 0;
     }
   }

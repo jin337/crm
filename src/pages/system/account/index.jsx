@@ -47,7 +47,7 @@ const Account = () => {
       ),
     },
     {
-      title: '是否绑定',
+      title: '绑定账号',
       dataIndex: 'user_id',
       align: 'center',
       render: (text) => {

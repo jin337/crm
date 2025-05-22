@@ -64,14 +64,14 @@ const Login = () => {
           <div className={styles['list']}>
             <div className={styles['title']}>
               <IconCommand className={styles['icon']} />
-              工程管理
+              工程
             </div>
             <div className={styles['stitle']}>
               实现项目全流程管控，涵盖任务分配、进度监控、资源协调等功能，支持多团队协作与工程数据可视化分析。
             </div>
             <div className={styles['title']}>
               <IconSafe className={styles['icon']} />
-              财务管理
+              财务
             </div>
             <div className={styles['stitle']}>
               提供费用预算、收支记录、成本分析等核心功能，集成报销审批与财务报表生成，实现企业资金全链路监管。

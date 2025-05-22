@@ -113,7 +113,11 @@ const Manage = () => {
           <Button type='text' size='mini' status='success' onClick={() => onCreate('add-children', record)}>
             新增
           </Button>
-          <Button type='text' size='mini' disabled={record.pid === '0'} onClick={() => onCreate('edit', record)}>
+          <Button
+            type='text'
+            size='mini'
+            disabled={record.pid === '0' && activeTab === '2'}
+            onClick={() => onCreate('edit', record)}>
             编辑
           </Button>
           <Button
