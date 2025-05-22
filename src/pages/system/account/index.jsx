@@ -1,4 +1,4 @@
-import { Button, Card, Checkbox, Form, Input, Message, Modal, Select, Table, Tag } from '@arco-design/web-react'
+import { Button, Card, Checkbox, Form, Input, Message, Modal, Select, Table, Tag, Tooltip } from '@arco-design/web-react'
 import { IconPlus } from '@arco-design/web-react/icon'
 import { useEffect, useState } from 'react'
 
@@ -55,7 +55,11 @@ const Account = () => {
           case 0:
             return <Tag color='gray'>未绑定</Tag>
           default:
-            return <Tag color='arcoblue'>已绑定</Tag>
+            return (
+              <Tooltip content='不可删除已绑定账号'>
+                <Tag color='arcoblue'>已绑定</Tag>
+              </Tooltip>
+            )
         }
       },
     },
@@ -251,7 +255,11 @@ const Account = () => {
         {selectedIds?.length > 0 && (
           <div className='absolute top-[61px] left-[72px] z-10 flex h-[40px] w-[calc(100%-104px)] items-center gap-4 bg-[var(--color-neutral-2)]'>
             <div>已选中 {selectedIds.length} 项</div>
-            <Button size='small' type='primary' onClick={() => onDelete(selectedIds)}>
+            <Button
+              size='small'
+              type='primary'
+              disabled={tableData?.list?.some((item) => selectedIds?.includes(item.id) && item?.user_id !== 0)}
+              onClick={() => onDelete(selectedIds)}>
               删除
             </Button>
             <Button size='small' type='primary' onClick={() => onResetPassword(selectedIds)}>
@@ -270,7 +278,6 @@ const Account = () => {
             type: 'checkbox',
             selectedRowKeys: selectedIds,
             onChange: (ids) => setSelectedIds(ids),
-            checkboxProps: (record) => ({ disabled: record.user_id !== 0 }), // 不可选中
           }}
           pagination={{
             showTotal: true,
