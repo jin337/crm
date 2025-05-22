@@ -75,7 +75,7 @@ const TreeCheck = (props) => {
     return data.map((option) => (
       <div className={`${styles['item']} ${option?.children?.length > 0 ? styles['item-box'] : ''}`} key={option.id}>
         <Checkbox
-          className={`${option.pid === '0' || option?.children?.length > 0 ? styles['item-label'] : ''}`}
+          className={`${option.pid === '0' ? styles['item-label'] : ''}`}
           value={option.id}
           checked={getParentStatus(option)}
           onChange={(checked) => changeChecked(checked, option)}
