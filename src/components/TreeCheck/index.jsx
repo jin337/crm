@@ -44,14 +44,15 @@ const TreeCheck = (props) => {
       const getLeaf = (e) => {
         const parent = flattenItems(items).find((x) => x.id === e.pid)
         if (parent) {
-          const newSelected = checked ? [...selected, e.id] : selected.filter((x) => x !== e.id)
-          const allPid = parent.children.map((x) => x.id)
-          const containsAll = allPid.every((x) => newSelected.includes(x))
-          if (checked) {
-            return containsAll ? [e.pid, e.id] : [e.id]
-          } else {
-            return [e.pid, e.id]
-          }
+          // const newSelected = checked ? [...selected, e.id] : selected.filter((x) => x !== e.id)
+          // const allPid = parent.children.map((x) => x.id)
+          // const containsAll = allPid.every((x) => newSelected.includes(x))
+          // if (checked) {
+          //   return containsAll ? [e.pid, e.id] : [e.id]
+          // } else {
+          //   return [e.pid, e.id]
+          // }
+          return [e.pid, e.id]
         } else {
           return [e.id]
         }
@@ -75,7 +76,7 @@ const TreeCheck = (props) => {
     return data.map((option) => (
       <div className={`${styles['item']} ${option?.children?.length > 0 ? styles['item-box'] : ''}`} key={option.id}>
         <Checkbox
-          className={`${option.pid === '0' ? styles['item-label'] : ''}`}
+          className={`${option.pid === '0' ? styles['title'] : ''}`}
           value={option.id}
           checked={getParentStatus(option)}
           onChange={(checked) => changeChecked(checked, option)}
@@ -98,7 +99,7 @@ const TreeCheck = (props) => {
       {menuSelect.app_id === '1' && (
         <div className={styles['item']}>
           <Checkbox
-            className={styles['item-label']}
+            className={styles['title']}
             onChange={allChecked}
             checked={selected.length === flattenItems(items).length}
             indeterminate={selected.length > 0 && selected.length < flattenItems(items).length}>

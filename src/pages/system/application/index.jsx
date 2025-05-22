@@ -144,6 +144,8 @@ const Application = () => {
                                 'IconIdcard',
                                 'IconStamp',
                                 'IconUserGroup',
+                                'IconCommand',
+                                'IconSafe',
                               ]?.map((item) => (
                                 <li
                                   key={item}
